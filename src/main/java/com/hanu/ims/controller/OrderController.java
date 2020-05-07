@@ -73,7 +73,7 @@ public class OrderController {
     }
 
     /**
-     * Add a created order to database and update involved entities
+     * Add a created order to database and update related entities
      */
     public void createOrder(Order order) {
         if (order.getOrderLines().isEmpty()) {
@@ -87,6 +87,49 @@ public class OrderController {
 
             // update batches
             List<Batch> savedBatches = batchRepository.saveAll(pendingBatches);
+
+            // invalidating cache
+            pendingBatches.clear();
         }
+    }
+
+    /**
+     * Update an order and update related entities
+     */
+    public void updateOrder(Order order, List<OrderLine> removedLines, List<OrderLine> newLines) {
+        // load related batches
+        List<Batch> pendingUpdateBatches = new ArrayList<>();
+
+        List<Batch> batchesToReturn = pendingUpdateBatchesFromOrderLines(removedLines, false);
+        List<Batch> batchesToTake = pendingUpdateBatchesFromOrderLines(newLines, true);
+
+        pendingUpdateBatches.addAll(batchesToReturn);
+        pendingUpdateBatches.addAll(batchesToTake);
+
+        orderRepository.save(order);
+        orderRepository.removeOrderLines(removedLines);
+        orderRepository.addOrderLines(newLines);
+        batchRepository.saveAll(pendingUpdateBatches);
+    }
+
+    public void removeOrder(Order order) {
+        List<OrderLine> orderLines = order.getOrderLines();
+        List<Batch> pendingUpdateBatches = pendingUpdateBatchesFromOrderLines(orderLines, true);
+        batchRepository.saveAll(pendingUpdateBatches);
+        orderRepository.removeOrderLines(orderLines);
+        orderRepository.delete(order);
+    }
+
+    private List<Batch> pendingUpdateBatchesFromOrderLines(List<OrderLine> orderLines, boolean isRemoved) {
+        int coefficient = isRemoved ? -1 : 1;
+        Map<Batch, Integer> relatedBatches = batchRepository.getBatchesAndQuantityFromOrderLines(orderLines);
+        List<Batch> pendingUpdateBatches = new ArrayList<>();
+        var keySet = relatedBatches.keySet();
+        for (Batch batch : keySet) {
+            int newQuantity = batch.getQuantity() + coefficient * relatedBatches.get(batch);
+            batch.setQuantity(newQuantity);
+            pendingUpdateBatches.add(batch);
+        }
+        return pendingUpdateBatches;
     }
 }
