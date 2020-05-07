@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="588.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.AdminDashboardView">
+   <children>
+      <Pane prefHeight="400.0" prefWidth="150.0">
+         <children>
+            <Label layoutX="34.0" layoutY="45.0" prefHeight="22.0" prefWidth="116.0" text="Overview" textAlignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="98.0" prefHeight="22.0" prefWidth="116.0" text="Total Users:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="userCountLabel" layoutX="58.0" layoutY="155.0" prefHeight="27.0" prefWidth="58.0" text="X_user">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TableView fx:id="userTable" prefHeight="469.0" prefWidth="624.0">
+        <columns>
+          <TableColumn fx:id="idColumn" prefWidth="107.0" text="ID" />
+          <TableColumn fx:id="usernameColumn" prefWidth="122.0" text="Username" />
+            <TableColumn fx:id="passwordColumn" prefWidth="157.0" text="Password" />
+            <TableColumn fx:id="roleColumn" prefWidth="138.0" text="Role" />
+            <TableColumn prefWidth="99.0" text="Action" />
+        </columns>
+      </TableView>
+      <Pane prefHeight="588.0" prefWidth="175.0">
+         <children>
+            <Button layoutX="24.0" layoutY="62.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="127.0" text="Create new account" onAction="#showCreateAccountView"/>
+         </children>
+      </Pane>
+   </children>
+</HBox>
