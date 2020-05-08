@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar prefHeight="25.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="List">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Create">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <SplitPane dividerPositions="0.2" layoutX="122.0" layoutY="120.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="21.0" layoutY="14.0" text="OverView">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="21.0" layoutY="70.0" prefHeight="19.0" prefWidth="98.0" text="Total Batch">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="21.0" layoutY="114.0" prefHeight="19.0" prefWidth="98.0" text="Daily Created">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="21.0" layoutY="160.0" prefHeight="19.0" prefWidth="98.0" text="Expried Batch">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <TableView layoutY="71.0" prefHeight="503.0" prefWidth="715.0">
+                    <columns>
+                      <TableColumn editable="false" prefWidth="68.0" text="ID" />
+                      <TableColumn prefWidth="185.0" text="Name" />
+                        <TableColumn prefWidth="129.0" text="Phone" />
+                        <TableColumn minWidth="1.0" prefWidth="111.0" text="Batch Quantity" />
+                        <TableColumn minWidth="0.0" prefWidth="106.0" text="Date created" />
+                        <TableColumn minWidth="0.0" prefWidth="106.0" text="Action" />
+                    </columns>
+                  </TableView>
+                  <Button layoutX="650.0" layoutY="37.0" mnemonicParsing="false" text="Delete" />
+                  <Button layoutX="601.0" layoutY="37.0" mnemonicParsing="false" text="Add" />
+                  <Label layoutX="21.0" layoutY="20.0" text="Supplier List" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

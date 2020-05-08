@@ -8,8 +8,6 @@ import com.hanu.ims.util.db.DbConnectorImpl;
 import com.hanu.ims.util.servicelocator.ServiceContainer;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
-import java.io.IOException;
-
 public class Startup {
     private ServiceContainer container;
 

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar prefHeight="25.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="List Batch">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Create Batch">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <SplitPane dividerPositions="0.2" layoutX="122.0" layoutY="120.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="51.0" layoutY="14.0" text="OverView">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="51.0" layoutY="70.0" text="Total Batch">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="51.0" layoutY="119.0" text="Expried Batch">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="51.0" layoutY="170.0" text="Daily created">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <SplitPane layoutX="156.0" layoutY="87.0" orientation="VERTICAL" prefHeight="373.0" prefWidth="475.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane>
+                           <children>
+                              <Label layoutX="34.0" layoutY="19.0" text="Batch infomaton" />
+                              <Separator layoutX="34.0" layoutY="37.0" prefHeight="5.0" prefWidth="649.0" />
+                              <Label layoutX="63.0" layoutY="48.0" text="Product name: " />
+                              <Label layoutX="62.0" layoutY="167.0" text="Status" AnchorPane.leftAnchor="62.0" />
+                              <Label layoutX="266.0" layoutY="48.0" text="Sku_code" AnchorPane.leftAnchor="266.0" />
+                              <Label layoutX="266.0" layoutY="100.0" text="Price" AnchorPane.leftAnchor="266.0" />
+                              <TextField layoutX="59.0" layoutY="65.0" />
+                              <TextField layoutX="263.0" layoutY="65.0" />
+                              <TextField layoutX="263.0" layoutY="117.0" />
+                              <RadioButton layoutX="79.0" layoutY="193.0" mnemonicParsing="false" text="Hot" />
+                              <RadioButton layoutX="192.0" layoutY="193.0" mnemonicParsing="false" text="normal" />
+                              <Label layoutX="62.0" layoutY="250.0" text="Import Quantity" />
+                              <Label layoutX="279.0" layoutY="250.0" text="Price" />
+                              <TextField layoutX="59.0" layoutY="273.0" />
+                              <TextField layoutX="266.0" layoutY="273.0" />
+                              <Button layoutX="208.0" layoutY="350.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Save" />
+                              <SplitMenuButton layoutX="57.0" layoutY="117.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Supplier">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                                  <MenuItem mnemonicParsing="false" text="Action 2" />
+                                </items>
+                              </SplitMenuButton>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
