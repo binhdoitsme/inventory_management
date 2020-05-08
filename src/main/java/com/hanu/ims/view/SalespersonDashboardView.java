@@ -7,10 +7,10 @@ import javafx.scene.Scene;
 
 import java.io.IOException;
 
-public class AdminDashboardView extends DashboardView {
-    private static final String LAYOUT_FILE = "admin_dashboard.fxml";
+public class SalespersonDashboardView extends DashboardView {
+    private static final String LAYOUT_FILE = "salesperson_dashboard.fxml";
 
-    public AdminDashboardView() throws IOException {
+    public SalespersonDashboardView() throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource(LAYOUT_FILE));
         Scene scene = new Scene(parent);
         setScene(scene);

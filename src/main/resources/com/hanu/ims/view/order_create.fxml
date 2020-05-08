@@ -3,16 +3,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.OrderCreateView">
+<AnchorPane prefHeight="427.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.OrderCreateViewEventBinding">
    <children>
-      <TableView layoutX="14.0" layoutY="54.0" prefHeight="301.0" prefWidth="574.0">
+      <TableView layoutX="13.0" layoutY="78.0" prefHeight="301.0" prefWidth="574.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn prefWidth="20.0" resizable="false" text="#" />
+          <TableColumn resizable="false" text="SKU" />
+            <TableColumn prefWidth="262.0" resizable="false" text="Product Name" />
+            <TableColumn prefWidth="75.0" resizable="false" text="List Price" />
+            <TableColumn prefWidth="60.0" resizable="false" text="Quantity" />
+            <TableColumn prefWidth="75.0" resizable="false" text="Row Price" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <TextField layoutX="13.0" layoutY="14.0" prefHeight="26.0" prefWidth="574.0" />
-      <Button layoutX="534.0" layoutY="361.0" mnemonicParsing="false" text="Create" />
-      <Button layoutX="476.0" layoutY="361.0" mnemonicParsing="false" text="Reset" />
+      <TextField layoutX="13.0" layoutY="39.0" prefHeight="26.0" prefWidth="574.0" />
+      <Button layoutX="537.0" layoutY="387.0" mnemonicParsing="false" text="Create" fx:id="submitBtn" onAction="#onSubmit" />
+      <Button layoutX="478.0" layoutY="387.0" mnemonicParsing="false" text="Reset" fx:id="resetBtn" onAction="#onReset" />
+      <Label layoutX="14.0" layoutY="19.0" text="Enter product SKU" />
    </children>
 </AnchorPane>
