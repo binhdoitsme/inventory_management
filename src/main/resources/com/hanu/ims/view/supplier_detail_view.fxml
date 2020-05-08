@@ -8,21 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <MenuBar prefHeight="25.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="List">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Create">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <SplitPane dividerPositions="0.2" layoutX="122.0" layoutY="120.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+      <SplitPane dividerPositions="0.2" layoutX="122.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
@@ -41,6 +27,8 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
+                  <Button layoutX="21.0" layoutY="559.0" mnemonicParsing="false" text="Back" />
+                  <Button layoutX="89.0" layoutY="559.0" mnemonicParsing="false" text="LogOut" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
@@ -48,8 +36,8 @@
                   <Separator layoutX="28.0" layoutY="47.0" prefHeight="0.0" prefWidth="415.0" />
                   <Label layoutX="22.0" layoutY="28.0" text="Supplier infomaton" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="28.0" />
                   <Label layoutX="296.0" layoutY="67.0" text="Date Created" />
-                  <Label layoutX="35.0" layoutY="67.0" text="Name" />
-                  <Label layoutX="35.0" layoutY="129.0" text="Phone" />
+                  <Label layoutX="35.0" layoutY="67.0" text="Name" AnchorPane.leftAnchor="41.0" />
+                  <Label layoutX="35.0" layoutY="129.0" text="Phone" AnchorPane.leftAnchor="41.0" />
                   <Label layoutX="11.0" layoutY="265.0" text="List Batch" />
                   <TableView layoutY="287.0" prefHeight="287.0" prefWidth="715.0">
                     <columns>
@@ -62,9 +50,13 @@
                         <TableColumn minWidth="0.0" prefWidth="100.0" text="Date Created" />
                     </columns>
                   </TableView>
-                  <Label layoutX="37.0" layoutY="207.0" text="Address" />
+                  <Label layoutX="41.0" layoutY="184.0" text="Address" />
                   <Button layoutX="649.0" layoutY="261.0" mnemonicParsing="false" text="Delete" />
                   <Button layoutX="391.0" layoutY="24.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="51.0" text="Edit" />
+                  <TextField layoutX="35.0" layoutY="84.0" />
+                  <TextField layoutX="35.0" layoutY="146.0" />
+                  <TextField layoutX="35.0" layoutY="201.0" prefHeight="25.0" prefWidth="365.0" />
+                  <TextField editable="false" layoutX="290.0" layoutY="84.0" prefHeight="25.0" prefWidth="149.0" />
                </children>
             </AnchorPane>
         </items>
