@@ -8,6 +8,10 @@ import com.hanu.ims.model.repository.AccountRepository;
 import com.hanu.ims.model.repository.BatchRepository;
 import com.hanu.ims.model.repository.OrderRepository;
 import com.hanu.ims.util.servicelocator.ServiceContainer;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,5 +135,26 @@ public class OrderController {
             pendingUpdateBatches.add(batch);
         }
         return pendingUpdateBatches;
+    }
+
+    public ObservableList<Order> getOrderList() {
+        ObservableList<Order> orderList = FXCollections.observableList(null);
+        Thread dbThread = new Thread(() -> {
+            List<Order> orders = orderRepository.findAll();
+            orderList.setAll(orders);
+        });
+        dbThread.start();
+        return orderList;
+    }
+
+    public ObservableValue<Order> getOrderById(int id) {
+        SimpleObjectProperty<Order> orderToReturn = new SimpleObjectProperty<>();
+        Thread dbThread = new Thread(() -> {
+            Order orderFromDb = orderRepository.findById(id);
+            if (orderFromDb == null) return;
+            orderToReturn.set(orderFromDb);
+        });
+        dbThread.start();
+        return orderToReturn;
     }
 }
