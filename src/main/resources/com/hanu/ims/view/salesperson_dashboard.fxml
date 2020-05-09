@@ -5,6 +5,7 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            fx:id="container"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.SalespersonDashboardViewEventBinding">
    <children>
       <Label alignment="CENTER" layoutX="360.0" layoutY="148.0" text="Welcome!">
@@ -22,10 +23,10 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Create order" onAction="" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Manage orders" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Log out" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Exit" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Create order" onAction="#onCreateOrderClicked" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Manage orders" GridPane.rowIndex="1" onAction="#onManageOrdersClicked" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Log out" GridPane.rowIndex="2" onAction="#onLogoutClicked" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Exit" GridPane.rowIndex="3" onAction="#onExit" />
          </children>
       </GridPane>
    </children>

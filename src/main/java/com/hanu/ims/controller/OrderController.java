@@ -138,7 +138,7 @@ public class OrderController {
     }
 
     public ObservableList<Order> getOrderList() {
-        ObservableList<Order> orderList = FXCollections.observableList(null);
+        ObservableList<Order> orderList = FXCollections.observableList(new ArrayList<>());
         Thread dbThread = new Thread(() -> {
             List<Order> orders = orderRepository.findAll();
             orderList.setAll(orders);
