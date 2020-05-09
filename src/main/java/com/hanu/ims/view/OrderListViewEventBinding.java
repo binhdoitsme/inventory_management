@@ -109,6 +109,7 @@ public class OrderListViewEventBinding {
     }
 
     static void updateDataSource() {
-        dataSource = controller.getOrderList();
+        if (dataSource == null)
+            dataSource = controller.getOrderList();
     }
 }

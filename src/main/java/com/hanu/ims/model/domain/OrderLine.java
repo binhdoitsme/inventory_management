@@ -1,5 +1,7 @@
 package com.hanu.ims.model.domain;
 
+import java.util.Objects;
+
 public class OrderLine {
     private String sku;
     private String productName;
@@ -50,5 +52,17 @@ public class OrderLine {
         sb.append(", lineSum=").append(lineSum);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderLine orderLine = (OrderLine) o;
+        return listPrice == orderLine.listPrice &&
+                quantity == orderLine.quantity &&
+                lineSum == orderLine.lineSum &&
+                Objects.equals(sku, orderLine.sku) &&
+                Objects.equals(productName, orderLine.productName);
     }
 }

@@ -1,18 +1,41 @@
 package com.hanu.ims.db;
 
 import com.hanu.ims.base.RepositoryImpl;
+import com.hanu.ims.exception.DbException;
 import com.hanu.ims.model.domain.Batch;
 import com.hanu.ims.model.domain.OrderLine;
+import com.hanu.ims.model.mapper.BatchMapper;
 import com.hanu.ims.model.repository.BatchRepository;
+import com.hanu.ims.util.configuration.Configuration;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
         implements BatchRepository {
+
+    private static final String FIND_AVAILABLE_BY_SKU = Configuration.get("db.sql.batch.findAvailableBySku");
+    private final BatchMapper mapper = new BatchMapper();
+
     @Override
     public List<Batch> findBySku(String sku) {
         return null;
+    }
+
+    @Override
+    public List<Batch> findAvailableBySku(String sku) {
+        try {
+            ResultSet rs = getConnector().connect().executeSelect(FIND_AVAILABLE_BY_SKU);
+            List<Batch> batches = new ArrayList<>();
+            while (rs.next()) {
+                batches.add(mapper.forwardConvert(rs));
+            }
+            return batches;
+        } catch (Exception e) {
+            throw new DbException(e);
+        }
     }
 
     @Override

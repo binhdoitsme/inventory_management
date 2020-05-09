@@ -86,11 +86,6 @@ public class Batch implements Comparable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, sku, quantity, importDate, retailPrice);
-    }
-
-    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Batch{");
         sb.append("id=").append(id);

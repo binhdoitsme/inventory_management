@@ -57,6 +57,7 @@
                         <Separator layoutX="28.0" layoutY="194.0" prefHeight="0.0" prefWidth="415.0" />
                         <Button fx:id="saveButton" layoutX="625.0" layoutY="516.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="58.0" text="Save" />
                         <Button fx:id="revertButton" layoutX="556.0" layoutY="516.0" mnemonicParsing="false" onAction="#onRevertButtonClicked" prefHeight="26.0" prefWidth="58.0" text="Revert" />
+                  <Label fx:id="orderTotal" alignment="CENTER_RIGHT" layoutX="585.0" layoutY="480.0" prefHeight="18.0" prefWidth="98.0" text="Total Price:" textAlignment="RIGHT" />
                     </children>
                 </AnchorPane>
             </items>

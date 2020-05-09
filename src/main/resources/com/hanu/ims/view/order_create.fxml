@@ -3,25 +3,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="427.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.OrderCreateViewEventBinding">
+<AnchorPane prefHeight="427.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.OrderCreateViewEventBinding">
    <children>
-      <TableView layoutX="13.0" layoutY="78.0" prefHeight="301.0" prefWidth="574.0">
+      <TableView fx:id="orderLinesTable" layoutX="13.0" layoutY="78.0" prefHeight="301.0" prefWidth="574.0">
         <columns>
           <TableColumn prefWidth="20.0" resizable="false" text="#" />
-          <TableColumn resizable="false" text="SKU" />
-            <TableColumn prefWidth="262.0" resizable="false" text="Product Name" />
-            <TableColumn prefWidth="75.0" resizable="false" text="List Price" />
-            <TableColumn prefWidth="60.0" resizable="false" text="Quantity" />
-            <TableColumn prefWidth="75.0" resizable="false" text="Row Price" />
+          <TableColumn fx:id="orderLineSku" resizable="false" text="SKU" />
+            <TableColumn fx:id="orderLineProductName" prefWidth="262.0" resizable="false" text="Product Name" />
+            <TableColumn fx:id="orderLineListPrice" prefWidth="75.0" resizable="false" text="List Price" />
+            <TableColumn fx:id="orderLineQuantity" prefWidth="60.0" resizable="false" text="Quantity" />
+            <TableColumn fx:id="orderLineSum" prefWidth="75.0" resizable="false" text="Sum" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TextField layoutX="13.0" layoutY="39.0" prefHeight="26.0" prefWidth="574.0" />
-      <Button layoutX="537.0" layoutY="387.0" mnemonicParsing="false" text="Create" fx:id="submitBtn" onAction="#onSubmit" />
-      <Button layoutX="478.0" layoutY="387.0" mnemonicParsing="false" text="Reset" fx:id="resetBtn" onAction="#onReset" />
-      <Label layoutX="14.0" layoutY="19.0" text="Enter product SKU" />
+      <TextField fx:id="skuTextField" layoutX="13.0" layoutY="39.0" prefHeight="26.0" prefWidth="479.0" promptText="Enter product SKU" />
+      <Button fx:id="submitBtn" layoutX="519.0" layoutY="387.0" mnemonicParsing="false" onAction="#onSubmit" text="Checkout" />
+      <Button fx:id="resetBtn" layoutX="441.0" layoutY="386.0" mnemonicParsing="false" onAction="#onReset" prefHeight="26.0" prefWidth="66.0" text="Reset" />
+      <Label layoutX="14.0" layoutY="19.0" text="Product SKU" />
+      <Button layoutX="500.0" layoutY="39.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Add" />
    </children>
 </AnchorPane>

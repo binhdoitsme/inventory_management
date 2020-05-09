@@ -17,13 +17,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
 public class OrderDetailsViewEventBinding {
 
     private ObservableValue<Order> observableOrder;
-
     private final Order initialState;
     private ObservableList<OrderLine> orderLines;
 
@@ -33,6 +33,8 @@ public class OrderDetailsViewEventBinding {
     private Label cashierName;
     @FXML
     private Label timestamp;
+    @FXML
+    private Label orderTotal;
     @FXML
     private TableView<OrderLine> orderLinesTable;
     @FXML
@@ -63,6 +65,7 @@ public class OrderDetailsViewEventBinding {
         orderId.setText("#" + order.getId());
         cashierName.setText(order.getCashierName());
         timestamp.setText(new Date(order.getTimestamp()).toString());
+        orderTotal.setText(String.valueOf(order.getTotalPrice()));
         bindTable();
         disableButtonsIfNoChangeDetected();
     }

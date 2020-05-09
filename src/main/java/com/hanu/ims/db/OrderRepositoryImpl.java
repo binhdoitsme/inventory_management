@@ -4,7 +4,9 @@ import com.hanu.ims.base.RepositoryImpl;
 import com.hanu.ims.exception.DbException;
 import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
+import com.hanu.ims.model.domain.Product;
 import com.hanu.ims.model.mapper.OrderListMapper;
+import com.hanu.ims.model.mapper.ProductWithoutBatchesMapper;
 import com.hanu.ims.model.repository.OrderRepository;
 import com.hanu.ims.util.configuration.Configuration;
 
@@ -17,11 +19,14 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
 
     private static final String FIND_BY_ID = Configuration.get("db.sql.order.findById");
     private static final String FIND_ALL = Configuration.get("db.sql.order.findAll");
+    private static final String FIND_ALL_PRODUCTS = Configuration.get("db.sql.product.findAll");
 
     private final OrderListMapper mapper;
+    private final ProductWithoutBatchesMapper productMapper;
 
     public OrderRepositoryImpl() {
         mapper = new OrderListMapper();
+        productMapper = new ProductWithoutBatchesMapper();
     }
 
     @Override
@@ -112,5 +117,19 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
     @Override
     public List<Order> saveAll(List<Order> items) {
         return null;
+    }
+
+    @Override
+    public List<Product> getAllProductSuggestions() {
+        try {
+            ResultSet rs = getConnector().connect().executeSelect(FIND_ALL_PRODUCTS);
+            List<Product> productList = new ArrayList<>();
+            while (rs.next()) {
+                productList.add(productMapper.forwardConvert(rs));
+            }
+            return productList;
+        } catch (Exception e) {
+            throw new DbException(e);
+        }
     }
 }

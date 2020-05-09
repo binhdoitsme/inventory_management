@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -74,7 +75,7 @@ public class LoginViewEventBinding {
 
         Account account = validateAccount(username, password);
 
-        loadingDialog.hide();
+        loadingDialog.close();
 
         if (account != null) {
             AuthenticationProvider.getInstance().setCurrentAccount(account);
@@ -101,6 +102,7 @@ public class LoginViewEventBinding {
         loadingDialog.initModality(Modality.WINDOW_MODAL);
         loadingDialog.initOwner(usernameField.getScene().getWindow());
         loadingDialog.setHeaderText("Please wait...");
+        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
         loadingDialog.show();
         return loadingDialog;
     }

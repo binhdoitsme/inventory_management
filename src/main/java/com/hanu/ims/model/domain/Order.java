@@ -95,9 +95,4 @@ public class Order {
                 Objects.equals(cashierName, order.cashierName) &&
                 orderLines.equals(order.orderLines);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, cashierId, cashierName, orderLines, timestamp);
-    }
 }

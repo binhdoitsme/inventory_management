@@ -4,6 +4,7 @@ package com.hanu.ims.controller;
 import com.hanu.ims.model.domain.Batch;
 import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
+import com.hanu.ims.model.domain.Product;
 import com.hanu.ims.model.repository.AccountRepository;
 import com.hanu.ims.model.repository.BatchRepository;
 import com.hanu.ims.model.repository.OrderRepository;
@@ -51,11 +52,7 @@ public class OrderController {
      * @return a list of tuple <Batch, quantity>
      */
     public Map<Batch, Integer> getBatches(String sku, int quantity) {
-        List<Batch> batchesBySku = batchRepository.findBySku(sku)
-                                    .stream()
-                                    .filter(batch -> batch.getQuantity() > 0)
-                                    .sorted()
-                                    .collect(Collectors.toList());
+        List<Batch> batchesBySku = batchRepository.findAvailableBySku(sku);
 
         int remainingQty = quantity;
         Map<Batch, Integer> batchSelections = new HashMap<>();
@@ -63,6 +60,7 @@ public class OrderController {
         for (Batch batch : batchesBySku) { // batches are sorted from oldest to newest
             if (remainingQty <= 0) break;
             int currentBatchQty = batch.getQuantity();
+            batchSelections.put(batch, remainingQty);
             if (currentBatchQty >= remainingQty) {
                 int newBatchQty = currentBatchQty - remainingQty;
                 batch.setQuantity(newBatchQty);
@@ -156,5 +154,18 @@ public class OrderController {
         });
         dbThread.start();
         return orderToReturn;
+    }
+
+    public ObservableList<Product> getAllProductSuggestions() {
+        ObservableList<Product> productObservableList = FXCollections.observableList(new ArrayList<>());
+        Thread dbThread = new Thread(() -> {
+            List<Product> productList = orderRepository.getAllProductSuggestions();
+            if (productList == null || productList.isEmpty()) {
+                return;
+            }
+            productObservableList.setAll(productList);
+        });
+        dbThread.start();
+        return productObservableList;
     }
 }
