@@ -7,6 +7,7 @@ module com.hanu.ims {
     requires org.apache.logging.log4j.slf4j;
     requires org.apache.commons.configuration2;
     requires net.bytebuddy;
+	requires junit;
 
     opens com.hanu.ims to javafx.fxml;
     exports com.hanu.ims;
@@ -22,6 +23,4 @@ module com.hanu.ims {
     exports com.hanu.ims.model.domain;
     opens com.hanu.ims.view to javafx.fxml;
     exports com.hanu.ims.view;
-
-
 }
