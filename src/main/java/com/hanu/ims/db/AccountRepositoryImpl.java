@@ -22,6 +22,16 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
     }
 
     @Override
+    public void beginTransaction() {
+
+    }
+
+    @Override
+    public void finishTransaction(boolean hasError) {
+
+    }
+
+    @Override
     public boolean add(Account account) {
         String sql = "INSERT INTO account (`username`, `password`, `role`) VALUES ('$username', '$password', '$role')"
                 .replace("$username", account.getUsername())
@@ -41,8 +51,8 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
     }
 
     @Override
-    public void add(List<Account> items) {
-
+    public boolean add(List<Account> items) {
+        return false;
     }
 
     @Override
@@ -57,23 +67,6 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
             e.printStackTrace();
         }
         return count;
-
-//        ResultSet rs = null;
-//        try {
-//            rs = getConnector().connect().executeSelect(sql);
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        } catch (InvalidQueryTypeException e) {
-//            e.printStackTrace();
-//        }
-//        while (true) {
-//            try {
-//                if (!rs.next()) break;
-//            } catch (SQLException throwables) {
-//                throwables.printStackTrace();
-//            }
-//            ++count;
-//        }
 
     }
 
@@ -100,18 +93,18 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
     }
 
     @Override
-    public void deleteAll(List<Account> items) {
-
+    public boolean deleteAll(List<Account> items) {
+        return false;
     }
 
     @Override
-    public void deleteAll() {
-
+    public boolean deleteAll() {
+        return false;
     }
 
     @Override
-    public void deleteById(Integer integer) {
-
+    public boolean deleteById(Integer integer) {
+        return false;
     }
 
     @Override
@@ -154,14 +147,6 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
         return accountList;
     }
 
-        /*
-String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and password= '$password' and role= '$role'"
-                    .replace("$id", Integer.toString(item.getId()))
-                    .replace("$username", item.getUsername())
-                    .replace("$password", item.getPassword())
-                    .replace("$role", item.getRole().name());
-
-     */
 
     @Override
     public Account save(Account item) {

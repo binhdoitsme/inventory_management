@@ -7,10 +7,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.util.List;
 
 public class AdminDashboardView {
@@ -171,6 +175,14 @@ public class AdminDashboardView {
         userTable.getItems().addAll(parseUserList());
         userCountLabel.setText(Integer.toString(accountList.size()));
     }
+
+//    private static final String LAYOUT_FILE = "admin_dashboard.fxml";
+
+//    public AdminDashboardView() throws IOException {
+//        Parent parent = FXMLLoader.load(getClass().getResource(LAYOUT_FILE));
+//        Scene scene = new Scene(parent);
+//        setScene(scene);
+//    }
 }
 
 
