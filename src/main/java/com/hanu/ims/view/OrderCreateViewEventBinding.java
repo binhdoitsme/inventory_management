@@ -64,7 +64,13 @@ public class OrderCreateViewEventBinding {
         });
         orderLineData.addListener((ListChangeListener<? super OrderLine>) orderLine -> {
             System.out.println("Added: " + orderLine);
-
+            if (orderLineData.isEmpty()) {
+                resetBtn.setDisable(true);
+                submitBtn.setDisable(true);
+            } else {
+                resetBtn.setDisable(false);
+                submitBtn.setDisable(false);
+            }
         });
         orderData.addListener(observable -> {
             System.out.println("order has changed!");
@@ -76,6 +82,7 @@ public class OrderCreateViewEventBinding {
             try {
                 addOrderLinesWithProductAndQuantity(productToAdd, DEFAULT_QTY);
             } catch (RuntimeException e) {
+                e.printStackTrace();
                 showAlertDialog(e.getMessage());
             }
             skuTextField.clear();
@@ -175,7 +182,9 @@ public class OrderCreateViewEventBinding {
     }
 
     public void onReset(ActionEvent actionEvent) {
-
+        orderLineData.clear();
+        orderData.getValue().setOrderLines(new ArrayList<>());
+        controller.invalidateCache();
     }
 
     private void reset() {

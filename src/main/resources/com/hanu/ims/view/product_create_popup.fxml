@@ -20,8 +20,8 @@
             <TextField />
             <Label text="Product Description" />
             <TextArea prefHeight="200.0" prefWidth="200.0" />
-            <Label text="Category" />
-            <ComboBox prefWidth="150.0" />
+            <Label text="Supplier" />
+            <TextField />
          </children>
       </VBox>
    </children>

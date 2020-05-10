@@ -70,6 +70,11 @@ public class Order {
         this.orderLines.addAll(orderLine);
     }
 
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines.clear();
+        this.orderLines.addAll(orderLines);
+    }
+
     public void setTimestampAsCurrent() {
         this.timestamp = Instant.now().getEpochSecond();
     }
