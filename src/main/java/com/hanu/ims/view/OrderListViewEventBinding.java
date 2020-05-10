@@ -152,8 +152,15 @@ public class OrderListViewEventBinding {
             });
         } catch (Exception e) {
             e.printStackTrace();
-
+            showAlertDialog(e.getMessage());
         }
+    }
+
+    private void showAlertDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("An error occurred!");
+        alert.setHeaderText(message);
+        alert.show();
     }
 
     static void updateDataSource(boolean forceUpdate) {
