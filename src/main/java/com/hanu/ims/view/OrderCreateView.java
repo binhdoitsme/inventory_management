@@ -7,9 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class LoginView extends Stage {
-    public LoginView() throws IOException {
-        Parent sceneRoot = FXMLLoader.load(LoginView.class.getResource("login.fxml"));
+public class OrderCreateView extends Stage {
+
+    public OrderCreateView() throws IOException {
+        Parent sceneRoot = FXMLLoader.load(OrderCreateView.class.getResource("order_create.fxml"));
         Scene scene = new Scene(sceneRoot);
         setScene(scene);
     }

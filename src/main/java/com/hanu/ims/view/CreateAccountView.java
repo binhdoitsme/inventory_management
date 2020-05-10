@@ -45,10 +45,10 @@ public class CreateAccountView {
                 ac.createAccount(account);
 
                 statusLabel.setText("Added account successfully");
-                LoginView lv = new LoginView();
-                lv.createDashboardView(actionEvent);
+                LoginViewEventBinding lv = new LoginViewEventBinding();
+//                lv.createDashboardView(actionEvent);
 //                AdminDashboardView adw= new AdminDashboardView();
-//                FXMLLoader secondPageLoader = new FXMLLoader(getClass().getResource("/admindashboardview.fxml"));
+//                FXMLLoader secondPageLoader = new FXMLLoader(getClass().getResource("/admin_dashboard.fxml"));
 //                Parent secondPane = secondPageLoader.load();
 //                Scene secondScene = new Scene(secondPane, 1200, 800);
 //                setDashboardPage(secondScene);
