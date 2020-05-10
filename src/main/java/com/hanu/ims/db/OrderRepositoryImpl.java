@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
         implements OrderRepository {
@@ -63,7 +64,24 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
 
     @Override
     public boolean removeOrderLines(List<OrderLine> orderLines) {
-        return false;
+        if (orderLines.isEmpty()) {
+            throw new NullPointerException("No order lines to add!");
+        }
+        int orderId = orderLines.get(0).getOrderId();
+        List<String> idList = orderLines.stream()
+                .map(item -> String.valueOf(item.getBatchId()))
+                .collect(Collectors.toList());
+        try {
+            String sql = "DELETE FROM _order_line WHERE _order_id = $order_id AND batch_id IN ($id_list)";
+            int rowsAffected = getConnector().connect()
+                    .executeDelete(sql
+                            .replace("$id_list", String.join(", ", idList))
+                            .replace("$order_id", String.valueOf(orderId)));
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
     }
 
     @Override
@@ -98,7 +116,17 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
 
     @Override
     public void deleteAll(List<Order> items) {
-
+        List<String> idList = items.stream()
+                .map(item -> String.valueOf(item.getId()))
+                .collect(Collectors.toList());
+        try {
+            String sql = "DELETE FROM _order WHERE id IN ($id_list)";
+            getConnector().connect()
+                    .executeDelete(sql.replace("$id_list", String.join(", ", idList)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
     }
 
     @Override
@@ -112,6 +140,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
             String sql = "DELETE FROM _order WHERE id = '$id'";
             getConnector().connect().executeDelete(sql.replace("$id", String.valueOf(integer)));
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DbException(e);
         }
     }

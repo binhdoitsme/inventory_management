@@ -147,8 +147,10 @@ public class OrderController {
         pendingUpdateBatches.addAll(batchesToTake);
 
         orderRepository.save(order);
-        orderRepository.removeOrderLines(removedLines);
-        orderRepository.addOrderLines(newLines);
+        if (!removedLines.isEmpty())
+            orderRepository.removeOrderLines(removedLines);
+        if (!newLines.isEmpty())
+            orderRepository.addOrderLines(newLines);
         batchRepository.saveAll(pendingUpdateBatches);
     }
 

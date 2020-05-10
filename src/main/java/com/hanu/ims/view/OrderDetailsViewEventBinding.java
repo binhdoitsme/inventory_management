@@ -1,5 +1,6 @@
 package com.hanu.ims.view;
 
+import com.hanu.ims.controller.OrderController;
 import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
 import com.hanu.ims.util.date.EpochSecondConverter;
@@ -14,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.stage.Modality;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class OrderDetailsViewEventBinding {
     private final Order initialState;
     private ObservableList<OrderLine> orderLines;
     private ObservableList<OrderLine> selectedOrderLines;
+    private ObservableList<OrderLine> orderLinesToDelete;
+    private OrderController controller;
 
     @FXML
     private Label orderId;
@@ -59,24 +63,42 @@ public class OrderDetailsViewEventBinding {
     private CheckBox selectAll;
 
     public OrderDetailsViewEventBinding(Order order) {
-        observableOrder = new SimpleObjectProperty<>(order);
+        Order clonedOrder = new Order(order.getId(),
+                order.getCashierId(), order.getCashierName(),
+                order.getOrderLines(), order.getTimestamp());
+        observableOrder = new SimpleObjectProperty<>(clonedOrder);
         initialState = order;
-        orderLines = FXCollections.observableList(order.getOrderLines());
+        List<OrderLine> orderLines = new ArrayList<>();
+        orderLines.addAll(clonedOrder.getOrderLines());
+        this.orderLines = FXCollections.observableList(orderLines);
         selectedOrderLines = FXCollections.observableList(new ArrayList<>());
+        orderLinesToDelete = FXCollections.observableList(new ArrayList<>());
     }
 
     public void initialize() {
+        controller = new OrderController();
         Order order = observableOrder.getValue();
         orderId.setText("#" + order.getId());
         cashierName.setText(order.getCashierName());
         timestamp.setText(EpochSecondConverter.epochSecondToString(order.getTimestamp()));
-        orderTotal.setText(String.valueOf(order.getTotalPrice()));
+        updateTotal(initialState.getOrderLines());
         deleteButton.setDisable(true);
         revertButton.setDisable(true);
         saveButton.setDisable(true);
         bindTable();
         disableButtonsIfNoChangeDetected();
         addOrderLineSelectedListener();
+        orderLinesTable.getItems().addListener((ListChangeListener<? super OrderLine>) c -> {
+            updateTotal(orderLinesTable.getItems());
+        });
+    }
+
+    private void updateTotal(List<OrderLine> orderLines) {
+        if (orderLines.isEmpty()) {
+            orderTotal.setText("0");
+        } else {
+            orderTotal.setText(String.valueOf(observableOrder.getValue().getTotalPrice()));
+        }
     }
 
     private void addOrderLineSelectedListener() {
@@ -87,6 +109,9 @@ public class OrderDetailsViewEventBinding {
             } else {
                 deleteButton.setDisable(false);
             }
+        });
+        orderLines.addListener((ListChangeListener<? super OrderLine>) c -> {
+            disableButtonsIfNoChangeDetected();
         });
     }
 
@@ -115,7 +140,11 @@ public class OrderDetailsViewEventBinding {
     }
 
     private void disableButtonsIfNoChangeDetected() {
-        if (observableOrder.getValue().equals(initialState)) {
+        var initialOrderLines = observableOrder.getValue().getOrderLines();
+        System.out.println(orderLines.size() == initialOrderLines.size());
+        System.out.println(observableOrder.getValue().equals(initialState));
+        if (observableOrder.getValue().equals(initialState)
+                && orderLines.size() == initialOrderLines.size()) {
             revertButton.setDisable(true);
             saveButton.setDisable(true);
             return;
@@ -139,10 +168,52 @@ public class OrderDetailsViewEventBinding {
         bindTable();
     }
 
+    private void showAlertDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("An error occurred!");
+        alert.setHeaderText(message);
+        alert.show();
+    }
+
+    private void showSuccessfulDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success!");
+        alert.setHeaderText("The operation completed successfully!");
+        alert.show();
+    }
+
+    private Dialog<?> showLoadingDialog() {
+        Dialog<String> loadingDialog = new Dialog<>();
+        loadingDialog.initModality(Modality.WINDOW_MODAL);
+        loadingDialog.initOwner(orderLinesTable.getScene().getWindow());
+        loadingDialog.setHeaderText("Please wait...");
+        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        loadingDialog.show();
+        return loadingDialog;
+    }
+
     /**
      * Event handler
      */
     public void onSaveButtonClicked() {
+        Dialog<?> loadingDialog = showLoadingDialog();
+        try {
+            controller.updateOrder(observableOrder.getValue(), orderLinesToDelete, new ArrayList<>());
+            showSuccessfulDialog();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            showAlertDialog(e.getMessage());
+        }
+        loadingDialog.close();
+        OrderListViewEventBinding.updateDataSource(true);
+    }
 
+    /**
+     * Event handler
+     */
+    public void onDeleteButtonClicked() {
+        var selectedItem = orderLinesTable.getSelectionModel().getSelectedItem();
+        orderLinesToDelete.add(selectedItem);
+        orderLines.remove(selectedItem);
     }
 }
