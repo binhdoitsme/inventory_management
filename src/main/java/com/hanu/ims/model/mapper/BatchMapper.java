@@ -16,6 +16,7 @@ public class BatchMapper extends Mapper<Batch> {
                     rs.getString("sku"),
                     rs.getInt("quantity"),
                     rs.getDate("import_date"),
+                    rs.getLong("import_price"),
                     rs.getLong("msrp"));
         } catch (Exception e) {
             e.printStackTrace();

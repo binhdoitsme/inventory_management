@@ -2,13 +2,13 @@ package com.hanu.ims.view;
 
 import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
+import com.hanu.ims.util.date.EpochSecondConverter;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,7 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 
-import java.util.Currency;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class OrderDetailsViewEventBinding {
         Order order = observableOrder.getValue();
         orderId.setText("#" + order.getId());
         cashierName.setText(order.getCashierName());
-        timestamp.setText(new Date(order.getTimestamp()).toString());
+        timestamp.setText(EpochSecondConverter.epochSecondToString(order.getTimestamp()));
         orderTotal.setText(String.valueOf(order.getTotalPrice()));
         bindTable();
         disableButtonsIfNoChangeDetected();
@@ -103,7 +103,7 @@ public class OrderDetailsViewEventBinding {
     }
 
     private void restoreOriginalState() {
-        ((SimpleObjectProperty<Order>)observableOrder).set(initialState);
+        ((SimpleObjectProperty<Order>) observableOrder).set(initialState);
         List<OrderLine> initialOrderLines = initialState.getOrderLines();
         System.out.println(initialOrderLines);
         orderLinesTable.getItems().setAll(initialOrderLines);

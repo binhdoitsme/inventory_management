@@ -3,6 +3,7 @@ package com.hanu.ims.view;
 import com.hanu.ims.controller.OrderController;
 import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
+import com.hanu.ims.util.date.EpochSecondConverter;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,8 +18,6 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.util.Date;
 
 public class OrderListViewEventBinding {
 
@@ -44,7 +43,7 @@ public class OrderListViewEventBinding {
     }
 
     public void initialize() {
-        updateDataSource();
+        updateDataSource(false);
         dataSource.addListener((ListChangeListener<? super Order>) c -> {
             System.out.println("Changed!");
         });
@@ -54,15 +53,18 @@ public class OrderListViewEventBinding {
         orderColCashier.setCellValueFactory(param ->
                 new SimpleStringProperty(param.getValue().getCashierName()));
         orderColTimestamp.setCellValueFactory(param ->
-                new SimpleStringProperty(new Date(param.getValue().getTimestamp()).toString()));
+                new SimpleStringProperty(EpochSecondConverter.epochSecondToString(param.getValue().getTimestamp())));
         orderColCheckbox.setCellFactory(CheckBoxTableCell.forTableColumn(orderColCheckbox));
 
-        orderColTotalPrice.setCellValueFactory(param ->
-                new SimpleLongProperty(param.getValue()
-                        .getOrderLines().stream()
-                        .map(OrderLine::getLineSum)
-                        .reduce((x, y) -> x + y)
-                        .get()).asObject());
+        orderColTotalPrice.setCellValueFactory(param -> {
+            if (param.getValue().getOrderLines().isEmpty())
+                return new SimpleLongProperty(0).asObject();
+            return new SimpleLongProperty(param.getValue()
+                    .getOrderLines().stream()
+                    .map(OrderLine::getLineSum)
+                    .reduce((x, y) -> x + y)
+                    .get()).asObject();
+        });
         orderListTable.setItems(dataSource);
         orderListTable.setRowFactory(tv -> {
             TableRow<Order> row = new TableRow<>();
@@ -100,7 +102,7 @@ public class OrderListViewEventBinding {
             orderCreateWindow.show();
             orderCreateWindow.setOnCloseRequest(event -> {
                 // update data of this
-                updateDataSource();
+                updateDataSource(true);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,8 +110,14 @@ public class OrderListViewEventBinding {
         }
     }
 
-    static void updateDataSource() {
+    static void updateDataSource(boolean forceUpdate) {
         if (dataSource == null)
             dataSource = controller.getOrderList();
+        if (forceUpdate) {
+            ObservableList<Order> orders = controller.getOrderList();
+            orders.addListener((ListChangeListener<? super Order>) c -> {
+                dataSource.setAll(orders);
+            });
+        }
     }
 }

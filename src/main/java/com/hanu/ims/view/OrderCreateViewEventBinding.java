@@ -23,10 +23,7 @@ import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OrderCreateViewEventBinding {
 
@@ -67,12 +64,20 @@ public class OrderCreateViewEventBinding {
         });
         orderLineData.addListener((ListChangeListener<? super OrderLine>) orderLine -> {
             System.out.println("Added: " + orderLine);
+
+        });
+        orderData.addListener(observable -> {
+            System.out.println("order has changed!");
         });
         updateSuggestions();
         autoCompletionBinding = TextFields.bindAutoCompletion(skuTextField, skuSuggestions);
         autoCompletionBinding.setOnAutoCompleted(event -> {
             Product productToAdd = event.getCompletion();
-            addOrderLinesWithProductAndQuantity(productToAdd, DEFAULT_QTY);
+            try {
+                addOrderLinesWithProductAndQuantity(productToAdd, DEFAULT_QTY);
+            } catch (RuntimeException e) {
+                showAlertDialog(e.getMessage());
+            }
             skuTextField.clear();
         });
         initializeTable();
@@ -92,6 +97,24 @@ public class OrderCreateViewEventBinding {
                 new SimpleLongProperty(param.getValue().getLineSum()).asObject());
     }
 
+    private void reduceOrderLineData() {
+        Map<String, OrderLine> skuQuantities = new HashMap<>();
+        for (OrderLine ol : orderLineData) {
+            String sku = ol.getSku();
+            if (!skuQuantities.containsKey(sku)) {
+                skuQuantities.put(sku, ol);
+                continue;
+            }
+            OrderLine orderLine = skuQuantities.get(sku);
+            orderLine.setQuantity(orderLine.getQuantity() + ol.getQuantity());
+        }
+        List<OrderLine> orderLines = new ArrayList<>();
+        for (String sku : skuQuantities.keySet()) {
+            orderLines.add(skuQuantities.get(sku));
+        }
+        orderLineData.setAll(orderLines);
+    }
+
     private void addOrderLinesWithProductAndQuantity(Product productToAdd, int quantity) {
         // add to order line list with quantity 1
         String sku = productToAdd.getSku();
@@ -101,30 +124,35 @@ public class OrderCreateViewEventBinding {
         batches.forEach(batch -> {
             String productName = productToAdd.getName();
             long retailPrice = batch.getRetailPrice();
-            System.out.println(batchSelections);
-            System.out.println(batch);
-            System.out.println(batchSelections.containsKey(batch));
             Integer qty = batchSelections.get(batch);
-            OrderLine orderLine = new OrderLine(sku, productName, retailPrice, qty);
+            int batchId = batch.getId();
+            OrderLine orderLine = new OrderLine(sku, productName, retailPrice, qty, batchId);
             orderLinesToAdd.add(orderLine);
         });
         orderLineData.addAll(orderLinesToAdd);
         orderData.getValue().addOrderLines(orderLinesToAdd);
+        ((SimpleObjectProperty<Order>)orderData).set(orderData.getValue());
 
-        orderData.addListener(order -> {
-            System.out.println(order);
-        });
+        reduceOrderLineData();
     }
 
     public void onSubmit(ActionEvent actionEvent) {
         Dialog<?> loadingDialog = showLoadingDialog();
         try {
             Order order = orderData.getValue();
+            order.setTimestampAsCurrent();
             controller.createOrder(order);
+            OrderListViewEventBinding.updateDataSource(true);
+            loadingDialog.close();
+            onSuccessfulAdd();
         } catch (RuntimeException e) {
             loadingDialog.close();
             showAlertDialog(e.getMessage());
         }
+    }
+
+    private void onSuccessfulAdd() {
+        orderLineData.clear();
     }
 
     private void showAlertDialog(String message) {
@@ -145,6 +173,11 @@ public class OrderCreateViewEventBinding {
     }
 
     public void onReset(ActionEvent actionEvent) {
+
+    }
+
+    private void reset() {
+        controller.invalidateCache();
 
     }
 

@@ -1,5 +1,6 @@
 package com.hanu.ims.model.domain;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,7 +71,7 @@ public class Order {
     }
 
     public void setTimestampAsCurrent() {
-        this.timestamp = new Date().getTime();
+        this.timestamp = Instant.now().getEpochSecond();
     }
 
     @Override

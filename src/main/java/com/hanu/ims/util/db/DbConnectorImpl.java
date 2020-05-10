@@ -89,6 +89,23 @@ public class DbConnectorImpl implements DbConnector {
         return query.toLowerCase().trim().startsWith(type.name().toLowerCase());
     }
 
+    @Override
+    public void beginTransaction() throws SQLException {
+        connection.setAutoCommit(false);
+    }
+
+    @Override
+    public void commit() throws SQLException {
+        connection.commit();
+        connection.setAutoCommit(true);
+    }
+
+    @Override
+    public void rollback() throws SQLException {
+        connection.rollback();
+        connection.setAutoCommit(true);
+    }
+
     public static void logQuery(String query) {
         logger.info(query);
     }

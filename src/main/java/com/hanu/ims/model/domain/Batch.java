@@ -1,40 +1,43 @@
 package com.hanu.ims.model.domain;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class Batch implements Comparable {
     private final int id;
     private String sku;
     private int quantity;
     private Date importDate;
+    private long importPrice;
     private long retailPrice;
 
     /**
      * Full constructor for database mapping
+     *
      * @param id
      * @param sku
      * @param quantity
      * @param importDate
      * @param retailPrice
      */
-    public Batch(int id, String sku, int quantity, Date importDate, long retailPrice) {
+    public Batch(int id, String sku, int quantity, Date importDate, long importPrice, long retailPrice) {
         this.id = id;
         this.sku = sku;
         this.quantity = quantity;
         this.importDate = importDate;
+        this.importPrice = importPrice;
         this.retailPrice = retailPrice;
     }
 
     /**
      * Constructor for Batch objects that are pending to be added to database
+     *
      * @param sku
      * @param quantity
      * @param importDate
      * @param retailPrice
      */
-    public Batch(String sku, int quantity, Date importDate, long retailPrice) {
-        this(0, sku, quantity, importDate, retailPrice);
+    public Batch(String sku, int quantity, Date importDate, long importPrice, long retailPrice) {
+        this(0, sku, quantity, importDate, importPrice, retailPrice);
     }
 
     public int getId() {
@@ -57,6 +60,10 @@ public class Batch implements Comparable {
         return retailPrice;
     }
 
+    public long getImportPrice() {
+        return importPrice;
+    }
+
     public void setSku(String sku) {
         this.sku = sku;
     }
@@ -71,6 +78,10 @@ public class Batch implements Comparable {
 
     public void setRetailPrice(long retailPrice) {
         this.retailPrice = retailPrice;
+    }
+
+    public void setImportPrice(long importPrice) {
+        this.importPrice = importPrice;
     }
 
     @Override

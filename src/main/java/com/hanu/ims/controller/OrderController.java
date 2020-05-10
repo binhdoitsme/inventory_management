@@ -1,6 +1,7 @@
 package com.hanu.ims.controller;
 
 
+import com.hanu.ims.exception.DbException;
 import com.hanu.ims.model.domain.Batch;
 import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
@@ -14,10 +15,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class OrderController {
@@ -54,8 +52,24 @@ public class OrderController {
     public Map<Batch, Integer> getBatches(String sku, int quantity) {
         List<Batch> batchesBySku = batchRepository.findAvailableBySku(sku);
 
+        List<Batch> pendingBatchesWithSameSku =
+                pendingBatches.stream()
+                    .filter(b -> b.getSku().equals(sku))
+                    .collect(Collectors.toList());
+        if (!pendingBatchesWithSameSku.isEmpty() || batchesBySku.size() != pendingBatchesWithSameSku.size()) {
+            for (Batch batch : pendingBatchesWithSameSku) {
+                int batchId = batch.getId();
+                int qty = batch.getQuantity();
+                batchesBySku.stream().filter(b -> b.getId() == batchId).findFirst().get().setQuantity(qty);
+            }
+        }
+
         int remainingQty = quantity;
         Map<Batch, Integer> batchSelections = new HashMap<>();
+
+        if (!batchesBySku.stream().anyMatch(b -> b.getQuantity() > 0)) {
+            throw new NoSuchElementException("Out of stock!");
+        }
 
         for (Batch batch : batchesBySku) { // batches are sorted from oldest to newest
             if (remainingQty <= 0) break;
@@ -64,13 +78,21 @@ public class OrderController {
             if (currentBatchQty >= remainingQty) {
                 int newBatchQty = currentBatchQty - remainingQty;
                 batch.setQuantity(newBatchQty);
+                currentBatchQty -= remainingQty;
                 remainingQty = 0;
             } else {
                 batch.setQuantity(0); // take all from the batch
                 remainingQty -= currentBatchQty;
+                currentBatchQty = 0;
             }
-
+            if (pendingBatchesWithSameSku.isEmpty())
+                pendingBatches.add(batch);
+            else {
+                pendingBatches.stream().filter(b -> b.getSku().equals(sku))
+                        .findFirst().get().setQuantity(currentBatchQty);
+            }
         }
+        System.out.println(pendingBatches);
         return batchSelections;
     }
 
@@ -81,14 +103,30 @@ public class OrderController {
         if (order.getOrderLines().isEmpty()) {
             return;
         } else {
-            // add order
-            boolean isAddOrderSuccessful = orderRepository.add(order);
+            try {
+                orderRepository.beginTransaction();
 
-            // add order lines
-            boolean isAddOrderLinesSuccessful = orderRepository.addOrderLines(order.getOrderLines());
+                boolean isAddOrderSuccessful = orderRepository.add(order);
 
-            // update batches
-            List<Batch> savedBatches = batchRepository.saveAll(pendingBatches);
+                int orderId = orderRepository.findAll().stream()
+                        .filter(o -> o.getTimestamp() == order.getTimestamp())
+                        .findFirst().get().getId();
+
+                List<OrderLine> orderLinesToAdd = new ArrayList<>();
+                orderLinesToAdd.addAll(order.getOrderLines());
+                orderLinesToAdd.forEach(o -> {
+                    o.setOrderId(orderId);
+                });
+                boolean isAddOrderLinesSuccessful = orderRepository.addOrderLines(order.getOrderLines());
+
+                List<Batch> savedBatches = batchRepository.saveAll(pendingBatches);
+                orderRepository.finishTransaction(false);
+            } catch (DbException e) {
+                e.printStackTrace();
+                orderRepository.finishTransaction(true);
+                throw new DbException(e);
+            }
+
 
             // invalidating cache
             pendingBatches.clear();
@@ -167,5 +205,9 @@ public class OrderController {
         });
         dbThread.start();
         return productObservableList;
+    }
+
+    public void invalidateCache() {
+        pendingBatches.clear();
     }
 }

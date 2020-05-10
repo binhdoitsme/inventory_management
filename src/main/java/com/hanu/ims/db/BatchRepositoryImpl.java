@@ -10,6 +10,7 @@ import com.hanu.ims.util.configuration.Configuration;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
         implements BatchRepository {
 
     private static final String FIND_AVAILABLE_BY_SKU = Configuration.get("db.sql.batch.findAvailableBySku");
+    private static final String FIND_BY_ID = Configuration.get("db.sql.batch.findById");
     private final BatchMapper mapper = new BatchMapper();
 
     @Override
@@ -40,7 +42,18 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public Map<Batch, Integer> getBatchesAndQuantityFromOrderLines(List<OrderLine> orderLines) {
-        return null;
+        String sql = "SELECT *, o.quantity _order_line_qty FROM batch b INNER JOIN _order_line o ON o.batch_id = b.id";
+        Map<Batch, Integer> batches = new HashMap<>();
+        try {
+            ResultSet rs = getConnector().connect().executeSelect(sql);
+            while (rs.next()) {
+                int quantity = rs.getInt("_order_line_qty");
+                batches.put(mapper.forwardConvert(rs), quantity);
+            }
+            return batches;
+        } catch (Exception e) {
+            throw new DbException(e);
+        }
     }
 
     @Override
@@ -85,7 +98,13 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public Batch findById(Integer integer) {
-        return null;
+        String sql = FIND_BY_ID.replace("$id", integer.toString());
+        try {
+            ResultSet rs = getConnector().connect().executeSelect(sql);
+            return mapper.forwardConvert(rs);
+        } catch (Exception e) {
+            throw new DbException(e);
+        }
     }
 
     @Override
@@ -100,11 +119,27 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public Batch save(Batch item) {
-        return null;
+        String template = "UPDATE batch SET quantity='$qty', import_price='$importPrice', msrp='$msrp' WHERE id='$id'";
+        String sql = template.replace("$qty", String.valueOf(item.getQuantity()))
+                            .replace("$importPrice", String.valueOf(item.getImportPrice()))
+                            .replace("$msrp", String.valueOf(item.getRetailPrice()))
+                            .replace("$id", String.valueOf(item.getId()));
+        try {
+            boolean updated = getConnector().connect().executeUpdate(sql) > 0;
+            if (updated) return findById(item.getId());
+            return item;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
     }
 
     @Override
     public List<Batch> saveAll(List<Batch> items) {
-        return null;
+        List<Batch> savedBatches = new ArrayList<>();
+        for (Batch item: items) {
+            savedBatches.add(save(item));
+        }
+        return savedBatches;
     }
 }

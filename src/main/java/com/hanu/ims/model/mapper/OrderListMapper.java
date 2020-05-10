@@ -27,17 +27,19 @@ public class OrderListMapper extends Mapper<List<Order>> {
                 if (orderList.stream().anyMatch(order -> order.getId() == orderId)) continue;
                 int cashierId = rs.getInt("cashier_id");
                 String cashierName = rs.getString("cashier_name");
-                long timestamp = rs.getTimestamp("timestamp").getTime();
+                long timestamp = rs.getTimestamp("timestamp").toInstant().getEpochSecond();
                 Order order = new Order(orderId, cashierId, cashierName, new ArrayList<>(), timestamp);
                 orderList.add(order);
 
                 // work with order line
+                orderLineMap.putIfAbsent(orderId, new ArrayList<>());
                 String sku = rs.getString("sku");
+                if (sku == null) continue;
                 String productName = rs.getString("product_name");
                 long listPrice = rs.getLong("msrp");
                 int quantity = rs.getInt("quantity");
-                OrderLine orderLine = new OrderLine(sku, productName, listPrice, quantity);
-                orderLineMap.putIfAbsent(orderId, new ArrayList<>());
+                int batchId = rs.getInt("batch_id");
+                OrderLine orderLine = new OrderLine(sku, productName, listPrice, quantity, batchId, orderId);
                 orderLineMap.get(orderId).add(orderLine);
             }
 

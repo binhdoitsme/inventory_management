@@ -9,8 +9,12 @@ import com.hanu.ims.model.mapper.OrderListMapper;
 import com.hanu.ims.model.mapper.ProductWithoutBatchesMapper;
 import com.hanu.ims.model.repository.OrderRepository;
 import com.hanu.ims.util.configuration.Configuration;
+import javafx.scene.Scene;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +35,30 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
 
     @Override
     public boolean addOrderLines(List<OrderLine> orderLines) {
-        return false;
+        if (orderLines.isEmpty()) {
+            throw new NullPointerException("No order lines to add!");
+        }
+        // build sql
+        String sql = "INSERT INTO _order_line VALUES ";
+        final String template = "('$quantity', '$batch_id', '$_order_id')";
+        List<String> valueStrings = new ArrayList<>();
+        orderLines.forEach(orderLine -> {
+            int quantity = orderLine.getQuantity();
+            int batchId = orderLine.getBatchId();
+            int orderId = orderLine.getOrderId();
+            valueStrings.add(template.replace("$quantity", String.valueOf(quantity))
+                                    .replace("$batch_id", String.valueOf(batchId))
+                                    .replace("$_order_id", String.valueOf(orderId)));
+        });
+        sql = sql.concat(String.join(", ", valueStrings));
+
+        // execute sql
+        try {
+            int rowsAffected = getConnector().connect().executeInsert(sql);
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            throw new DbException(e);
+        }
     }
 
     @Override
@@ -41,13 +68,22 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
 
     @Override
     public boolean add(Order item) {
-        return false;
+        try {
+            Timestamp timestamp = Timestamp.from(Instant.ofEpochSecond(item.getTimestamp()));
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String timestampStr = df.format(timestamp);
+            String sql = "INSERT INTO _order VALUES ('0', '$timestamp', '$cashier_id')"
+                            .replace("$timestamp", timestampStr)
+                            .replace("$cashier_id", String.valueOf(item.getCashierId()));
+            return getConnector().connect().executeInsert(sql) > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
     }
 
     @Override
-    public void add(List<Order> items) {
-
-    }
+    public void add(List<Order> items) { }
 
     @Override
     public long count() {

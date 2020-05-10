@@ -8,13 +8,26 @@ public class OrderLine {
     private long listPrice;
     private int quantity;
     private long lineSum;
+    private int batchId;
+    private int orderId;
 
-    public OrderLine(String sku, String productName, long listPrice, int quantity) {
+    public OrderLine(String sku, String productName, long listPrice, int quantity, int batchId, int orderId) {
         this.sku = sku;
         this.productName = productName;
         this.listPrice = listPrice;
         this.quantity = quantity;
         this.lineSum = listPrice * quantity;
+        this.batchId = batchId;
+        this.orderId = orderId;
+    }
+
+    public OrderLine(String sku, String productName, long listPrice, int quantity, int batchId) {
+        this.sku = sku;
+        this.productName = productName;
+        this.listPrice = listPrice;
+        this.quantity = quantity;
+        this.lineSum = listPrice * quantity;
+        this.batchId = batchId;
     }
 
     public String getSku() {
@@ -33,13 +46,29 @@ public class OrderLine {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-        lineSum = quantity * listPrice;
+    public int getBatchId() {
+        return batchId;
     }
 
     public long getLineSum() {
         return lineSum;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setBatchId(int batchId) {
+        this.batchId = batchId;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+        lineSum = quantity * listPrice;
     }
 
     @Override

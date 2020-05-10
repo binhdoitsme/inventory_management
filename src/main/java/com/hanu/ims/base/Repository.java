@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface Repository<T, ID extends Serializable> {
+    void beginTransaction();
+    void finishTransaction(boolean hasError);
     boolean add(T item);
     void add(List<T> items);
     long count();
