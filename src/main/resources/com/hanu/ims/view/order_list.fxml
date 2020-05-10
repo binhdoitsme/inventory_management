@@ -31,10 +31,10 @@
                     <children>
                         <TableView fx:id="orderListTable" editable="true" layoutY="71.0" prefHeight="503.0" prefWidth="715.0">
                             <columns>
-                                <TableColumn fx:id="orderColCheckbox" prefWidth="23.20001220703125" sortable="false">
-                                    <graphic>
-                                        <CheckBox mnemonicParsing="false" />
-                                    </graphic>
+                                <TableColumn fx:id="orderColCheckbox" prefWidth="23.20001220703125" sortable="false" text="#">
+<!--                                    <graphic>-->
+<!--                                        <CheckBox mnemonicParsing="false" />-->
+<!--                                    </graphic>-->
                                 </TableColumn>
                                 <TableColumn fx:id="orderColId" editable="false" prefWidth="92.80003356933594" text="ID" />
                                 <TableColumn fx:id="orderColCashier" prefWidth="159.199951171875" text="Cashier" />
@@ -43,7 +43,7 @@
                                 <TableColumn minWidth="0.0" prefWidth="118.60003662109375" text="Status" />
                             </columns>
                         </TableView>
-                        <Button layoutX="624.0" layoutY="35.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" text="Delete" />
+                        <Button layoutX="624.0" layoutY="35.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" text="Delete" fx:id="deleteButton" onAction="#onDeleteButtonPressed" />
                         <Button fx:id="createOrderButton" layoutX="539.0" layoutY="36.0" mnemonicParsing="false" onAction="#onCreateOrderClicked" prefHeight="26.0" prefWidth="76.0" text="Create" />
                         <Label layoutX="21.0" layoutY="20.0" text="Order List" />
                     </children>

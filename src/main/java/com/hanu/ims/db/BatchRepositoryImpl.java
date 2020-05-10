@@ -42,7 +42,8 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public Map<Batch, Integer> getBatchesAndQuantityFromOrderLines(List<OrderLine> orderLines) {
-        String sql = "SELECT *, o.quantity _order_line_qty FROM batch b INNER JOIN _order_line o ON o.batch_id = b.id";
+        int orderId = orderLines.get(0).getOrderId();
+        String sql = "SELECT *, o.quantity _order_line_qty FROM batch b INNER JOIN _order_line o ON o.batch_id = b.id WHERE _order_id = '$id'".replace("$id", String.valueOf(orderId));
         Map<Batch, Integer> batches = new HashMap<>();
         try {
             ResultSet rs = getConnector().connect().executeSelect(sql);
@@ -101,6 +102,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
         String sql = FIND_BY_ID.replace("$id", integer.toString());
         try {
             ResultSet rs = getConnector().connect().executeSelect(sql);
+            rs.next();
             return mapper.forwardConvert(rs);
         } catch (Exception e) {
             throw new DbException(e);
@@ -121,9 +123,9 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
     public Batch save(Batch item) {
         String template = "UPDATE batch SET quantity='$qty', import_price='$importPrice', msrp='$msrp' WHERE id='$id'";
         String sql = template.replace("$qty", String.valueOf(item.getQuantity()))
-                            .replace("$importPrice", String.valueOf(item.getImportPrice()))
-                            .replace("$msrp", String.valueOf(item.getRetailPrice()))
-                            .replace("$id", String.valueOf(item.getId()));
+                .replace("$importPrice", String.valueOf(item.getImportPrice()))
+                .replace("$msrp", String.valueOf(item.getRetailPrice()))
+                .replace("$id", String.valueOf(item.getId()));
         try {
             boolean updated = getConnector().connect().executeUpdate(sql) > 0;
             if (updated) return findById(item.getId());
@@ -137,7 +139,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
     @Override
     public List<Batch> saveAll(List<Batch> items) {
         List<Batch> savedBatches = new ArrayList<>();
-        for (Batch item: items) {
+        for (Batch item : items) {
             savedBatches.add(save(item));
         }
         return savedBatches;

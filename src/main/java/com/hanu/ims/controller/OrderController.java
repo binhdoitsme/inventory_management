@@ -154,13 +154,14 @@ public class OrderController {
 
     public void removeOrder(Order order) {
         List<OrderLine> orderLines = order.getOrderLines();
-        List<Batch> pendingUpdateBatches = pendingUpdateBatchesFromOrderLines(orderLines, true);
+        List<Batch> pendingUpdateBatches = pendingUpdateBatchesFromOrderLines(orderLines, false);
         batchRepository.saveAll(pendingUpdateBatches);
-        orderRepository.removeOrderLines(orderLines);
+//        orderRepository.removeOrderLines(orderLines);
         orderRepository.delete(order);
     }
 
     private List<Batch> pendingUpdateBatchesFromOrderLines(List<OrderLine> orderLines, boolean isRemoved) {
+        if (orderLines.isEmpty()) return new ArrayList<>();
         int coefficient = isRemoved ? -1 : 1;
         Map<Batch, Integer> relatedBatches = batchRepository.getBatchesAndQuantityFromOrderLines(orderLines);
         List<Batch> pendingUpdateBatches = new ArrayList<>();

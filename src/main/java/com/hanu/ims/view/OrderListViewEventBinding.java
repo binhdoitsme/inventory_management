@@ -11,13 +11,13 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class OrderListViewEventBinding {
 
@@ -31,10 +31,12 @@ public class OrderListViewEventBinding {
     private TableColumn<Order, String> orderColCashier;
     @FXML
     private TableColumn<Order, String> orderColTimestamp;
-    @FXML
-    private TableColumn<Order, Boolean> orderColCheckbox;
+//    @FXML
+//    private TableColumn<Order, Boolean> orderColCheckbox;
     @FXML
     private TableColumn<Order, Long> orderColTotalPrice;
+    @FXML
+    private Button deleteButton;
 
     private static OrderController controller;
 
@@ -54,7 +56,7 @@ public class OrderListViewEventBinding {
                 new SimpleStringProperty(param.getValue().getCashierName()));
         orderColTimestamp.setCellValueFactory(param ->
                 new SimpleStringProperty(EpochSecondConverter.epochSecondToString(param.getValue().getTimestamp())));
-        orderColCheckbox.setCellFactory(CheckBoxTableCell.forTableColumn(orderColCheckbox));
+//        orderColCheckbox.setCellFactory(CheckBoxTableCell.forTableColumn(orderColCheckbox));
 
         orderColTotalPrice.setCellValueFactory(param -> {
             if (param.getValue().getOrderLines().isEmpty())
@@ -77,6 +79,50 @@ public class OrderListViewEventBinding {
             });
             return row;
         });
+
+        deleteButton.setDisable(true);
+        addOrderLineSelectedListener();
+    }
+
+    private void addOrderLineSelectedListener() {
+        ObservableList<TablePosition> selectedCells = orderListTable.getSelectionModel().getSelectedCells();
+        selectedCells.addListener((ListChangeListener<? super TablePosition>) c -> {
+            if (selectedCells.isEmpty()) {
+                deleteButton.setDisable(true);
+            } else {
+                deleteButton.setDisable(false);
+            }
+        });
+    }
+
+    public void onDeleteButtonPressed() {
+        Dialog<ButtonType> confirmationDialog = new Dialog<>();
+        confirmationDialog.setTitle("Confirm delete");
+        confirmationDialog.setHeaderText("Are you sure want to delete the selected order?");
+        confirmationDialog.initOwner(orderListTable.getScene().getWindow());
+        confirmationDialog.initModality(Modality.WINDOW_MODAL);
+        confirmationDialog.getDialogPane().getButtonTypes().add(ButtonType.YES);
+        confirmationDialog.getDialogPane().getButtonTypes().add(ButtonType.NO);
+        Optional<ButtonType> result = confirmationDialog.showAndWait();
+        if (!result.isPresent() || result.get().equals(ButtonType.NO)) {
+            return;
+        }
+
+        Dialog<?> loadingDialog = showLoadingDialog();
+        Order order = orderListTable.getSelectionModel().getSelectedItem();
+        controller.removeOrder(order);
+        updateDataSource(true);
+        loadingDialog.close();
+    }
+
+    private Dialog<?> showLoadingDialog() {
+        Dialog<String> loadingDialog = new Dialog<>();
+        loadingDialog.initModality(Modality.WINDOW_MODAL);
+        loadingDialog.initOwner(orderListTable.getScene().getWindow());
+        loadingDialog.setHeaderText("Please wait...");
+        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        loadingDialog.show();
+        return loadingDialog;
     }
 
     public void createOrderDetailsView(Order order) {
@@ -102,7 +148,7 @@ public class OrderListViewEventBinding {
             orderCreateWindow.show();
             orderCreateWindow.setOnCloseRequest(event -> {
                 // update data of this
-                updateDataSource(true);
+                updateDataSource(false);
             });
         } catch (Exception e) {
             e.printStackTrace();

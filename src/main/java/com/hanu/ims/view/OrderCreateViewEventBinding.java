@@ -80,6 +80,8 @@ public class OrderCreateViewEventBinding {
             }
             skuTextField.clear();
         });
+        resetBtn.setDisable(true);
+        submitBtn.setDisable(true);
         initializeTable();
     }
 

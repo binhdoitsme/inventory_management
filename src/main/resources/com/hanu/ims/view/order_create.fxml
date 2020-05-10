@@ -18,10 +18,10 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TextField fx:id="skuTextField" layoutX="13.0" layoutY="39.0" prefHeight="26.0" prefWidth="479.0" promptText="Enter product SKU" />
+      <TextField fx:id="skuTextField" layoutX="13.0" layoutY="39.0" prefHeight="26.0" prefWidth="574.0" promptText="Enter product SKU" />
       <Button fx:id="submitBtn" layoutX="519.0" layoutY="387.0" mnemonicParsing="false" onAction="#onSubmit" text="Checkout" />
       <Button fx:id="resetBtn" layoutX="441.0" layoutY="386.0" mnemonicParsing="false" onAction="#onReset" prefHeight="26.0" prefWidth="66.0" text="Reset" />
       <Label layoutX="14.0" layoutY="19.0" text="Product SKU" />
-      <Button layoutX="500.0" layoutY="39.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Add" />
+<!--      <Button layoutX="500.0" layoutY="39.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Add" />-->
    </children>
 </AnchorPane>

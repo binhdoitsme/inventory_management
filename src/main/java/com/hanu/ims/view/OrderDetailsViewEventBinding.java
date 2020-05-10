@@ -9,15 +9,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +25,7 @@ public class OrderDetailsViewEventBinding {
     private ObservableValue<Order> observableOrder;
     private final Order initialState;
     private ObservableList<OrderLine> orderLines;
+    private ObservableList<OrderLine> selectedOrderLines;
 
     @FXML
     private Label orderId;
@@ -47,17 +47,22 @@ public class OrderDetailsViewEventBinding {
     private TableColumn<OrderLine, Integer> orderLineQuantity;
     @FXML
     private TableColumn<OrderLine, Long> orderLineSum;
-    @FXML
-    private TableColumn<OrderLine, Boolean> orderLineCheckbox;
+//    @FXML
+//    private TableColumn<OrderLine, Boolean> orderLineCheckbox;
     @FXML
     private Button revertButton;
     @FXML
     private Button saveButton;
+    @FXML
+    private Button deleteButton;
+    @FXML
+    private CheckBox selectAll;
 
     public OrderDetailsViewEventBinding(Order order) {
         observableOrder = new SimpleObjectProperty<>(order);
         initialState = order;
         orderLines = FXCollections.observableList(order.getOrderLines());
+        selectedOrderLines = FXCollections.observableList(new ArrayList<>());
     }
 
     public void initialize() {
@@ -66,8 +71,32 @@ public class OrderDetailsViewEventBinding {
         cashierName.setText(order.getCashierName());
         timestamp.setText(EpochSecondConverter.epochSecondToString(order.getTimestamp()));
         orderTotal.setText(String.valueOf(order.getTotalPrice()));
+        deleteButton.setDisable(true);
+        revertButton.setDisable(true);
+        saveButton.setDisable(true);
         bindTable();
         disableButtonsIfNoChangeDetected();
+        addOrderLineSelectedListener();
+    }
+
+    private void addOrderLineSelectedListener() {
+        ObservableList<TablePosition> selectedCells = orderLinesTable.getSelectionModel().getSelectedCells();
+        selectedCells.addListener((ListChangeListener<? super TablePosition>) c -> {
+            if (selectedCells.isEmpty()) {
+                deleteButton.setDisable(true);
+            } else {
+                deleteButton.setDisable(false);
+            }
+        });
+    }
+
+    public void onSelectAll() {
+        if (selectedOrderLines.isEmpty()) {
+            orderLinesTable.getSelectionModel().selectAll();
+
+        } else {
+            selectedOrderLines.clear();
+        }
     }
 
     private void bindTable() {
@@ -82,7 +111,7 @@ public class OrderDetailsViewEventBinding {
                 new SimpleIntegerProperty(param.getValue().getQuantity()).asObject());
         orderLineSum.setCellValueFactory(param ->
                 new SimpleLongProperty(param.getValue().getLineSum()).asObject());
-        orderLineCheckbox.setCellFactory(CheckBoxTableCell.forTableColumn(orderLineCheckbox));
+//        orderLineCheckbox.setCellFactory(CheckBoxTableCell.forTableColumn(orderLineCheckbox));
     }
 
     private void disableButtonsIfNoChangeDetected() {

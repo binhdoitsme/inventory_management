@@ -92,7 +92,8 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
 
     @Override
     public void delete(Order item) {
-
+        int id = item.getId();
+        deleteById(id);
     }
 
     @Override
@@ -107,7 +108,12 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
 
     @Override
     public void deleteById(Integer integer) {
-
+        try {
+            String sql = "DELETE FROM _order WHERE id = '$id'";
+            getConnector().connect().executeDelete(sql.replace("$id", String.valueOf(integer)));
+        } catch (Exception e) {
+            throw new DbException(e);
+        }
     }
 
     @Override
