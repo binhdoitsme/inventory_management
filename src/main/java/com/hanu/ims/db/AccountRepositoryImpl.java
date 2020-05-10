@@ -38,8 +38,8 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
     }
 
     @Override
-    public void add(List<Account> items) {
-
+    public boolean add(List<Account> items) {
+        return false;
     }
 
     @Override
@@ -48,23 +48,23 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
     }
 
     @Override
-    public void delete(Account item) {
-
+    public boolean delete(Account item) {
+        return false;
     }
 
     @Override
-    public void deleteAll(List<Account> items) {
-
+    public boolean deleteAll(List<Account> items) {
+        return false;
     }
 
     @Override
-    public void deleteAll() {
-
+    public boolean deleteAll() {
+        return false;
     }
 
     @Override
-    public void deleteById(Integer integer) {
-
+    public boolean deleteById(Integer integer) {
+        return false;
     }
 
     @Override

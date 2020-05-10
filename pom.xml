@@ -31,6 +31,11 @@
             <version>13</version>
         </dependency>
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+        </dependency>
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>13</version>
@@ -56,7 +61,6 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.4</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-configuration2</artifactId>
@@ -68,6 +72,7 @@
             <version>1.10.10</version>
         </dependency>
         <dependency>
+
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
             <version>11.0.1</version>
@@ -86,6 +91,17 @@
             <version>6.0.4</version>
         </dependency>
 
+
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.junit.platform</groupId>
+        	<artifactId>junit-platform-launcher</artifactId>
+        	<version>1.7.0-M1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
