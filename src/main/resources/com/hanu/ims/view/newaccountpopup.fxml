@@ -39,7 +39,7 @@
          </font>
       </Label>
       <PasswordField fx:id="confirmPasswordField" layoutX="29.0" layoutY="476.0" prefHeight="25.0" prefWidth="180.0" />
-      <Button layoutX="46.0" layoutY="659.0" mnemonicParsing="false" onAction="#attemptCreateAccount" prefHeight="58.0" prefWidth="138.0" text="Submit">
+      <Button layoutX="50.0" layoutY="724.0" mnemonicParsing="false" onAction="#attemptCreateAccount" prefHeight="58.0" prefWidth="138.0" text="Submit">
          <font>
             <Font size="18.0" />
          </font>
@@ -54,9 +54,19 @@
             </FXCollections>
          </items>
       </ChoiceBox>
-      <Label fx:id="statusLabel" layoutX="12.0" layoutY="78.0" prefHeight="143.0" prefWidth="215.0" textAlignment="CENTER" wrapText="true">
+      <Label fx:id="statusLabel" layoutX="12.0" layoutY="81.0" prefHeight="140.0" prefWidth="215.0" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Calibri Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="34.0" layoutY="600.0" prefHeight="64.0" prefWidth="169.0" text="-UserList will be updated upon closing this popup" wrapText="true">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="34.0" layoutY="651.0" prefHeight="64.0" prefWidth="169.0" text="-Admin will be hidden after creation" wrapText="true">
+         <font>
+            <Font size="15.0" />
          </font>
       </Label>
    </children>

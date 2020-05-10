@@ -1,6 +1,7 @@
 package com.hanu.ims.controller;
 
 import com.hanu.ims.db.AccountRepositoryImpl;
+import com.hanu.ims.exception.InvalidQueryTypeException;
 import com.hanu.ims.model.domain.Account;
 import com.hanu.ims.model.repository.AccountRepository;
 import com.hanu.ims.util.servicelocator.ServiceContainer;
@@ -18,6 +19,20 @@ public class AccountController {
     public Account validate(String username, String password) {
         Account validatedAccount = repository.findByUsernameAndPassword(username, password);
         return validatedAccount;
+    }
+
+    public long countUsers() throws SQLException, InvalidQueryTypeException {
+        return repository.count();
+    }
+
+    public boolean deleteAccount(Account account){
+        return repository.delete(account);
+    }
+
+    public boolean updateAccount(Account account){
+        Account status= repository.save(account);
+        if(status==null) return false;
+        else return true;
     }
 
     public List<Account> getAccountList() {
