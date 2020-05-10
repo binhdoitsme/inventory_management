@@ -1,11 +1,14 @@
 package com.hanu.ims.db;
 
 import com.hanu.ims.base.RepositoryImpl;
+import com.hanu.ims.exception.InvalidQueryTypeException;
 import com.hanu.ims.model.domain.Account;
 import com.hanu.ims.model.mapper.AccountMapper;
 import com.hanu.ims.model.repository.AccountRepository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,13 +46,57 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
     }
 
     @Override
-    public long count() {
-        return 0;
+    public long count() { //total count, including admins
+        long count= 0;
+        try {
+            String sql = "SELECT * FROM account";
+            count= getConnector().connect().executeScalar(sql);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (InvalidQueryTypeException e) {
+            e.printStackTrace();
+        }
+        return count;
+
+//        ResultSet rs = null;
+//        try {
+//            rs = getConnector().connect().executeSelect(sql);
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        } catch (InvalidQueryTypeException e) {
+//            e.printStackTrace();
+//        }
+//        while (true) {
+//            try {
+//                if (!rs.next()) break;
+//            } catch (SQLException throwables) {
+//                throwables.printStackTrace();
+//            }
+//            ++count;
+//        }
+
     }
 
-    @Override
-    public void delete(Account item) {
 
+
+    @Override
+    public boolean delete(Account item)  {
+        try {
+            String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and password= '$password' and role= '$role'"
+                    .replace("$id", Integer.toString(item.getId()))
+                    .replace("$username", item.getUsername())
+                    .replace("$password", item.getPassword())
+                    .replace("$role", item.getRole().name());
+            int deletedCount= getConnector().connect().executeDelete(sql);
+            System.out.println("deleted account count: "+ deletedCount);
+            if(deletedCount>0) return true;
+            else return false;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (InvalidQueryTypeException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -107,8 +154,37 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
         return accountList;
     }
 
+        /*
+String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and password= '$password' and role= '$role'"
+                    .replace("$id", Integer.toString(item.getId()))
+                    .replace("$username", item.getUsername())
+                    .replace("$password", item.getPassword())
+                    .replace("$role", item.getRole().name());
+
+     */
+
     @Override
     public Account save(Account item) {
+        boolean updateCount = false;
+        try {
+            String sql =
+                    "update account set username= '$username', password= '$password' where id= $id"
+                    .replace("$username", item.getUsername())
+                    .replace("$password", item.getPassword())
+                    .replace("$id", Integer.toString(item.getId()));
+
+            updateCount= getConnector().connect().executeUpdate(sql)>0;
+            System.out.println("updateCount is "+ updateCount);
+            if(updateCount) {
+                return item;
+            }
+            else return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        catch (InvalidQueryTypeException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
