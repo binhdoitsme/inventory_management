@@ -168,7 +168,7 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
         boolean updateCount = false;
         try {
             String sql =
-                    "update account set username= `$username`, password= `$password` where id= $id"
+                    "update account set username= '$username', password= '$password' where id= $id"
                     .replace("$username", item.getUsername())
                     .replace("$password", item.getPassword())
                     .replace("$id", Integer.toString(item.getId()));

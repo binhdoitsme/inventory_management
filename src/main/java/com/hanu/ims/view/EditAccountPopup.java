@@ -39,8 +39,7 @@ public class EditAccountPopup {
 
         popupWindow.setOnHiding( event -> {
             System.out.println("Closing Edit Stage");
-            userTable.getItems().clear();
-            userTable.getItems().addAll(AdminDashboardView.staticAccountList);
+            userTable.refresh();
         } );
 
         popupWindow.showAndWait();
