@@ -17,4 +17,7 @@ public interface DbConnector {
     int executeInsert(String query) throws SQLException, InvalidQueryTypeException;
     int executeUpdate(String query) throws SQLException, InvalidQueryTypeException;
     int executeDelete(String query) throws SQLException, InvalidQueryTypeException;
+    void beginTransaction() throws SQLException;
+    void commit() throws SQLException;
+    void rollback() throws SQLException;
 }

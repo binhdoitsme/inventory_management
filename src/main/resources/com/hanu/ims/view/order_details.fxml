@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <SplitPane dividerPositions="0.2" layoutX="122.0" layoutY="120.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <Label layoutX="21.0" layoutY="14.0" text="OverView">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="21.0" layoutY="70.0" prefHeight="19.0" prefWidth="98.0" text="Total Order">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="21.0" layoutY="114.0" prefHeight="19.0" prefWidth="98.0" text="Daily Order">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="715.0" SplitPane.resizableWithParent="false">
+                    <children>
+                        <Separator layoutX="28.0" layoutY="47.0" prefHeight="0.0" prefWidth="415.0" />
+                        <Label layoutX="22.0" layoutY="28.0" text="Order infomaton" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="28.0" />
+                        <Label layoutX="295.0" layoutY="67.0" text="Cashier:" />
+                        <Label layoutX="28.0" layoutY="67.0" text="Order ID" />
+                        <Label fx:id="orderId" layoutX="104.0" layoutY="67.0" prefHeight="18.0" prefWidth="178.0" text="Label" />
+                        <Label fx:id="cashierName" layoutX="358.0" layoutY="67.0" prefHeight="18.0" prefWidth="276.0" text="Label" />
+                        <Label layoutX="28.0" layoutY="99.0" text="Date Created" />
+                        <Label fx:id="timestamp" layoutX="104.0" layoutY="99.0" prefHeight="18.0" prefWidth="178.0" text="Label" />
+                        <TableView fx:id="orderLinesTable" layoutX="26.0" layoutY="215.0" prefHeight="245.0" prefWidth="658.0">
+                            <columns>
+                                <TableColumn fx:id="orderLineCheckbox" editable="false" prefWidth="27.0" text="#">
+<!--                                    <graphic>-->
+<!--                                        <CheckBox mnemonicParsing="false" fx:id="selectAll" onAction="#onSelectAll" />-->
+<!--                                    </graphic>-->
+                                </TableColumn>
+                                <TableColumn fx:id="orderLineSku" prefWidth="87.19998168945312" text="SKU" />
+                                <TableColumn fx:id="orderLineProductName" prefWidth="303.79998779296875" text="Product Name" />
+                                <TableColumn fx:id="orderLineListPrice" minWidth="1.0" prefWidth="110.4000244140625" text="List Price" />
+                                <TableColumn fx:id="orderLineQuantity" minWidth="0.0" prefWidth="35.20001220703125" text="Qty" />
+                                <TableColumn fx:id="orderLineSum" minWidth="0.0" prefWidth="95.39996337890625" text="Line Sum" />
+                            </columns>
+                        </TableView>
+                        <Button layoutX="634.0" layoutY="167.0" mnemonicParsing="false" text="Delete" fx:id="deleteButton" onAction="#onDeleteButtonClicked"/>
+                        <Label layoutX="519.0" layoutY="480.0" text="Total Price:" />
+                        <Label layoutX="28.0" layoutY="171.0" prefHeight="18.0" prefWidth="178.0" text="List of ordered products:" />
+                        <Separator layoutX="28.0" layoutY="194.0" prefHeight="0.0" prefWidth="415.0" />
+                        <Button fx:id="saveButton" layoutX="625.0" layoutY="516.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="58.0" onAction="#onSaveButtonClicked" text="Save" />
+                        <Button fx:id="revertButton" layoutX="556.0" layoutY="516.0" mnemonicParsing="false" onAction="#onRevertButtonClicked" prefHeight="26.0" prefWidth="58.0" text="Revert" />
+                  <Label fx:id="orderTotal" alignment="CENTER_RIGHT" layoutX="585.0" layoutY="480.0" prefHeight="18.0" prefWidth="98.0" text="Total Price:" textAlignment="RIGHT" />
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

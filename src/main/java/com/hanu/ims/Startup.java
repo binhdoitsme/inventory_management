@@ -1,7 +1,13 @@
 package com.hanu.ims;
 
 import com.hanu.ims.db.AccountRepositoryImpl;
+import com.hanu.ims.db.BatchRepositoryImpl;
+import com.hanu.ims.db.OrderRepositoryImpl;
 import com.hanu.ims.model.repository.AccountRepository;
+import com.hanu.ims.model.repository.BatchRepository;
+import com.hanu.ims.model.repository.OrderRepository;
+import com.hanu.ims.db.SupplierRepositoryImpl;
+import com.hanu.ims.model.repository.SupplierRepository;
 import com.hanu.ims.util.configuration.Configuration;
 import com.hanu.ims.util.db.DbConnector;
 import com.hanu.ims.util.db.DbConnectorImpl;
@@ -21,9 +27,12 @@ public class Startup {
         container = ServiceContainer.getInstance();
 
         // add dependencies here
+        
         container.addDependency(DbConnector.class, new DbConnectorImpl());
         container.addDependency(AccountRepository.class, new AccountRepositoryImpl());
-
+        container.addDependency(OrderRepository.class, new OrderRepositoryImpl());
+        container.addDependency(BatchRepository.class, new BatchRepositoryImpl());
+        container.addDependency(SupplierRepository.class, new SupplierRepositoryImpl());
         return this;
     }
 

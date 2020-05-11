@@ -1,5 +1,6 @@
 package com.hanu.ims.base;
 
+import com.hanu.ims.exception.DbException;
 import com.hanu.ims.util.db.DbConnector;
 import com.hanu.ims.util.db.DbConnectorImpl;
 import com.hanu.ims.util.servicelocator.ServiceContainer;
@@ -15,5 +16,26 @@ public abstract class RepositoryImpl<T, ID extends Serializable> implements Repo
 
     protected DbConnector getConnector() {
         return connector;
+    }
+
+    @Override
+    public void beginTransaction() {
+        try {
+            connector.beginTransaction();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
+    }
+
+    @Override
+    public void finishTransaction(boolean hasError) {
+        try {
+            if (hasError) connector.rollback();
+            else connector.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
     }
 }
