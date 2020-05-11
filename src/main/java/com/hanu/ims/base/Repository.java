@@ -1,6 +1,9 @@
 package com.hanu.ims.base;
 
+import com.hanu.ims.exception.InvalidQueryTypeException;
+
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface Repository<T, ID extends Serializable> {

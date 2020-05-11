@@ -33,11 +33,11 @@ public class CreateAccountView {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
         String role = (String) roleChoiceBox.getValue();
-
-        System.out.println(username);
-        System.out.println(password);
-        System.out.println(confirmPassword);
-        System.out.println(role);
+//
+//        System.out.println(username);
+//        System.out.println(password);
+//        System.out.println(confirmPassword);
+//        System.out.println(role);
 
         if (validateNewAccount(username, password, confirmPassword, role).equals("OK")) {
             Account account = new Account(username, password, Role.valueOf(role));
@@ -45,7 +45,7 @@ public class CreateAccountView {
                 ac.createAccount(account);
 
                 statusLabel.setText("Added account successfully");
-                LoginViewEventBinding lv = new LoginViewEventBinding();
+//                LoginViewEventBinding lv = new LoginViewEventBinding();
 //                lv.createDashboardView(actionEvent);
 //                AdminDashboardView adw= new AdminDashboardView();
 //                FXMLLoader secondPageLoader = new FXMLLoader(getClass().getResource("/admin_dashboard.fxml"));
@@ -53,6 +53,13 @@ public class CreateAccountView {
 //                Scene secondScene = new Scene(secondPane, 1200, 800);
 //                setDashboardPage(secondScene);
 //                toDashboardPage(actionEvent);
+                if(account.getRole()!=Role.Admin) {
+                    Account doppelgangerAccount= new Account(ac.validate(username,password).getId()
+                            , username, password, Role.valueOf(role));
+                    AdminDashboardViewEventBinding.staticAccountList.add(doppelgangerAccount);
+
+                }
+
             } catch (Exception ex) {
                 ex.printStackTrace();
                 statusLabel.setText("Failed to add account to database");

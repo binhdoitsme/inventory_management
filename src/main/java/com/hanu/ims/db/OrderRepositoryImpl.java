@@ -101,7 +101,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
     }
 
     @Override
-    public void add(List<Order> items) { }
+    public boolean add(List<Order> items) { return false; }
 
     @Override
     public long count() {
@@ -109,20 +109,20 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
     }
 
     @Override
-    public void delete(Order item) {
+    public boolean delete(Order item) {
         int id = item.getId();
-        deleteById(id);
+        return deleteById(id);
     }
 
     @Override
-    public void deleteAll(List<Order> items) {
+    public boolean deleteAll(List<Order> items) {
         List<String> idList = items.stream()
                 .map(item -> String.valueOf(item.getId()))
                 .collect(Collectors.toList());
         try {
             String sql = "DELETE FROM _order WHERE id IN ($id_list)";
-            getConnector().connect()
-                    .executeDelete(sql.replace("$id_list", String.join(", ", idList)));
+            return getConnector().connect()
+                    .executeDelete(sql.replace("$id_list", String.join(", ", idList))) > 0;
         } catch (Exception e) {
             e.printStackTrace();
             throw new DbException(e);
@@ -130,15 +130,16 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
     }
 
     @Override
-    public void deleteAll() {
-
+    public boolean deleteAll() {
+        return false;
     }
 
     @Override
-    public void deleteById(Integer integer) {
+    public boolean deleteById(Integer integer) {
         try {
             String sql = "DELETE FROM _order WHERE id = '$id'";
-            getConnector().connect().executeDelete(sql.replace("$id", String.valueOf(integer)));
+            return getConnector().connect()
+                    .executeDelete(sql.replace("$id", String.valueOf(integer))) > 0;
         } catch (Exception e) {
             e.printStackTrace();
             throw new DbException(e);

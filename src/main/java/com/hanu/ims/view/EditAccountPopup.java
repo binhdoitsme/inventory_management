@@ -11,37 +11,35 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-public class CreateAccountPopup {
+public class EditAccountPopup {
 
-    private Label userCountLabel;
+    private Account account;
     private TableView<Account> userTable;
 
-    CreateAccountPopup(){
+    EditAccountPopup(){
         super();
     }
 
-    CreateAccountPopup(TableView<Account> tableView, Label label) {
+    EditAccountPopup(TableView<Account> tableView, Account account) {
         this.userTable = tableView;
-        this.userCountLabel= label;
+        this.account= account;
     }
-    
+
     public void display() throws Exception {
         Stage popupWindow = new Stage();
 
-        FXMLLoader popupLoader = new FXMLLoader(getClass().getResource("newaccountpopup.fxml"));
+        FXMLLoader popupLoader = new FXMLLoader(getClass().getResource("editaccountpopup.fxml"));
         Parent firstPane = popupLoader.load();
         Scene firstScene = new Scene(firstPane, 400, 800);
 
         popupWindow.initModality(Modality.APPLICATION_MODAL);
-        popupWindow.setTitle("Create New User");
+        popupWindow.setTitle("Edit User Details");
 
         popupWindow.setScene(firstScene);
 
         popupWindow.setOnHiding( event -> {
-            System.out.println("Closing Stage");
-            userTable.getItems().clear();
-            userTable.getItems().addAll(AdminDashboardViewEventBinding.staticAccountList);
-            userCountLabel.setText(Integer.toString(AdminDashboardViewEventBinding.staticAccountList.size()));
+            System.out.println("Closing Edit Stage");
+            userTable.refresh();
         } );
 
         popupWindow.showAndWait();

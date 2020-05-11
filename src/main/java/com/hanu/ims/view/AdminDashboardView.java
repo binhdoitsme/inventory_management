@@ -15,4 +15,6 @@ public class AdminDashboardView extends DashboardView {
         Scene scene = new Scene(parent);
         setScene(scene);
     }
+
+
 }

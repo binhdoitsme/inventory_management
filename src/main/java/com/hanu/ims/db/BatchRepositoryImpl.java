@@ -63,8 +63,8 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
     }
 
     @Override
-    public void add(List<Batch> items) {
-
+    public boolean add(List<Batch> items) {
+        return false;
     }
 
     @Override
@@ -73,23 +73,23 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
     }
 
     @Override
-    public void delete(Batch item) {
-
+    public boolean delete(Batch item) {
+        return false;
     }
 
     @Override
-    public void deleteAll(List<Batch> items) {
-
+    public boolean deleteAll(List<Batch> items) {
+        return false;
     }
 
     @Override
-    public void deleteAll() {
-
+    public boolean deleteAll() {
+        return false;
     }
 
     @Override
-    public void deleteById(Integer integer) {
-
+    public boolean deleteById(Integer integer) {
+        return false;
     }
 
     @Override
