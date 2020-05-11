@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="808.0" prefWidth="237.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.EditAccountView">
     <children>
-        <Label layoutX="34.0" layoutY="8.0" prefHeight="70.0" prefWidth="169.0" text="Create New Account">
+        <Label layoutX="34.0" layoutY="8.0" prefHeight="70.0" prefWidth="169.0" text="Edit Account">
             <font>
                 <Font size="18.0" />
             </font></Label>
