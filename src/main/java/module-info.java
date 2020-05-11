@@ -10,7 +10,7 @@ module com.hanu.ims {
     requires org.controlsfx.controls;
     requires com.gluonhq.attach.util;
     requires com.gluonhq.charm.glisten;
-	  requires junit;
+    requires junit;
 
 
     opens com.hanu.ims to javafx.fxml;
