@@ -21,9 +21,15 @@ import java.util.Map;
 public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
         implements BatchRepository {
 
+    // constants
     private static final String FIND_AVAILABLE_BY_SKU = Configuration.get("db.sql.batch.findAvailableBySku");
     private static final String FIND_BY_ID = Configuration.get("db.sql.batch.findById");
     private static final String FIND_ALL = Configuration.get("db.sql.batch.findAll");
+    private static final String GET_BATCHES_AND_QUANTITY_FROM_ORDER_LINE = Configuration.get("db.sql.batch.getBatchesAndQuantityFromOrderLines");
+    private static final String GET_CATEGORY_SUGGESTIONS = Configuration.get("db.sql.category.getCategorySuggestions");
+    private static final String SAVE = Configuration.get("db.sql.batch.save");
+
+    // mappers
     private final BatchMapper batchMapper = new BatchMapper();
     private final CategoryMapper categoryMapper = new CategoryMapper();
     private final ProductWithoutBatchesMapper productMapper = new ProductWithoutBatchesMapper();;
@@ -50,7 +56,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
     @Override
     public Map<Batch, Integer> getBatchesAndQuantityFromOrderLines(List<OrderLine> orderLines) {
         int orderId = orderLines.get(0).getOrderId();
-        String sql = "SELECT *, o.quantity _order_line_qty FROM batch b INNER JOIN _order_line o ON o.batch_id = b.id WHERE _order_id = '$id'".replace("$id", String.valueOf(orderId));
+        String sql = GET_BATCHES_AND_QUANTITY_FROM_ORDER_LINE.replace("$id", String.valueOf(orderId));
         Map<Batch, Integer> batches = new HashMap<>();
         try {
             ResultSet rs = getConnector().connect().executeSelect(sql);
@@ -66,7 +72,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public List<Category> getCategorySuggestions() {
-        String sql = "SELECT *, c.id cat_id FROM category c LEFT JOIN product p ON c.id = p.category_id";
+        String sql = GET_CATEGORY_SUGGESTIONS;
         try {
             ResultSet rs = getConnector().connect().executeSelect(sql);
             Map<Category, List<Product>> categoryProductMap = new HashMap<>();
@@ -160,7 +166,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public Batch save(Batch item) {
-        String template = "UPDATE batch SET quantity='$qty', import_price='$importPrice', msrp='$msrp' WHERE id='$id'";
+        String template = SAVE;
         String sql = template.replace("$qty", String.valueOf(item.getQuantity()))
                 .replace("$importPrice", String.valueOf(item.getImportPrice()))
                 .replace("$msrp", String.valueOf(item.getRetailPrice()))

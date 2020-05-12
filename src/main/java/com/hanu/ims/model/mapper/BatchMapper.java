@@ -18,7 +18,7 @@ public class BatchMapper extends Mapper<Batch> {
             Batch batch =  new Batch(rs.getInt("id"),
                                     rs.getString("sku"),
                                     rs.getInt("import_quantity"),
-                                    rs.getInt("quantity"),
+                                    rs.getInt("batch_quantity"),
                                     rs.getDate("import_date"),
                                     rs.getLong("import_price"),
                                     rs.getLong("msrp"),
