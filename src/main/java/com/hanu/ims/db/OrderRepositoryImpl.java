@@ -28,7 +28,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
     private static final String FIND_ALL_PRODUCTS = Configuration.get("db.sql.product.findAll");
     private static final String ADD_ORDER_LINES = Configuration.get("db.sql.order.addOrderLines");
     private static final String REMOVE_ORDER_LINES = Configuration.get("db.sql.order.removeOrderLines");
-    private static final String ADD = Configuration.get("db.sql.order.add");
+    private static final String ADD_ONE = Configuration.get("db.sql.order.addOne");
     private static final String DELETE_ALL = Configuration.get("db.sql.order.deleteAll");
     private static final String DELETE_BY_ID = Configuration.get("db.sql.order.deleteById");
     // mappers
@@ -96,8 +96,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
             Timestamp timestamp = Timestamp.from(Instant.ofEpochSecond(item.getTimestamp()));
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String timestampStr = df.format(timestamp);
-            String sql = ADD
-                            .replace("$timestamp", timestampStr)
+            String sql = ADD_ONE.replace("$timestamp", timestampStr)
                             .replace("$cashier_id", String.valueOf(item.getCashierId()));
             return getConnector().connect().executeInsert(sql) > 0;
         } catch (Exception e) {

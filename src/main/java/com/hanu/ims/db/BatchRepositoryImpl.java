@@ -42,7 +42,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
     @Override
     public List<Batch> findAvailableBySku(String sku) {
         try {
-            ResultSet rs = getConnector().connect().executeSelect(FIND_AVAILABLE_BY_SKU);
+            ResultSet rs = getConnector().connect().executeSelect(FIND_AVAILABLE_BY_SKU.replace("$sku", sku));
             List<Batch> batches = new ArrayList<>();
             while (rs.next()) {
                 batches.add(batchMapper.forwardConvert(rs));

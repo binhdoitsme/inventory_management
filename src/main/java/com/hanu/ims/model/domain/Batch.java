@@ -139,9 +139,6 @@ public class Batch implements Comparable {
         if (o == null || getClass() != o.getClass()) return false;
         Batch batch = (Batch) o;
         return id == batch.id &&
-                quantity == batch.quantity &&
-                retailPrice == batch.retailPrice &&
-                sku.equals(batch.sku) &&
                 importDate.equals(batch.importDate);
     }
 
@@ -150,9 +147,14 @@ public class Batch implements Comparable {
         final StringBuilder sb = new StringBuilder("Batch{");
         sb.append("id=").append(id);
         sb.append(", sku='").append(sku).append('\'');
+        sb.append(", importQuantity=").append(importQuantity);
         sb.append(", quantity=").append(quantity);
         sb.append(", importDate=").append(importDate);
+        sb.append(", importPrice=").append(importPrice);
         sb.append(", retailPrice=").append(retailPrice);
+        sb.append(", status=").append(status);
+        sb.append(", productName='").append(productName).append('\'');
+        sb.append(", category=").append(category);
         sb.append('}');
         return sb.toString();
     }
