@@ -5,10 +5,14 @@ import java.util.Date;
 public class Batch implements Comparable {
     private final int id;
     private String sku;
+    private int importQuantity; // need to change DB to support this
     private int quantity;
     private Date importDate;
     private long importPrice;
     private long retailPrice;
+    private Status status;
+    private String productName;
+    private Category category;
 
     /**
      * Full constructor for database mapping
@@ -28,6 +32,18 @@ public class Batch implements Comparable {
         this.retailPrice = retailPrice;
     }
 
+    public Batch(int id, String sku, int importQuantity, int quantity,
+                 Date importDate, long importPrice, long retailPrice, String productName) {
+        this.id = id;
+        this.sku = sku;
+        this.importQuantity = importQuantity;
+        this.quantity = quantity;
+        this.importDate = importDate;
+        this.importPrice = importPrice;
+        this.retailPrice = retailPrice;
+        this.productName = productName;
+    }
+
     /**
      * Constructor for Batch objects that are pending to be added to database
      *
@@ -38,6 +54,7 @@ public class Batch implements Comparable {
      */
     public Batch(String sku, int quantity, Date importDate, long importPrice, long retailPrice) {
         this(0, sku, quantity, importDate, importPrice, retailPrice);
+        this.importQuantity = quantity;
     }
 
     public int getId() {
@@ -64,6 +81,22 @@ public class Batch implements Comparable {
         return importPrice;
     }
 
+    public int getImportQuantity() {
+        return importQuantity;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
     public void setSku(String sku) {
         this.sku = sku;
     }
@@ -82,6 +115,22 @@ public class Batch implements Comparable {
 
     public void setImportPrice(long importPrice) {
         this.importPrice = importPrice;
+    }
+
+    public void setImportQuantity(int importQuantity) {
+        this.importQuantity = importQuantity;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
@@ -116,5 +165,9 @@ public class Batch implements Comparable {
             Batch batch = (Batch) o;
             return this.importDate.compareTo(batch.importDate);
         }
+    }
+
+    public enum Status {
+        IMPORTED, ORDERED, OUT_OF_STOCK, EXPIRED
     }
 }

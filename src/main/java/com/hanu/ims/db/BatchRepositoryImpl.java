@@ -3,8 +3,12 @@ package com.hanu.ims.db;
 import com.hanu.ims.base.RepositoryImpl;
 import com.hanu.ims.exception.DbException;
 import com.hanu.ims.model.domain.Batch;
+import com.hanu.ims.model.domain.Category;
 import com.hanu.ims.model.domain.OrderLine;
+import com.hanu.ims.model.domain.Product;
 import com.hanu.ims.model.mapper.BatchMapper;
+import com.hanu.ims.model.mapper.CategoryMapper;
+import com.hanu.ims.model.mapper.ProductWithoutBatchesMapper;
 import com.hanu.ims.model.repository.BatchRepository;
 import com.hanu.ims.util.configuration.Configuration;
 
@@ -19,7 +23,10 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     private static final String FIND_AVAILABLE_BY_SKU = Configuration.get("db.sql.batch.findAvailableBySku");
     private static final String FIND_BY_ID = Configuration.get("db.sql.batch.findById");
-    private final BatchMapper mapper = new BatchMapper();
+    private static final String FIND_ALL = Configuration.get("db.sql.batch.findAll");
+    private final BatchMapper batchMapper = new BatchMapper();
+    private final CategoryMapper categoryMapper = new CategoryMapper();
+    private final ProductWithoutBatchesMapper productMapper = new ProductWithoutBatchesMapper();;
 
     @Override
     public List<Batch> findBySku(String sku) {
@@ -32,7 +39,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
             ResultSet rs = getConnector().connect().executeSelect(FIND_AVAILABLE_BY_SKU);
             List<Batch> batches = new ArrayList<>();
             while (rs.next()) {
-                batches.add(mapper.forwardConvert(rs));
+                batches.add(batchMapper.forwardConvert(rs));
             }
             return batches;
         } catch (Exception e) {
@@ -49,10 +56,33 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
             ResultSet rs = getConnector().connect().executeSelect(sql);
             while (rs.next()) {
                 int quantity = rs.getInt("_order_line_qty");
-                batches.put(mapper.forwardConvert(rs), quantity);
+                batches.put(batchMapper.forwardConvert(rs), quantity);
             }
             return batches;
         } catch (Exception e) {
+            throw new DbException(e);
+        }
+    }
+
+    @Override
+    public List<Category> getCategorySuggestions() {
+        String sql = "SELECT *, c.id cat_id FROM category c LEFT JOIN product p ON c.id = p.category_id";
+        try {
+            ResultSet rs = getConnector().connect().executeSelect(sql);
+            Map<Category, List<Product>> categoryProductMap = new HashMap<>();
+            while (rs.next()) {
+                var currentCategory = categoryMapper.forwardConvert(rs);
+                categoryProductMap.putIfAbsent(currentCategory, new ArrayList<>());
+                categoryProductMap.get(currentCategory).add(productMapper.forwardConvert(rs));
+            }
+            List<Category> categories = new ArrayList<>();
+            categories.addAll(categoryProductMap.keySet());
+            for (Category category : categories) {
+                category.getProducts().addAll(categoryProductMap.get(category));
+            }
+            return categories;
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new DbException(e);
         }
     }
@@ -103,7 +133,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
         try {
             ResultSet rs = getConnector().connect().executeSelect(sql);
             rs.next();
-            return mapper.forwardConvert(rs);
+            return batchMapper.forwardConvert(rs);
         } catch (Exception e) {
             throw new DbException(e);
         }
@@ -116,7 +146,16 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public List<Batch> findAll() {
-        return null;
+        try {
+            ResultSet rs = getConnector().connect().executeSelect(FIND_ALL);
+            List<Batch> batches = new ArrayList<>();
+            while (rs.next()) {
+                batches.add(batchMapper.forwardConvert(rs));
+            }
+            return batches;
+        } catch (Exception e) {
+            throw new DbException(e);
+        }
     }
 
     @Override
