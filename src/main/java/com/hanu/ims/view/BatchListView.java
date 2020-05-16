@@ -72,11 +72,20 @@ public class BatchListView extends Stage {
         var selection = batchTable.getSelectionModel().getSelectedItems();
 
         selection.addListener((ListChangeListener<? super Batch>) c -> {
+            System.out.println("Selection changed!");
             if (selection.isEmpty()) {
                 batchDeleteButton.setDisable(true);
             } else {
                 Batch item = batchTable.getSelectionModel().getSelectedItem();
-                if (item.getQuantity() < item.getImportQuantity()) return;
+                System.out.println(item.getQuantity() < item.getImportQuantity() ||
+                        item.getStatus() == Batch.Status.EXPIRED ||
+                        item.getStatus() == Batch.Status.ORDERED);
+                if (item.getQuantity() < item.getImportQuantity() ||
+                        item.getStatus() == Batch.Status.EXPIRED ||
+                        item.getStatus() == Batch.Status.ORDERED) {
+                    batchDeleteButton.setDisable(true);
+                    return;
+                }
                 batchDeleteButton.setDisable(false);
             }
         });
@@ -145,6 +154,7 @@ public class BatchListView extends Stage {
 
         Dialog<?> loadingDialog = showLoadingDialog();
         Batch batch = batchTable.getSelectionModel().getSelectedItem();
+        batchTable.getSelectionModel().clearSelection();
         try {
             controller.removeBatch(batch.getId());
             updateDataSource(true);

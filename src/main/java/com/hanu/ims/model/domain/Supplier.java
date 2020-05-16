@@ -5,24 +5,25 @@ public class Supplier {
 	private String name;
 	private String phone;
 	private String address;
-	private Boolean is_available;
+	private Boolean isAvailable;
+	private Category category;
 
-	public Supplier(int id, String name, String phone, String address, Boolean is_available) {
-		if (validated(id, name, phone, address, is_available)) {
+	public Supplier(int id, String name, String phone, String address, Boolean isAvailable) {
+		if (validated(id, name, phone, address, isAvailable)) {
 			this.id = id;
 			this.name = name;
 			this.phone = phone;
 			this.address = address;
-			this.is_available = is_available;
+			this.isAvailable = isAvailable;
 		}
 	}
 
-	public Supplier(String name, String phone, String address, Boolean is_available) {
-		if (validatedNoneId(name, phone, address, is_available)) {
+	public Supplier(String name, String phone, String address, Boolean isAvailable) {
+		if (validatedNoneId(name, phone, address, isAvailable)) {
 			this.name = name;
 			this.phone = phone;
 			this.address = address;
-			this.is_available = is_available;
+			this.isAvailable = isAvailable;
 		}
 	}
 
@@ -66,28 +67,36 @@ public class Supplier {
 		}
 	}
 
-	public Boolean getIs_available() {
-		return is_available;
+	public Boolean isAvailable() {
+		return isAvailable;
 	}
 
-	public void setIs_available(Boolean is_available) {
-		if(validatedIsAvailable(is_available)) {
-    		this.is_available = is_available;
+	public void setIsAvailable(Boolean isAvailable) {
+		if(validatedIsAvailable(isAvailable)) {
+    		this.isAvailable = isAvailable;
     	}
 	}
 
-	private boolean validated(int id, String name, String phone, String address, Boolean is_available) {
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	private boolean validated(int id, String name, String phone, String address, Boolean isAvailable) {
 		if (validatedId(id) && validatedName(name) && validatedPhone(phone) && validatedAddress(address)
-				&& validatedIsAvailable(is_available)) {
+				&& validatedIsAvailable(isAvailable)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	private boolean validatedNoneId(String name, String phone, String address, Boolean is_available) {
+	private boolean validatedNoneId(String name, String phone, String address, Boolean isAvailable) {
 		if (validatedName(name) && validatedPhone(phone) && validatedAddress(address)
-				&& validatedIsAvailable(is_available)) {
+				&& validatedIsAvailable(isAvailable)) {
 			return true;
 		} else {
 			return false;
@@ -118,8 +127,8 @@ public class Supplier {
 		}
 	}
 
-	private boolean validatedIsAvailable(Boolean is_available) {
-		if (is_available == null) {
+	private boolean validatedIsAvailable(Boolean isAvailable) {
+		if (isAvailable == null) {
 			return false;
 		} else {
 			return true;
@@ -132,5 +141,13 @@ public class Supplier {
 		} else {
 			return true;
 		}
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("[").append(id).append("] ")
+				.append(name.toUpperCase());
+		return sb.toString();
 	}
 }

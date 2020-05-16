@@ -95,7 +95,21 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public boolean add(Batch item) {
-        return false;
+        String sql = "INSERT INTO batch (sku, import_quantity, quantity, import_price, msrp, import_date, supplier_id) VALUES ('$sku', '$import_quantity', '$quantity', '$import_price', '$msrp', '$import_date', '$supplier_id')"
+                .replace("$sku", item.getSku())
+                .replace("$import_quantity", String.valueOf(item.getImportQuantity()))
+                .replace("$quantity", String.valueOf(item.getQuantity()))
+                .replace("$import_price", String.valueOf(item.getImportPrice()))
+                .replace("$msrp", String.valueOf(item.getRetailPrice()))
+                .replace("$import_date", item.getImportDate().toString())
+                .replace("$supplier_id", String.valueOf(item.getSupplierId()));
+        try {
+            int rowsAffected = getConnector().connect().executeInsert(sql);
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
     }
 
     @Override

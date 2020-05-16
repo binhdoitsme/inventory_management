@@ -7,9 +7,9 @@ import java.util.List;
 
 
 public interface SupplierRepository extends Repository<Supplier, Integer> {
-    List<Supplier> lst = null;
     boolean add(Supplier supplier);
     void invalidate(int id);
     List<Supplier> findAll();
     Supplier findById(int id);
+    List<Supplier> findAllActiveSuppliers();
 }

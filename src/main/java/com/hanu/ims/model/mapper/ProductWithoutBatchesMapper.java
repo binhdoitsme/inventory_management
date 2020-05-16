@@ -14,7 +14,7 @@ public class ProductWithoutBatchesMapper extends Mapper<Product> {
     private static Product fromDatabase(ResultSet rs) {
         try {
             return new Product(rs.getString("sku"),
-                                rs.getString("name"),
+                                rs.getString("product_name"),
                                 rs.getString("description"));
         } catch (SQLException e) {
             e.printStackTrace();

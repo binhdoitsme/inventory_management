@@ -17,17 +17,17 @@ public class SupplierMapper extends Mapper<Supplier> {
                     rs.getString("name"),
                     rs.getString("phone"),
                     rs.getString("address"),
-                    rs.getBoolean("is_available"));
+                    rs.getBoolean("isAvailable"));
         } catch (SQLException e) {
             return null;
         }
     }
 
     public String convert(Supplier supplier) {
-        return new String("($name,$phone, $address, $is_available)")
+        return new String("($name,$phone, $address, $isAvailable)")
                 .replace("$name", "\'" + supplier.getName() + "\'")
                 .replace("$phone", "\'" + supplier.getPhone() + "\'")
                 .replace("$address", "\'" + supplier.getAddress() + "\'")
-                .replace("$is_available", ""+ supplier.getIs_available());
+                .replace("$isAvailable", ""+ supplier.isAvailable());
     }
 }

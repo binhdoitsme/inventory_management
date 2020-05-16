@@ -58,13 +58,9 @@ public class Product {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Product{");
-        sb.append("sku='").append(sku).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", category=").append(category);
-        sb.append(", batches=").append(batches);
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder("");
+        sb.append("[").append(sku.toUpperCase()).append("] ");
+        sb.append(name.toUpperCase());
         return sb.toString();
     }
 }

@@ -12,7 +12,8 @@ public class Batch implements Comparable {
     private long retailPrice;
     private Status status;
     private String productName;
-    private Category category;
+    private int supplierId;
+    private Supplier supplier;
 
     /**
      * Full constructor for database mapping
@@ -23,13 +24,15 @@ public class Batch implements Comparable {
      * @param importDate
      * @param retailPrice
      */
-    public Batch(int id, String sku, int quantity, Date importDate, long importPrice, long retailPrice) {
+    public Batch(int id, String sku, int quantity, Date importDate,
+                 long importPrice, long retailPrice, int supplierId) {
         this.id = id;
         this.sku = sku;
         this.quantity = quantity;
         this.importDate = importDate;
         this.importPrice = importPrice;
         this.retailPrice = retailPrice;
+        this.supplierId = supplierId;
     }
 
     public Batch(int id, String sku, int importQuantity, int quantity,
@@ -52,8 +55,9 @@ public class Batch implements Comparable {
      * @param importDate
      * @param retailPrice
      */
-    public Batch(String sku, int quantity, Date importDate, long importPrice, long retailPrice) {
-        this(0, sku, quantity, importDate, importPrice, retailPrice);
+    public Batch(String sku, int quantity, Date importDate,
+                 long importPrice, long retailPrice, int supplierId) {
+        this(0, sku, quantity, importDate, importPrice, retailPrice, supplierId);
         this.importQuantity = quantity;
     }
 
@@ -89,12 +93,16 @@ public class Batch implements Comparable {
         return productName;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
     public Status getStatus() {
         return status;
+    }
+
+    public int getSupplierId() {
+        return supplierId;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
     }
 
     public void setSku(String sku) {
@@ -125,12 +133,16 @@ public class Batch implements Comparable {
         this.productName = productName;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
     @Override
@@ -139,7 +151,10 @@ public class Batch implements Comparable {
         if (o == null || getClass() != o.getClass()) return false;
         Batch batch = (Batch) o;
         return id == batch.id &&
-                importDate.equals(batch.importDate);
+                importDate.equals(batch.importDate)
+                && quantity == batch.quantity
+                && importPrice == batch.importPrice
+                && retailPrice == batch.retailPrice;
     }
 
     @Override
@@ -154,7 +169,6 @@ public class Batch implements Comparable {
         sb.append(", retailPrice=").append(retailPrice);
         sb.append(", status=").append(status);
         sb.append(", productName='").append(productName).append('\'');
-        sb.append(", category=").append(category);
         sb.append('}');
         return sb.toString();
     }

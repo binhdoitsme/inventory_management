@@ -21,19 +21,19 @@
         <Button layoutX="328.0" layoutY="463.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Revert"
                 fx:id="revertButton"/>
         <Button layoutX="423.0" layoutY="463.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Save"
-                fx:id="saveButton"/>
+                fx:id="saveButton" onAction="#onSave"/>
         <VBox layoutX="35.0" layoutY="46.0" prefHeight="346.0" prefWidth="471.0">
             <children>
                 <Label text="SKU" />
-                <TextField fx:id="skuInput"/>
+                <TextField fx:id="skuInput" disable="true"/>
                 <Label text="Product Name" />
-                <TextField fx:id="productNameInput"/>
+                <TextField fx:id="productNameInput" disable="true"/>
                 <Label text="Category" />
-                <ComboBox prefWidth="200.0" fx:id="categoryInput"/>
+                <TextField prefWidth="200.0" fx:id="categoryInput" disable="true"/>
                 <Label text="Supplier" />
-                <TextField fx:id="supplierInput"/>
+                <TextField fx:id="supplierInput" disable="true" />
                 <Label text="Import date"/>
-                <TextField fx:id="importDateInput" editable="false"/>
+                <TextField fx:id="importDateInput" editable="false" disable="true" />
                 <Label text="Quantity in stock"/>
                 <TextField fx:id="quantityInput"/>
                 <Label text="Import price"/>
@@ -41,7 +41,7 @@
                 <Label text="Retail Price"/>
                 <TextField fx:id="retailPriceInput"/>
                 <Label text="Status"/>
-                <TextField prefWidth="150.0" fx:id="status" editable="false"/>
+                <TextField prefWidth="150.0" fx:id="status" editable="false" disable="true"/>
             </children>
         </VBox>
     </children>

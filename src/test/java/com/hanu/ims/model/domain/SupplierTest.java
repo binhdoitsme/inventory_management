@@ -9,7 +9,7 @@ public class SupplierTest {
 	String[] lstname = { null, "", "name", "do hai binh" };
 	String[] lstphone = { null, "", "phone" };
 	String[] lstaddress = { null, "", "address" };
-	boolean[] lstis_available = { true, false };
+	boolean[] lstisAvailable = { true, false };
 
 	@Test
 	public void testinitShouldFail() {
@@ -17,10 +17,10 @@ public class SupplierTest {
 			for (int id : ids) {
 				for (String phone : lstphone) {
 					for (String address : lstaddress) {
-						for (boolean is_available : lstis_available) {
+						for (boolean isAvailable : lstisAvailable) {
 							if (id < 0 || name == null || name.equals("") || phone == null || phone.equals("")
 									|| address == null || address.equals("")) {
-								testInitShouldFailFor(id, name, phone, address, is_available);
+								testInitShouldFailFor(id, name, phone, address, isAvailable);
 							}
 						}
 					}
@@ -35,11 +35,11 @@ public class SupplierTest {
 			for (int id : ids) {
 				for (String phone : lstphone) {
 					for (String address : lstaddress) {
-						for (boolean is_available : lstis_available) {
+						for (boolean isAvailable : lstisAvailable) {
 							if (id < 0 || name == null || name.equals("") || phone == null || phone.equals("")
 									|| address == null || address.equals("")) {
 							} else {
-								testInitShouldPassFor(id, name, phone, address, is_available);
+								testInitShouldPassFor(id, name, phone, address, isAvailable);
 							}
 						}
 					}
@@ -48,22 +48,22 @@ public class SupplierTest {
 		}
 	}
 	//helper
-	void testInitShouldFailFor(int id, String name, String phone, String address, Boolean is_available) {
+	void testInitShouldFailFor(int id, String name, String phone, String address, Boolean isAvailable) {
 		try {
-			Supplier s = new Supplier(id, name, phone, address, is_available);
+			Supplier s = new Supplier(id, name, phone, address, isAvailable);
 			throw new AssertionError();
 		} catch (Exception e) {
 			
 		}
 	}
 	//helper
-	void testInitShouldPassFor(int id, String name, String phone, String address, Boolean is_available) {
-		Supplier s = new Supplier(id, name, phone, address, is_available);
+	void testInitShouldPassFor(int id, String name, String phone, String address, Boolean isAvailable) {
+		Supplier s = new Supplier(id, name, phone, address, isAvailable);
 		assertEquals(id, s.getId());
 		assertEquals(name, s.getName());
 		assertEquals(phone, s.getPhone());
 		assertEquals(address, s.getAddress());
-		assertEquals(is_available, s.getIs_available());
+		assertEquals(isAvailable, s.isAvailable());
 	}
 	
 	
@@ -130,17 +130,17 @@ public class SupplierTest {
 	@Test
 	public void testSetAvailableShouldPass() {
 		Supplier s = new Supplier(2, "quantrongtu", "02345215587", "KTX", true);
-		s.setIs_available(true);
-		assertEquals(true, s.getIs_available());
-		s.setIs_available(false);
-		assertEquals(false, s.getIs_available());
+		s.setIsAvailable(true);
+		assertEquals(true, s.isAvailable());
+		s.setIsAvailable(false);
+		assertEquals(false, s.isAvailable());
 	}
 
 	@Test
 	public void testSetAvailableShouldFail() {
 		try {
 			Supplier s = new Supplier(2, "quantrongtu", "02345215587", "KTX", true);
-			s.setIs_available(null);
+			s.setIsAvailable(null);
 			throw new AssertionError();
 		} catch (Exception e) {
 

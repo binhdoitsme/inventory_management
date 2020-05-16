@@ -23,6 +23,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
     private static final String FIND_BY_ID = Configuration.get("db.sql.supplier.findById");
     private static final String FIND_ALL = Configuration.get("db.sql.supplier.findAll");
     private static final String FIND_ALL_BY_ID = Configuration.get("db.sql.supplier.findAllById");
+    private static final String FIND_ALL_ACTIVE = Configuration.get("db.sql.supplier.findAllActiveSuppliers");
     private static final String SAVE_ONE = Configuration.get("db.sql.supplier.saveOne");
     private static final String INVALIDATE = Configuration.get("db.sql.supplier.invalidate");
 
@@ -203,7 +204,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
                 .replace("$name", "\'" + item.getName() + "\'")
                 .replace("$phone", "\'" + item.getPhone() + "\'")
                 .replace("$address", "\'" + item.getAddress() + "\'")
-                .replace("$is_available", "\'" + item.getIs_available() + "\'")
+                .replace("$isAvailable", "\'" + item.isAvailable() + "\'")
                 .replace("$id", "\'" + item.getId() + "\'");
         try {
             ResultSet rs = getConnector().connect().executeSelect(query);
@@ -233,6 +234,22 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             ResultSet rs = getConnector().connect().executeSelect(query);
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Supplier> findAllActiveSuppliers() {
+        List<Supplier> supplierList = new ArrayList<>();
+        String query = FIND_ALL_ACTIVE;
+        try {
+            ResultSet rs = getConnector().connect().executeSelect(query);
+            while (rs.next()) {
+                supplierList.add(supplierMapper.forwardConvert(rs));
+            }
+            return supplierList;
+        } catch (SQLException | InvalidQueryTypeException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

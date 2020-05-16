@@ -1,28 +1,27 @@
 package com.hanu.ims.view;
 
+import com.hanu.ims.controller.BatchController;
 import com.hanu.ims.model.domain.Batch;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneOffset;
 
 public class BatchDetailsView extends Stage {
 
     private static final String FXML_FILE_NAME = "batch_details_view.fxml";
     private static final String TITLE = "Batch Details";
 
+    private static BatchController controller;
+
     private final Batch initialState;
-    private ObservableValue<Batch> currentState;
+    private Batch currentState;
 
     // FXML
     @FXML
@@ -31,6 +30,8 @@ public class BatchDetailsView extends Stage {
     private TextField skuInput;
     @FXML
     private TextField productNameInput;
+    @FXML
+    private TextField categoryInput;
     @FXML
     private TextField supplierInput;
     @FXML
@@ -49,21 +50,40 @@ public class BatchDetailsView extends Stage {
     private Button saveButton;
 
     public BatchDetailsView(Batch batch) throws IOException {
+        controller = new BatchController();
         initialState = batch;
-        currentState = new SimpleObjectProperty<>(
-                new Batch(
-                        batch.getId(), batch.getSku(),
-                        batch.getImportQuantity(), batch.getQuantity(), batch.getImportDate(),
-                        batch.getImportPrice(), batch.getRetailPrice(), batch.getProductName()
-                )
-        );
-        currentState.getValue().setStatus(batch.getStatus());
+        initializeCurrentState(batch);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_FILE_NAME));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
         setScene(scene);
         setTitle(TITLE);
         disableInputIfExpired();
+        addEventListeners();
+    }
+
+    private void initializeCurrentState(Batch batch) {
+        currentState = new Batch(
+                batch.getId(), batch.getSku(),
+                batch.getImportQuantity(), batch.getQuantity(), batch.getImportDate(),
+                batch.getImportPrice(), batch.getRetailPrice(), batch.getProductName()
+        );
+        currentState.setStatus(batch.getStatus());
+    }
+
+    private void addEventListeners() {
+        quantityInput.setOnKeyTyped(event -> {
+            currentState.setQuantity(Integer.parseInt(quantityInput.getText()));
+            disableButtonsIfNoChangeDetected();
+        });
+        importPriceInput.setOnKeyTyped(event -> {
+            currentState.setImportPrice(Long.parseLong(importPriceInput.getText()));
+            disableButtonsIfNoChangeDetected();
+        });
+        retailPriceInput.setOnKeyTyped(event -> {
+            currentState.setImportPrice(Long.parseLong(retailPriceInput.getText()));
+            disableButtonsIfNoChangeDetected();
+        });
     }
 
     private void setFieldValues(Batch newValue) {
@@ -74,6 +94,8 @@ public class BatchDetailsView extends Stage {
         productNameInput.setText(newValue.getProductName());
         productNameInput.setEditable(false);
         importDateInput.setText(newValue.getImportDate().toString().substring(0, 10));
+//        supplierInput.setText(newValue.getSupplier().getName());
+//        categoryInput.setText(newValue.getSupplier().getCategory().getName());
         status.setText(newValue.getStatus().toString());
         if (newValue.getQuantity() < newValue.getImportQuantity()) {
             quantityInput.setEditable(false);
@@ -87,7 +109,7 @@ public class BatchDetailsView extends Stage {
     }
 
     private void disableInputIfExpired() {
-        if (currentState.getValue().getStatus() == Batch.Status.EXPIRED) {
+        if (currentState.getStatus() == Batch.Status.EXPIRED) {
             quantityInput.setDisable(true);
             importPriceInput.setDisable(true);
             retailPriceInput.setDisable(true);
@@ -100,7 +122,7 @@ public class BatchDetailsView extends Stage {
     }
 
     private void disableButtonsIfNoChangeDetected() {
-        if (currentState.getValue().equals(initialState)) {
+        if (currentState.equals(initialState)) {
             revertButton.setDisable(true);
             saveButton.setDisable(true);
         } else {
@@ -111,12 +133,41 @@ public class BatchDetailsView extends Stage {
 
     @FXML
     public void initialize() {
-        setFieldValues(currentState.getValue());
+        setFieldValues(currentState);
         disableButtonsIfNoChangeDetected();
-        currentState.addListener((observable, oldValue, newValue) -> {
-            setFieldValues(newValue);
-            disableButtonsIfNoChangeDetected();
-            disableInputIfExpired();
-        });
+    }
+
+    private void showAlertDialog(String message, String title, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.show();
+    }
+
+    private Dialog<?> showLoadingDialog() {
+        Dialog<String> loadingDialog = new Dialog<>();
+        loadingDialog.initModality(Modality.WINDOW_MODAL);
+        loadingDialog.initOwner(saveButton.getScene().getWindow());
+        loadingDialog.setHeaderText("Please wait...");
+        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        loadingDialog.show();
+        return loadingDialog;
+    }
+
+    public void onSave() {
+        System.out.println("Saved!");
+        var loadingDialog = showLoadingDialog();
+        try {
+            Batch batch = controller.updateBatch(currentState);
+            loadingDialog.close();
+            BatchListView.updateDataSource(true);
+            initializeCurrentState(batch);
+            showAlertDialog("Operation completed!", "Successful!", Alert.AlertType.INFORMATION);
+            close();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            loadingDialog.close();
+            showAlertDialog(e.getMessage(), "An error occurred!", Alert.AlertType.ERROR);
+        }
     }
 }
