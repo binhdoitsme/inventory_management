@@ -8,10 +8,10 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane fx:controller="com.hanu.ims.view.LoginViewEventBinding" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TextField fx:id="usernameField" layoutX="147.0" layoutY="150.0" prefHeight="25.0" prefWidth="306.0" onKeyPressed="#onKeyPress" onKeyTyped="#onKeyTyped" />
-        <PasswordField fx:id="passwordField" layoutX="148.0" layoutY="215.0" prefHeight="25.0" prefWidth="306.0" onKeyPressed="#onKeyPress" onKeyTyped="#onKeyTyped" />
+        <TextField fx:id="usernameField" layoutX="147.0" layoutY="150.0" prefHeight="25.0" prefWidth="306.0" onKeyPressed="#onKeyPress" />
+        <PasswordField fx:id="passwordField" layoutX="148.0" layoutY="215.0" prefHeight="25.0" prefWidth="306.0" onKeyPressed="#onKeyPress" />
         <Button fx:id="loginButton" layoutX="239.0" layoutY="291.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="122.0" text="Login" onAction="#onLoginClicked">
             <font>
                 <Font size="18.0" />

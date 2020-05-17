@@ -10,7 +10,7 @@ public class AuthenticationProvider {
     private AuthenticationProvider() {}
 
     public void setCurrentAccount(Account account) {
-        this.currentAccount = currentAccount;
+        this.currentAccount = account;
     }
 
     public Account getCurrentAccount() {

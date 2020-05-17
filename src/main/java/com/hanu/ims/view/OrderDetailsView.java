@@ -215,7 +215,7 @@ public class OrderDetailsView extends Stage {
             showAlertDialog(e.getMessage());
         }
         loadingDialog.close();
-        OrderListViewEventBinding.updateDataSource(true);
+        OrderListView.updateDataSource(true);
     }
 
     /**
