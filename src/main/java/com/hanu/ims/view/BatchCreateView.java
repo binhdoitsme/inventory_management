@@ -75,8 +75,6 @@ public class BatchCreateView extends Stage {
         addInputEventHandlers();
         prepareTextFormattedFields();
         disableButtonsIfNotCompletedForm();
-//        skuAutoComplete.setPrefWidth(container.getPrefWidth());
-//        supplierAutoComplete.setPrefWidth(container.getPrefWidth());
     }
 
     private void addInputEventHandlers() {
@@ -107,8 +105,16 @@ public class BatchCreateView extends Stage {
         if (suppliers == null) {
             suppliers = FXCollections.observableList(new ArrayList<>());
         }
-//        skuAutoComplete = TextFields.bindAutoCompletion(skuInput, products);
-//        supplierAutoComplete = TextFields.bindAutoCompletion(supplierInput, suppliers);
+        skuInput.setOnKeyTyped(event -> {
+            selectedProduct = null;
+        });
+        supplierInput.setOnKeyTyped(event -> {
+            selectedSupplier = null;
+        });
+        skuAutoComplete = TextFields.bindAutoCompletion(skuInput, products);
+        supplierAutoComplete = TextFields.bindAutoCompletion(supplierInput, suppliers);
+        skuAutoComplete.setPrefWidth(Double.MAX_VALUE);
+        supplierAutoComplete.setPrefWidth(Double.MAX_VALUE);
     }
 
     private void prepareTextFormattedFields() {
@@ -169,13 +175,15 @@ public class BatchCreateView extends Stage {
         supplierInput.setText("");
         importPriceInput.setText("");
         retailPriceInput.setText("");
+
         disableButtonsIfNotCompletedForm();
     }
 
     private void showAlertDialog(String message, String title, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
-        alert.setHeaderText(message);
+        alert.setHeaderText("");
+        alert.setContentText(message);
         alert.show();
     }
 
@@ -189,9 +197,21 @@ public class BatchCreateView extends Stage {
         return loadingDialog;
     }
 
-    public void onSave() {
+    public void onSave() throws IOException {
         if (selectedProduct == null) {
-            showAlertDialog("The entered SKU is not present in database!", "An error occurred!", Alert.AlertType.ERROR);
+            // show create product dialog
+            var createProductDialog = new ProductCreateView(skuInput.getText());
+            createProductDialog.initModality(Modality.WINDOW_MODAL);
+            createProductDialog.initOwner(getScene().getWindow());
+            createProductDialog.setOnCloseRequest(event -> {
+                updateProductSuggestions();
+            });
+            createProductDialog.show();
+            return;
+        }
+        if (selectedSupplier == null) {
+            showAlertDialog("The entered supplier is not present in database!",
+                    "An error occurred!", Alert.AlertType.WARNING);
             return;
         }
         Dialog<?> loadingDialog = showLoadingDialog();

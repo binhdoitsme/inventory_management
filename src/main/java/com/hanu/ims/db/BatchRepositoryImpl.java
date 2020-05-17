@@ -124,7 +124,14 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public boolean delete(Batch item) {
-        return false;
+        String sql = "DELETE FROM batch WHERE id = '$id'".replace("$id", String.valueOf(item.getId()));
+        try {
+            int rowsAffected = getConnector().connect().executeDelete(sql);
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
     }
 
     @Override
@@ -139,7 +146,14 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
 
     @Override
     public boolean deleteById(Integer integer) {
-        return false;
+        String sql = "DELETE FROM batch WHERE id = '$id'".replace("$id", String.valueOf(integer));
+        try {
+            int rowsAffected = getConnector().connect().executeDelete(sql);
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
     }
 
     @Override
@@ -182,6 +196,7 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
     public Batch save(Batch item) {
         String template = SAVE;
         String sql = template.replace("$qty", String.valueOf(item.getQuantity()))
+                .replace("$imp_qty", String.valueOf(item.getImportQuantity()))
                 .replace("$importPrice", String.valueOf(item.getImportPrice()))
                 .replace("$msrp", String.valueOf(item.getRetailPrice()))
                 .replace("$id", String.valueOf(item.getId()));

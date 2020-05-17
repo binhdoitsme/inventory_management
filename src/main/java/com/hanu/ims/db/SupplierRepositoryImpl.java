@@ -244,7 +244,9 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
         try {
             ResultSet rs = getConnector().connect().executeSelect(query);
             while (rs.next()) {
-                supplierList.add(supplierMapper.forwardConvert(rs));
+                var supplier = supplierMapper.forwardConvert(rs);
+                if (supplier == null) continue;
+                supplierList.add(supplier);
             }
             return supplierList;
         } catch (SQLException | InvalidQueryTypeException e) {

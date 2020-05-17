@@ -44,6 +44,22 @@ public class Product {
         return batches;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setBatches(List<Batch> batches) {
+        this.batches = batches;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

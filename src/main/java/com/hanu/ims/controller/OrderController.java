@@ -54,7 +54,7 @@ public class OrderController {
 
         List<Batch> pendingBatchesWithSameSku =
                 pendingBatches.stream()
-                    .filter(b -> b.getSku().equals(sku))
+                    .filter(b -> b.getSku().equals(sku) && b.getStatus() != Batch.Status.EXPIRED)
                     .collect(Collectors.toList());
         if (!pendingBatchesWithSameSku.isEmpty() || batchesBySku.size() != pendingBatchesWithSameSku.size()) {
             for (Batch batch : pendingBatchesWithSameSku) {

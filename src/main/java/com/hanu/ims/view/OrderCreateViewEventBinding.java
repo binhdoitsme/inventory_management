@@ -122,6 +122,7 @@ public class OrderCreateViewEventBinding {
             orderLines.add(skuQuantities.get(sku));
         }
         orderLineData.setAll(orderLines);
+        orderData.getValue().setOrderLines(orderLines);
     }
 
     private void addOrderLinesWithProductAndQuantity(Product productToAdd, int quantity) {
@@ -139,7 +140,7 @@ public class OrderCreateViewEventBinding {
             orderLinesToAdd.add(orderLine);
         });
         orderLineData.addAll(orderLinesToAdd);
-        orderData.getValue().addOrderLines(orderLinesToAdd);
+        orderData.getValue().addOrderLines(orderLinesToAdd); // defect here
         ((SimpleObjectProperty<Order>)orderData).set(orderData.getValue());
 
         reduceOrderLineData();
@@ -156,6 +157,7 @@ public class OrderCreateViewEventBinding {
             onSuccessfulAdd();
         } catch (RuntimeException e) {
             loadingDialog.close();
+            e.printStackTrace();
             showAlertDialog(e.getMessage());
         }
     }

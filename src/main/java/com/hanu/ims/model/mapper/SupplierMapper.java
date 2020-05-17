@@ -17,7 +17,7 @@ public class SupplierMapper extends Mapper<Supplier> {
                     rs.getString("name"),
                     rs.getString("phone"),
                     rs.getString("address"),
-                    rs.getBoolean("isAvailable"));
+                    rs.getBoolean("is_available"));
         } catch (SQLException e) {
             return null;
         }
