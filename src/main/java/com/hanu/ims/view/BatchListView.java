@@ -77,9 +77,9 @@ public class BatchListView extends Stage {
                 batchDeleteButton.setDisable(true);
             } else {
                 Batch item = batchTable.getSelectionModel().getSelectedItem();
-                System.out.println(item.getQuantity() < item.getImportQuantity() ||
-                        item.getStatus() == Batch.Status.EXPIRED ||
-                        item.getStatus() == Batch.Status.ORDERED);
+//                System.out.println(item.getQuantity() < item.getImportQuantity() ||
+//                        item.getStatus() == Batch.Status.EXPIRED ||
+//                        item.getStatus() == Batch.Status.ORDERED);
                 if (item.getQuantity() < item.getImportQuantity() ||
                         item.getStatus() == Batch.Status.EXPIRED ||
                         item.getStatus() == Batch.Status.ORDERED) {
@@ -178,7 +178,7 @@ public class BatchListView extends Stage {
     private Dialog<?> showLoadingDialog() {
         Dialog<String> loadingDialog = new Dialog<>();
         loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(batchTable.getScene().getWindow());
+        loadingDialog.initOwner(getScene().getWindow());
         loadingDialog.setHeaderText("Please wait...");
         loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
         loadingDialog.show();

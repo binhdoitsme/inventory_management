@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductController {
     private ProductRepository productRepository;
@@ -23,6 +24,10 @@ public class ProductController {
         // get all possible categories for combo box
         ObservableList<Category> result = FXCollections.observableList(new ArrayList<>());
         Thread dbThread = new Thread(() -> {
+            List<Category> categories = batchRepository.getCategorySuggestions();
+            if (categories == null || categories.isEmpty()) {
+                return;
+            }
             result.setAll(batchRepository.getCategorySuggestions());
         });
         dbThread.start();

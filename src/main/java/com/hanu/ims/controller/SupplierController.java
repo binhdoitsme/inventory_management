@@ -4,7 +4,10 @@ import com.hanu.ims.db.SupplierRepositoryImpl;
 import com.hanu.ims.model.domain.Supplier;
 import com.hanu.ims.model.repository.SupplierRepository;
 import com.hanu.ims.util.servicelocator.ServiceContainer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierController {
@@ -14,44 +17,50 @@ public class SupplierController {
         repository = ServiceContainer.locateDependency(SupplierRepository.class);
     }
 
-    public boolean createSupplier(Supplier supplier) throws Exception {
-        if (isvalidated(supplier)) {
+    public boolean createSupplier(Supplier supplier) {
+        if (isValidated(supplier)) {
             repository.add(supplier);
             return true;
         }
         return false;
     }
 
-    public boolean invalidateSupplier(Supplier supplier) throws Exception {
-        if (isvalidated(supplier)) {
-            repository.invalidate(getSupplierDetails(supplier.getId()).getId());
+    public boolean invalidateSupplier(Supplier supplier) {
+        if (isValidated(supplier)) {
+            supplier.setIsAvailable(false);
+            repository.save(supplier);
             return true;
         }
         return false;
     }
 
-    public Supplier getSupplierDetails(int id) throws Exception {
+    public Supplier getSupplierDetails(int id) {
         return repository.findById(id);
     }
 
-    public void updateSupplier(Supplier supplier) throws Exception {
+    public void updateSupplier(Supplier supplier) {
         repository.save(supplier);
     }
 
-    public List<Supplier> getSupplierList()  throws Exception {
-        return repository.findAll();
+    public ObservableList<Supplier> getSupplierList()  {
+        ObservableList<Supplier> suppliers = FXCollections.observableList(new ArrayList<>());
+        Thread dbThread = new Thread(() -> {
+            suppliers.setAll(repository.findAll());
+        });
+        dbThread.start();
+        return suppliers;
     }
     
     //helper
 
-    public boolean isIn(Supplier supplier) throws Exception {
+    public boolean isIn(Supplier supplier) {
         if (getSupplierDetails(supplier.getId()) != null) {
             return true;
         }
         return false;
     }
 
-    public boolean isvalidated(Supplier supplier) throws Exception {
+    public boolean isValidated(Supplier supplier) {
         if (supplier != null || !isIn(supplier)) {
             return true;
         } else {

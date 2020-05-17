@@ -1,6 +1,7 @@
 package com.hanu.ims.db;
 
 import com.hanu.ims.base.RepositoryImpl;
+import com.hanu.ims.exception.DbException;
 import com.hanu.ims.exception.InvalidQueryTypeException;
 import com.hanu.ims.model.domain.Supplier;
 import com.hanu.ims.model.mapper.SupplierMapper;
@@ -47,7 +48,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             }
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return false;
+            throw new DbException(e);
         }
     }
 
@@ -66,7 +67,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             return false;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return false;
+            throw new DbException(e);
         }
     }
 
@@ -86,7 +87,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             return false;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return false;
+            throw new DbException(e);
         }
     }
 
@@ -105,7 +106,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             return false;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return false;
+            throw new DbException(e);
         }
     }
 
@@ -119,7 +120,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             return false;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return false;
+            throw new DbException(e);
         }
     }
 
@@ -134,7 +135,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             return false;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return false;
+            throw new DbException(e);
         }
     }
 
@@ -156,7 +157,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             return supplierMapper.forwardConvert(rs);
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return null;
+            throw new DbException(e);
         }
     }
 
@@ -173,7 +174,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             return lstSupplier;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return null;
+            throw new DbException(e);
         }
     }
 
@@ -189,13 +190,8 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             return lstSupplier;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return null;
+            throw new DbException(e);
         }
-    }
-
-    @Override
-    public Supplier findById(int id) {
-        return null;
     }
 
     @Override
@@ -204,14 +200,17 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
                 .replace("$name", "\'" + item.getName() + "\'")
                 .replace("$phone", "\'" + item.getPhone() + "\'")
                 .replace("$address", "\'" + item.getAddress() + "\'")
-                .replace("$isAvailable", "\'" + item.isAvailable() + "\'")
+                .replace("$is_available", "\'" + (item.isAvailable() ? 1 : 0) + "\'")
                 .replace("$id", "\'" + item.getId() + "\'");
         try {
-            ResultSet rs = getConnector().connect().executeSelect(query);
+            var rowsAffected = getConnector().connect().executeUpdate(query);
+            if (rowsAffected > 0) {
+                return findById(item.getId());
+            }
             return item;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return null;
+            throw new DbException(e);
         }
     }
 
@@ -251,7 +250,7 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
             return supplierList;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
-            return null;
+            throw new DbException(e);
         }
     }
 }

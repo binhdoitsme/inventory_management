@@ -47,7 +47,12 @@ public class InventoryManagerDashboardView extends DashboardView {
         dialog.close();
     }
 
-    public void onManageSuppliersClicked(ActionEvent actionEvent) {
-
+    public void onManageSuppliersClicked(ActionEvent actionEvent) throws IOException {
+        var stage = new SupplierListView();
+        var dialog = showLoadingDialog();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(this);
+        stage.show();
+        dialog.close();
     }
 }
