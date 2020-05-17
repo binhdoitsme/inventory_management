@@ -28,7 +28,7 @@ public class ProductController {
             if (categories == null || categories.isEmpty()) {
                 return;
             }
-            result.setAll(batchRepository.getCategorySuggestions());
+            result.setAll(categories);
         });
         dbThread.start();
         return result;

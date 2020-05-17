@@ -1,5 +1,7 @@
 package com.hanu.ims.model.domain;
 
+import java.util.Objects;
+
 public class Supplier {
 	private int id;
 	private String name;
@@ -149,5 +151,18 @@ public class Supplier {
 		sb.append("[").append(id).append("] ")
 				.append(name.toUpperCase());
 		return sb.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Supplier supplier = (Supplier) o;
+		return id == supplier.id &&
+				Objects.equals(name, supplier.name) &&
+				Objects.equals(phone, supplier.phone) &&
+				Objects.equals(address, supplier.address) &&
+				Objects.equals(isAvailable, supplier.isAvailable) &&
+				Objects.equals(category, supplier.category);
 	}
 }

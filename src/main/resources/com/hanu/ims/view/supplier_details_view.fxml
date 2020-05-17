@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.hanu.ims.view.SupplierDetailsView"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="325.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Button fx:id="revertButton" layoutX="178.0" layoutY="279.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Revert" />
+        <Button fx:id="saveButton" layoutX="274.0" layoutY="279.0" mnemonicParsing="false" onAction="#onSave" prefHeight="31.0" prefWidth="82.0" text="Save" />
+        <Label layoutX="109.0" layoutY="25.0" text="Add new supplier">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <VBox layoutX="17.0" layoutY="65.0" prefHeight="200.0" prefWidth="340.0">
+            <children>
+                <Label text="Supplier name" />
+                <TextField fx:id="supplierNameInput" prefHeight="26.0" prefWidth="172.0" />
+                <Label text="Phone number" />
+                <TextField fx:id="supplierPhoneInput" />
+                <Label text="Address" />
+                <TextArea fx:id="supplierAddressInput" prefHeight="200.0" prefWidth="200.0" />
+                <Label text="Category" />
+                <ComboBox fx:id="categoryInput" maxWidth="1.7976931348623157E308" />
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>

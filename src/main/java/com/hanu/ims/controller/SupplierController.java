@@ -38,8 +38,8 @@ public class SupplierController {
         return repository.findById(id);
     }
 
-    public void updateSupplier(Supplier supplier) {
-        repository.save(supplier);
+    public Supplier updateSupplier(Supplier supplier) {
+        return repository.save(supplier);
     }
 
     public ObservableList<Supplier> getSupplierList()  {

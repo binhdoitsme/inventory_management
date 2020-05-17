@@ -204,8 +204,4 @@ public class BatchListView extends Stage {
             });
         }
     }
-
-    static void updateCategoryData() {
-
-    }
 }

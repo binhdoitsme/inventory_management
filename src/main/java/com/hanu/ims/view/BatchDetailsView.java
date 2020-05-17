@@ -2,8 +2,6 @@ package com.hanu.ims.view;
 
 import com.hanu.ims.controller.BatchController;
 import com.hanu.ims.model.domain.Batch;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

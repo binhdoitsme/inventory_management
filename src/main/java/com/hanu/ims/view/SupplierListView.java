@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -91,12 +92,34 @@ public class SupplierListView extends Stage {
                 new SimpleStringProperty(param.getValue().getAddress()));
         supplierColStatus.setCellValueFactory(param ->
                 new SimpleStringProperty(param.getValue().isAvailable() ? "AVAILABLE" : "UNAVAILABLE"));
+        supplierTable.setRowFactory(tv -> {
+            TableRow<Supplier> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY
+                        && event.getClickCount() == 2) {
+                    Supplier clickedRow = row.getItem();
+                    createSupplierDetailsView(clickedRow);
+                }
+            });
+            return row;
+        });
+    }
+
+    public void createSupplierDetailsView(Supplier supplier) {
+        try {
+            Stage supplierDetailsWindow = new SupplierDetailsView(supplier);
+            supplierDetailsWindow.initModality(Modality.WINDOW_MODAL);
+            supplierDetailsWindow.initOwner(getScene().getWindow());
+            supplierDetailsWindow.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void onDeleteButtonClicked() {
         Dialog<ButtonType> confirmationDialog = new Dialog<>();
         confirmationDialog.setTitle("Confirm delete");
-        confirmationDialog.setHeaderText("Are you sure want to delete the selected batch?");
+        confirmationDialog.setHeaderText("Are you sure want to delete the selected supplier?");
         confirmationDialog.initOwner(getScene().getWindow());
         confirmationDialog.initModality(Modality.WINDOW_MODAL);
         confirmationDialog.getDialogPane().getButtonTypes().add(ButtonType.YES);
