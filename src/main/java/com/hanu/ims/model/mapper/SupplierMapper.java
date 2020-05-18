@@ -1,6 +1,7 @@
 package com.hanu.ims.model.mapper;
 
 import com.hanu.ims.base.Mapper;
+import com.hanu.ims.model.domain.Category;
 import com.hanu.ims.model.domain.Supplier;
 
 import java.sql.ResultSet;
@@ -13,21 +14,22 @@ public class SupplierMapper extends Mapper<Supplier> {
 
     private static Supplier fromResultSet(ResultSet rs) {
         try {
-            return new Supplier(rs.getInt("id"),
+            Supplier s = new Supplier(rs.getInt("id"),
                     rs.getString("name"),
                     rs.getString("phone"),
                     rs.getString("address"),
                     rs.getBoolean("is_available"));
+            return s;
         } catch (SQLException e) {
             return null;
         }
     }
 
     public String convert(Supplier supplier) {
-        return new String("($name,$phone, $address, $is_available)")
+        return new String("($name,$phone, $address, $isAvailable)")
                 .replace("$name", "\'" + supplier.getName() + "\'")
                 .replace("$phone", "\'" + supplier.getPhone() + "\'")
                 .replace("$address", "\'" + supplier.getAddress() + "\'")
-                .replace("$is_available", ""+ supplier.getIs_available());
+                .replace("$isAvailable", ""+ supplier.isAvailable());
     }
 }

@@ -21,15 +21,18 @@ public class OrderListMapper extends Mapper<List<Order>> {
         Map<Integer, List<OrderLine>> orderLineMap = new HashMap<>();
         List<Order> orderList = new ArrayList<>();
         try {
+            int i = 0;
             while (rs.next()) {
                 // work with order
                 int orderId = rs.getInt("order_id");
-                if (orderList.stream().anyMatch(order -> order.getId() == orderId)) continue;
-                int cashierId = rs.getInt("cashier_id");
-                String cashierName = rs.getString("cashier_name");
-                long timestamp = rs.getTimestamp("timestamp").toInstant().getEpochSecond();
-                Order order = new Order(orderId, cashierId, cashierName, new ArrayList<>(), timestamp);
-                orderList.add(order);
+                if (orderList.stream().anyMatch(order -> order.getId() == orderId)) {}
+                else {
+                    int cashierId = rs.getInt("cashier_id");
+                    String cashierName = rs.getString("cashier_name");
+                    long timestamp = rs.getTimestamp("timestamp").toInstant().getEpochSecond();
+                    Order order = new Order(orderId, cashierId, cashierName, new ArrayList<>(), timestamp);
+                    orderList.add(order);
+                }
 
                 // work with order line
                 orderLineMap.putIfAbsent(orderId, new ArrayList<>());

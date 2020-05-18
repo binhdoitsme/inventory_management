@@ -127,7 +127,7 @@ public class MockSupplierRepositoryImpl extends SupplierRepositoryImpl {
 	public void invalidate(int id) {
 		Supplier s = findById(id);
 		if(s != null) {
-			s.setIs_available(false);
+			s.setIsAvailable(false);
 		}
 	}
 }

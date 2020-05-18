@@ -44,6 +44,22 @@ public class Product {
         return batches;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setBatches(List<Batch> batches) {
+        this.batches = batches;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,13 +74,9 @@ public class Product {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Product{");
-        sb.append("sku='").append(sku).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", category=").append(category);
-        sb.append(", batches=").append(batches);
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder("");
+        sb.append("[").append(sku.toUpperCase()).append("] ");
+        sb.append(name.toUpperCase());
         return sb.toString();
     }
 }

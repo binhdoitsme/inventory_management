@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="342.0" prefWidth="537.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label layoutX="34.0" layoutY="22.0" text="Create a batch">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Label>
+        <Separator layoutX="34.0" layoutY="44.0" prefHeight="0.0" prefWidth="96.0" />
+        <Button fx:id="resetButton" layoutX="329.0" layoutY="282.0" mnemonicParsing="false" onAction="#onReset" prefHeight="31.0" prefWidth="82.0" text="Reset" />
+        <Button fx:id="saveButton" layoutX="423.0" layoutY="282.0" mnemonicParsing="false" onAction="#onSave" prefHeight="31.0" prefWidth="82.0" text="Save" />
+        <VBox fx:id="container" layoutX="35.0" layoutY="51.0" prefHeight="195.0" prefWidth="471.0">
+            <children>
+                <!--                <Label text="Category"/>-->
+                <!--                <ComboBox prefWidth="200.0" fx:id="categoryInput" onAction="#onCategoryChanged"/>-->
+                <Label text="SKU" />
+                <TextField fx:id="skuInput" />
+                <Label text="Supplier" />
+                <TextField fx:id="supplierInput" />
+                <!--                <Label text="Product Name"/>-->
+                <!--                <TextField fx:id="productNameInput"/>-->
+                <Label text="Import quantity" />
+                <Spinner fx:id="quantityInput" editable="true" min="1" max="500" />
+                <Label text="Import price" />
+                <TextField fx:id="importPriceInput" />
+                <Label text="Retail Price" />
+                <TextField fx:id="retailPriceInput" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

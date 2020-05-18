@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <TableView fx:id="supplierTable" layoutX="13.0" layoutY="77.0" prefHeight="496.0" prefWidth="739.0">
+            <columns>
+                <TableColumn fx:id="supplierColId" prefWidth="27.199996948242188" text="#" />
+                <TableColumn fx:id="supplierColName" prefWidth="212.0" text="Name" />
+                <TableColumn fx:id="supplierColPhone" minWidth="0.0" prefWidth="96.79998779296875" text="Phone number" />
+                <TableColumn fx:id="supplierColAddress" prefWidth="323.8000183105469" text="Address" />
+                <TableColumn fx:id="supplierColStatus" minWidth="0.0" prefWidth="84.0" text="Status" />
+            </columns>
+        </TableView>
+        <Button fx:id="supplierDeleteButton" layoutX="652.0" layoutY="37.0" mnemonicParsing="false" onAction="#onDeleteButtonClicked" prefHeight="31.0" prefWidth="98.0" text="Disable" />
+        <Button fx:id="supplierAddButton" layoutX="543.0" layoutY="37.0" mnemonicParsing="false" onAction="#onAddButtonClicked" prefHeight="31.0" prefWidth="98.0" text="Add..." />
+        <Label layoutX="21.0" layoutY="16.0" text="Manage suppliers">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Separator layoutX="21.0" layoutY="47.0" prefWidth="200.0" />
+    </children>
+</AnchorPane>

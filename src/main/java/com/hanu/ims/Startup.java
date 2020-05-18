@@ -1,13 +1,7 @@
 package com.hanu.ims;
 
-import com.hanu.ims.db.AccountRepositoryImpl;
-import com.hanu.ims.db.BatchRepositoryImpl;
-import com.hanu.ims.db.OrderRepositoryImpl;
-import com.hanu.ims.model.repository.AccountRepository;
-import com.hanu.ims.model.repository.BatchRepository;
-import com.hanu.ims.model.repository.OrderRepository;
-import com.hanu.ims.db.SupplierRepositoryImpl;
-import com.hanu.ims.model.repository.SupplierRepository;
+import com.hanu.ims.db.*;
+import com.hanu.ims.model.repository.*;
 import com.hanu.ims.util.configuration.Configuration;
 import com.hanu.ims.util.db.DbConnector;
 import com.hanu.ims.util.db.DbConnectorImpl;
@@ -33,6 +27,7 @@ public class Startup {
         container.addDependency(OrderRepository.class, new OrderRepositoryImpl());
         container.addDependency(BatchRepository.class, new BatchRepositoryImpl());
         container.addDependency(SupplierRepository.class, new SupplierRepositoryImpl());
+        container.addDependency(ProductRepository.class, new ProductRepositoryImpl());
         return this;
     }
 

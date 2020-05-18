@@ -22,10 +22,16 @@ import java.util.stream.Collectors;
 public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
         implements OrderRepository {
 
+    // constants
     private static final String FIND_BY_ID = Configuration.get("db.sql.order.findById");
     private static final String FIND_ALL = Configuration.get("db.sql.order.findAll");
     private static final String FIND_ALL_PRODUCTS = Configuration.get("db.sql.product.findAll");
-
+    private static final String ADD_ORDER_LINES = Configuration.get("db.sql.order.addOrderLines");
+    private static final String REMOVE_ORDER_LINES = Configuration.get("db.sql.order.removeOrderLines");
+    private static final String ADD_ONE = Configuration.get("db.sql.order.addOne");
+    private static final String DELETE_ALL = Configuration.get("db.sql.order.deleteAll");
+    private static final String DELETE_BY_ID = Configuration.get("db.sql.order.deleteById");
+    // mappers
     private final OrderListMapper mapper;
     private final ProductWithoutBatchesMapper productMapper;
 
@@ -40,7 +46,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
             throw new NullPointerException("No order lines to add!");
         }
         // build sql
-        String sql = "INSERT INTO _order_line VALUES ";
+        String sql = ADD_ORDER_LINES;
         final String template = "('$quantity', '$batch_id', '$_order_id')";
         List<String> valueStrings = new ArrayList<>();
         orderLines.forEach(orderLine -> {
@@ -72,7 +78,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
                 .map(item -> String.valueOf(item.getBatchId()))
                 .collect(Collectors.toList());
         try {
-            String sql = "DELETE FROM _order_line WHERE _order_id = $order_id AND batch_id IN ($id_list)";
+            String sql = REMOVE_ORDER_LINES;
             int rowsAffected = getConnector().connect()
                     .executeDelete(sql
                             .replace("$id_list", String.join(", ", idList))
@@ -90,8 +96,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
             Timestamp timestamp = Timestamp.from(Instant.ofEpochSecond(item.getTimestamp()));
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String timestampStr = df.format(timestamp);
-            String sql = "INSERT INTO _order VALUES ('0', '$timestamp', '$cashier_id')"
-                            .replace("$timestamp", timestampStr)
+            String sql = ADD_ONE.replace("$timestamp", timestampStr)
                             .replace("$cashier_id", String.valueOf(item.getCashierId()));
             return getConnector().connect().executeInsert(sql) > 0;
         } catch (Exception e) {
@@ -120,7 +125,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
                 .map(item -> String.valueOf(item.getId()))
                 .collect(Collectors.toList());
         try {
-            String sql = "DELETE FROM _order WHERE id IN ($id_list)";
+            String sql = DELETE_ALL;
             return getConnector().connect()
                     .executeDelete(sql.replace("$id_list", String.join(", ", idList))) > 0;
         } catch (Exception e) {
@@ -137,7 +142,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
     @Override
     public boolean deleteById(Integer integer) {
         try {
-            String sql = "DELETE FROM _order WHERE id = '$id'";
+            String sql = DELETE_BY_ID;
             return getConnector().connect()
                     .executeDelete(sql.replace("$id", String.valueOf(integer))) > 0;
         } catch (Exception e) {

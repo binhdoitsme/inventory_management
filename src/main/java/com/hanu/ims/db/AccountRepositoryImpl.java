@@ -1,6 +1,7 @@
 package com.hanu.ims.db;
 
 import com.hanu.ims.base.RepositoryImpl;
+import com.hanu.ims.exception.DbException;
 import com.hanu.ims.exception.InvalidQueryTypeException;
 import com.hanu.ims.model.domain.Account;
 import com.hanu.ims.model.mapper.AccountMapper;
@@ -79,7 +80,13 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
 
     @Override
     public boolean delete(Account item) {
-        return false;
+        String sql = "DELETE FROM account WHERE id='$id'".replace("$id", String.valueOf(item.getId()));
+        try {
+            return getConnector().connect().executeDelete(sql) > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
     }
 
     @Override

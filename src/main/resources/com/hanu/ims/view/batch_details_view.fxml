@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0"
+            prefWidth="537.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label layoutX="34.0" layoutY="15.0" text="Batch">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Label>
+        <Label layoutX="78.0" layoutY="15.0" text="#" fx:id="batchIdField">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Label>
+        <Separator layoutX="34.0" layoutY="37.0" prefHeight="0.0" prefWidth="353.0"/>
+        <Button layoutX="328.0" layoutY="463.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Revert"
+                fx:id="revertButton"/>
+        <Button layoutX="423.0" layoutY="463.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Save"
+                fx:id="saveButton" onAction="#onSave"/>
+        <VBox layoutX="35.0" layoutY="46.0" prefHeight="346.0" prefWidth="471.0">
+            <children>
+                <Label text="SKU" />
+                <TextField fx:id="skuInput" disable="true"/>
+                <Label text="Product Name" />
+                <TextField fx:id="productNameInput" disable="true"/>
+                <Label text="Category" />
+                <TextField prefWidth="200.0" fx:id="categoryInput" disable="true"/>
+                <Label text="Supplier" />
+                <TextField fx:id="supplierInput" disable="true" />
+                <Label text="Import date"/>
+                <TextField fx:id="importDateInput" editable="false" disable="true" />
+                <Label text="Quantity in stock"/>
+                <TextField fx:id="quantityInput"/>
+                <Label text="Import price"/>
+                <TextField fx:id="importPriceInput"/>
+                <Label text="Retail Price"/>
+                <TextField fx:id="retailPriceInput"/>
+                <Label text="Status"/>
+                <TextField prefWidth="150.0" fx:id="status" editable="false" disable="true"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
