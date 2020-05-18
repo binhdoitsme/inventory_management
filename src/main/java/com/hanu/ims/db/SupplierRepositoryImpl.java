@@ -40,7 +40,11 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
         String query = ADD_ONE
                 .replace("$value", supplierMapper.convert(supplier));
         try {
-            int effectedRow = getConnector().connect().executeInsert(query);
+            var connector = getConnector().connect();
+            int effectedRow = connector.executeInsert(query);
+//            int id = connector.executeScalar("SELECT MAX(id) FROM supplier");
+//            connector.executeInsert("INSERT INTO supplier_category VALUES ('$sid')"
+//                        .replace("$sid", String.valueOf(id)));
             if (effectedRow != 0) {
                 return true;
             } else {

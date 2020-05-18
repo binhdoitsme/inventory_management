@@ -24,7 +24,6 @@ public class SupplierDetailsView extends Stage {
 
     private static SupplierController controller;
     private static ProductController productController;
-    private static ObservableList<Category> categories;
 
     private final Supplier initialState;
     private Supplier currentState;
@@ -36,8 +35,6 @@ public class SupplierDetailsView extends Stage {
     @FXML
     private TextArea supplierAddressInput;
     @FXML
-    private ComboBox<Category> categoryInput;
-    @FXML
     private Button revertButton;
     @FXML
     private Button saveButton;
@@ -45,7 +42,6 @@ public class SupplierDetailsView extends Stage {
     public SupplierDetailsView(Supplier supplier) throws IOException {
         controller = new SupplierController();
         productController = new ProductController();
-        updateSuggestions(false);
         initialState = supplier;
         initializeCurrentState(supplier);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_FILE_NAME));
@@ -63,8 +59,7 @@ public class SupplierDetailsView extends Stage {
         supplierNameInput.setText(supplier.getName());
         supplierPhoneInput.setText(supplier.getPhone());
         supplierAddressInput.setText(supplier.getAddress());
-        categoryInput.setItems(categories);
-        categoryInput.getSelectionModel().select(categories.indexOf(supplier.getCategory()));
+
     }
 
     private void initializeCurrentState(Supplier supplier) {
@@ -72,7 +67,6 @@ public class SupplierDetailsView extends Stage {
                 supplier.getId(), supplier.getName(), supplier.getPhone(),
                 supplier.getAddress(), supplier.isAvailable()
         );
-        currentState.setCategory(supplier.getCategory());
     }
 
     private void addEventListeners() {
@@ -105,7 +99,6 @@ public class SupplierDetailsView extends Stage {
             supplierAddressInput.setDisable(true);
             supplierNameInput.setDisable(true);
             supplierPhoneInput.setDisable(true);
-            categoryInput.setDisable(true);
         }
     }
 
@@ -133,24 +126,13 @@ public class SupplierDetailsView extends Stage {
             Supplier batch = controller.updateSupplier(currentState);
             loadingDialog.close();
             BatchListView.updateDataSource(true);
-            initializeCurrentState(batch);
             showAlertDialog("Operation completed!", "Successful!", Alert.AlertType.INFORMATION);
+            SupplierListView.updateDataSource(true);
             close();
         } catch (RuntimeException e) {
             e.printStackTrace();
             loadingDialog.close();
             showAlertDialog(e.getMessage(), "An error occurred!", Alert.AlertType.ERROR);
-        }
-    }
-
-    static void updateSuggestions(boolean forceUpdate) {
-        boolean shouldUpdate = categories == null || forceUpdate;
-        if (shouldUpdate) {
-            categories = FXCollections.observableList(new ArrayList<>());
-            var updatedCategories = productController.getAllCategories();
-            updatedCategories.addListener((ListChangeListener<? super Category>) c -> {
-                categories.setAll(updatedCategories);
-            });
         }
     }
 }

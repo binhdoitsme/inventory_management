@@ -8,7 +8,6 @@ public class Supplier {
 	private String phone;
 	private String address;
 	private Boolean isAvailable;
-	private Category category;
 
 	public Supplier(int id, String name, String phone, String address, Boolean isAvailable) {
 		if (validated(id, name, phone, address, isAvailable)) {
@@ -77,14 +76,6 @@ public class Supplier {
 		if(validatedIsAvailable(isAvailable)) {
     		this.isAvailable = isAvailable;
     	}
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
 	}
 
 	private boolean validated(int id, String name, String phone, String address, Boolean isAvailable) {
@@ -162,7 +153,6 @@ public class Supplier {
 				Objects.equals(name, supplier.name) &&
 				Objects.equals(phone, supplier.phone) &&
 				Objects.equals(address, supplier.address) &&
-				Objects.equals(isAvailable, supplier.isAvailable) &&
-				Objects.equals(category, supplier.category);
+				Objects.equals(isAvailable, supplier.isAvailable);
 	}
 }

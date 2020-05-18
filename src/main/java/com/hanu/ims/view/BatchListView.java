@@ -31,7 +31,7 @@ public class BatchListView extends Stage {
 
     // static
     private static ObservableList<Batch> dataSource;
-    private static BatchController controller;
+    private static BatchController controller = new BatchController();
     private static ObservableList<Category> categories;
 
     // FXML

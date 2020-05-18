@@ -8,7 +8,7 @@
     <children>
         <Button fx:id="revertButton" layoutX="178.0" layoutY="279.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Revert" />
         <Button fx:id="saveButton" layoutX="274.0" layoutY="279.0" mnemonicParsing="false" onAction="#onSave" prefHeight="31.0" prefWidth="82.0" text="Save" />
-        <Label layoutX="109.0" layoutY="25.0" text="Add new supplier">
+        <Label layoutX="109.0" layoutY="25.0" text="Supplier details">
             <font>
                 <Font size="20.0" />
             </font>
@@ -21,8 +21,8 @@
                 <TextField fx:id="supplierPhoneInput" />
                 <Label text="Address" />
                 <TextArea fx:id="supplierAddressInput" prefHeight="200.0" prefWidth="200.0" />
-                <Label text="Category" />
-                <ComboBox fx:id="categoryInput" maxWidth="1.7976931348623157E308" />
+<!--                <Label text="Category" />-->
+<!--                <ComboBox fx:id="categoryInput" maxWidth="1.7976931348623157E308" />-->
             </children>
         </VBox>
     </children>

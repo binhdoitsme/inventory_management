@@ -20,8 +20,8 @@
                 <TextField fx:id="supplierPhoneInput" />
                 <Label text="Address" />
                 <TextArea fx:id="supplierAddressInput" prefHeight="200.0" prefWidth="200.0" />
-                <Label text="Category" />
-                <ComboBox fx:id="categoryInput" maxWidth="1.7976931348623157E308" />
+<!--                <Label text="Category" />-->
+<!--                <ComboBox fx:id="categoryInput" maxWidth="1.7976931348623157E308" />-->
             </children>
         </VBox>
     </children>

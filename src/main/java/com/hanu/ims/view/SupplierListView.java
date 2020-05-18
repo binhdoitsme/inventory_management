@@ -69,7 +69,7 @@ public class SupplierListView extends Stage {
         var selection = supplierTable.getSelectionModel().getSelectedItems();
 
         selection.addListener((ListChangeListener<? super Supplier>) c -> {
-            if (selection.isEmpty()) {
+            if (selection.isEmpty() || supplierTable.getSelectionModel().getSelectedItem() == null) {
                 supplierDeleteButton.setDisable(true);
             } else {
                 if (!supplierTable.getSelectionModel().getSelectedItem().isAvailable()) {
@@ -111,6 +111,7 @@ public class SupplierListView extends Stage {
             supplierDetailsWindow.initModality(Modality.WINDOW_MODAL);
             supplierDetailsWindow.initOwner(getScene().getWindow());
             supplierDetailsWindow.show();
+            supplierDetailsWindow.setOnCloseRequest(event -> updateDataSource(true));
         } catch (Exception e) {
             e.printStackTrace();
         }

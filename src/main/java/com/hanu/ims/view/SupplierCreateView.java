@@ -47,28 +47,14 @@ public class SupplierCreateView extends Stage {
         loader.setController(this);
         Parent root = loader.load();
         setScene(new Scene(root));
-        categoryInput.setItems(categories);
-        categoryInput.setConverter(new StringConverter<Category>() {
-            @Override
-            public String toString(Category object) {
-                if (object == null) return "";
-                return object.getName();
-            }
-
-            @Override
-            public Category fromString(String string) {
-                return null;
-            }
-        });
     }
 
     public void onSubmit() {
         String name = supplierNameInput.getText().trim();
         String phone = supplierPhoneInput.getText().trim();
         String address = supplierAddressInput.getText().trim();
-        Category category = categoryInput.getValue();
         Supplier supplier = new Supplier(name, phone, address, true);
-        supplier.setCategory(category);
+
         var loadingDialog = showLoadingDialog();
         try {
             controller.createSupplier(supplier);
