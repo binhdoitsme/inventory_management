@@ -74,6 +74,7 @@ public class OrderController {
         for (Batch batch : batchesBySku) { // batches are sorted from oldest to newest
             if (remainingQty <= 0) break;
             int currentBatchQty = batch.getQuantity();
+            if (currentBatchQty <= 0) continue;
             batchSelections.put(batch, remainingQty); // this is where the current bug appears
             if (currentBatchQty >= remainingQty) {
                 int newBatchQty = currentBatchQty - remainingQty;
@@ -85,10 +86,10 @@ public class OrderController {
                 remainingQty -= currentBatchQty;
                 currentBatchQty = 0;
             }
-            if (pendingBatchesWithSameSku.isEmpty())
+            if (!pendingBatchesWithSameSku.stream().anyMatch(b -> b.getQuantity() > 0 && b.getId() == batch.getId())) // the glitch stems from this line // changed
                 pendingBatches.add(batch);
             else {
-                pendingBatches.stream().filter(b -> b.getSku().equals(sku))
+                pendingBatches.stream().filter(b -> b.getId() == batch.getId())
                         .findFirst().get().setQuantity(currentBatchQty);
             }
         }

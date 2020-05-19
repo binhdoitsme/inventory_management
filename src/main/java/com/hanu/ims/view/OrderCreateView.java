@@ -52,6 +52,8 @@ public class OrderCreateView extends Stage {
     private TableColumn<OrderLine, Integer> orderLineQuantity;
     @FXML
     private TableColumn<OrderLine, Long> orderLineSum;
+    @FXML
+    private Label total;
 
     private AutoCompletionBinding<Product> autoCompletionBinding;
 
@@ -68,11 +70,16 @@ public class OrderCreateView extends Stage {
         Parent sceneRoot = loader.load();
         Scene scene = new Scene(sceneRoot);
         setScene(scene);
+        setInitialTotal();
+    }
+
+    private void setInitialTotal() {
+        total.setText("$0");
     }
 
     @FXML
     public void initialize() {
-        ((SimpleObjectProperty<Order>)orderData)
+        ((SimpleObjectProperty<Order>) orderData)
                 .set(new Order(AuthenticationProvider.getInstance().getCurrentAccount().getId()));
         skuSuggestions.addListener((ListChangeListener<? super Product>) p -> {
             System.out.println("Changed!");
@@ -102,6 +109,10 @@ public class OrderCreateView extends Stage {
             }
             skuTextField.clear();
         });
+        skuSuggestions.addListener((ListChangeListener<? super Product>) c -> {
+            autoCompletionBinding = TextFields.bindAutoCompletion(skuTextField, skuSuggestions);
+        });
+
         resetBtn.setDisable(true);
         submitBtn.setDisable(true);
         initializeTable();
@@ -122,19 +133,24 @@ public class OrderCreateView extends Stage {
     }
 
     private void reduceOrderLineData() {
-        Map<String, OrderLine> skuQuantities = new HashMap<>();
+        Map<Integer, List<OrderLine>> skuQuantities = new HashMap<>();
         for (OrderLine ol : orderLineData) {
-            String sku = ol.getSku();
-            if (!skuQuantities.containsKey(sku)) {
-                skuQuantities.put(sku, ol);
-                continue;
+            int batchId = ol.getBatchId();
+            skuQuantities.putIfAbsent(batchId, new ArrayList<>());
+
+            List<OrderLine> orderLines = skuQuantities.get(batchId);
+            Optional<OrderLine> orderLineFromSameBatch = orderLines.stream()
+                    .filter(o -> o.getBatchId() == ol.getBatchId()).findFirst();
+            if (orderLineFromSameBatch.isPresent()) {
+                OrderLine orderLine = orderLineFromSameBatch.get();
+                orderLine.setQuantity(orderLine.getQuantity() + ol.getQuantity());
+            } else {
+                skuQuantities.get(batchId).add(ol);
             }
-            OrderLine orderLine = skuQuantities.get(sku);
-            orderLine.setQuantity(orderLine.getQuantity() + ol.getQuantity());
         }
         List<OrderLine> orderLines = new ArrayList<>();
-        for (String sku : skuQuantities.keySet()) {
-            orderLines.add(skuQuantities.get(sku));
+        for (int batchId : skuQuantities.keySet()) {
+            orderLines.addAll(skuQuantities.get(batchId));
         }
         orderLineData.setAll(orderLines);
         orderData.getValue().setOrderLines(orderLines);
@@ -156,9 +172,18 @@ public class OrderCreateView extends Stage {
         });
         orderLineData.addAll(orderLinesToAdd);
         orderData.getValue().addOrderLines(orderLinesToAdd); // defect here
-        ((SimpleObjectProperty<Order>)orderData).set(orderData.getValue());
+        ((SimpleObjectProperty<Order>) orderData).set(orderData.getValue());
 
         reduceOrderLineData();
+        setTotal();
+    }
+
+    private void setTotal() {
+        total.setText("$" + calculateOrderTotal());
+    }
+
+    private long calculateOrderTotal() {
+        return orderLineData.stream().map(line -> line.getLineSum()).reduce((l1, l2) -> l1 + l2).get();
     }
 
     public void onSubmit(ActionEvent actionEvent) {
@@ -202,6 +227,7 @@ public class OrderCreateView extends Stage {
         orderLineData.clear();
         orderData.getValue().setOrderLines(new ArrayList<>());
         controller.invalidateCache();
+        setInitialTotal();
     }
 
     public void updateSuggestions() {

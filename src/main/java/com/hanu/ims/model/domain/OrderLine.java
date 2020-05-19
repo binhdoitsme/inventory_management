@@ -90,7 +90,6 @@ public class OrderLine {
         OrderLine orderLine = (OrderLine) o;
         return listPrice == orderLine.listPrice &&
                 quantity == orderLine.quantity &&
-                lineSum == orderLine.lineSum &&
                 Objects.equals(sku, orderLine.sku) &&
                 Objects.equals(productName, orderLine.productName);
     }

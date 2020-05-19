@@ -178,6 +178,7 @@ public class OrderListView extends Stage {
     }
 
     static void updateDataSource(boolean forceUpdate) {
+        if (controller == null) return;
         if (dataSource == null)
             dataSource = controller.getOrderList();
         if (forceUpdate) {
