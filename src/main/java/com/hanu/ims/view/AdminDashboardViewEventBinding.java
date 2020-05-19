@@ -33,8 +33,8 @@ public class AdminDashboardViewEventBinding {
     public TableColumn<Account, Integer> idColumn;
     @FXML
     public TableColumn<Account, String> usernameColumn;
-    @FXML
-    public TableColumn<Account, String> passwordColumn;
+//    @FXML
+//    public TableColumn<Account, String> passwordColumn;
     @FXML
     public TableColumn<Account, Role> roleColumn;
 
@@ -56,7 +56,7 @@ public class AdminDashboardViewEventBinding {
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<Account, Integer>("id"));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<Account, String>("username"));
-        passwordColumn.setCellValueFactory(new PropertyValueFactory<Account, String>("password"));
+//        passwordColumn.setCellValueFactory(new PropertyValueFactory<Account, String>("password"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<Account, Role>("role"));
         userTable.getItems().setAll(parseUserList());
 
@@ -67,14 +67,14 @@ public class AdminDashboardViewEventBinding {
     }
 
     private void addEditButtonToTable() {
-        TableColumn<Account, Void> colBtn = new TableColumn("Edit");
+        TableColumn<Account, Void> colBtn = new TableColumn("Reset password");
 
         Callback<TableColumn<Account, Void>, TableCell<Account, Void>> cellFactory = new Callback<TableColumn<Account, Void>, TableCell<Account, Void>>() {
             @Override
             public TableCell<Account, Void> call(final TableColumn<Account, Void> param) {
                 final TableCell<Account, Void> cell = new TableCell<Account, Void>() {
 
-                    private final Button btn = new Button("Edit");
+                    private final Button btn = new Button("Reset password");
 
                     {
                         btn.setOnAction((ActionEvent event) -> {

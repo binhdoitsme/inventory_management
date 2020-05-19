@@ -33,7 +33,7 @@ public class EditAccountPopup {
         Scene firstScene = new Scene(firstPane, 400, 800);
 
         popupWindow.initModality(Modality.APPLICATION_MODAL);
-        popupWindow.setTitle("Edit User Details");
+        popupWindow.setTitle("Reset Password Confirmation");
 
         popupWindow.setScene(firstScene);
 

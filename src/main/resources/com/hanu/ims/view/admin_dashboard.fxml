@@ -32,9 +32,8 @@
       <TableView fx:id="userTable" prefHeight="588.0" prefWidth="679.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="107.0" text="ID" />
-          <TableColumn fx:id="usernameColumn" prefWidth="122.0" text="Username" />
-            <TableColumn fx:id="passwordColumn" prefWidth="157.0" text="Password" />
-            <TableColumn fx:id="roleColumn" prefWidth="138.0" text="Role" />
+          <TableColumn fx:id="usernameColumn" prefWidth="201.0" text="Username" />
+            <TableColumn fx:id="roleColumn" prefWidth="169.0" text="Role" />
         </columns>
       </TableView>
       <Pane prefHeight="588.0" prefWidth="175.0">

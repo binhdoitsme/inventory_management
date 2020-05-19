@@ -1,6 +1,7 @@
 package com.hanu.ims.view;
 
 import com.hanu.ims.controller.OrderController;
+import com.hanu.ims.model.domain.Account;
 import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
 import com.hanu.ims.util.configuration.Configuration;
@@ -17,11 +18,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Optional;
 
 public class OrderListView extends Stage {
@@ -40,6 +44,8 @@ public class OrderListView extends Stage {
 //    private TableColumn<Order, Boolean> orderColCheckbox;
     @FXML
     private TableColumn<Order, Long> orderColTotalPrice;
+    @FXML
+    private TableColumn<Order, String> orderColStatus;
     @FXML
     private Button deleteButton;
 
@@ -63,7 +69,6 @@ public class OrderListView extends Stage {
         dataSource.addListener((ListChangeListener<? super Order>) c -> {
             System.out.println("Changed!");
         });
-
         orderColId.setCellValueFactory(param ->
                 new SimpleIntegerProperty(param.getValue().getId()).asObject());
         orderColCashier.setCellValueFactory(param ->
@@ -71,7 +76,9 @@ public class OrderListView extends Stage {
         orderColTimestamp.setCellValueFactory(param ->
                 new SimpleStringProperty(EpochSecondConverter.epochSecondToString(param.getValue().getTimestamp())));
 //        orderColCheckbox.setCellFactory(CheckBoxTableCell.forTableColumn(orderColCheckbox));
-
+        orderColStatus.setCellValueFactory((param -> new SimpleStringProperty((
+                (Instant.now().getEpochSecond())-param.getValue().getTimestamp()< 604800 ? "In force" : "EXPIRED")
+                )));
         orderColTotalPrice.setCellValueFactory(param -> {
             if (param.getValue().getOrderLines().isEmpty())
                 return new SimpleLongProperty(0).asObject();
@@ -93,9 +100,10 @@ public class OrderListView extends Stage {
             });
             return row;
         });
-
+//        addStatusToTable();
         deleteButton.setDisable(true);
         addOrderLineSelectedListener();
+
     }
 
     private void addOrderLineSelectedListener() {
@@ -187,4 +195,40 @@ public class OrderListView extends Stage {
             });
         }
     }
+
+//    private void addStatusToTable() {
+//        System.out.println("status ran");
+//        TableColumn<Order, Void> colBtn = new TableColumn("Custom Status");
+//
+//        Callback<TableColumn<Order, Void>, TableCell<Order, Void>> cellFactory = new Callback<TableColumn<Order, Void>, TableCell<Order, Void>>() {
+//            @Override
+//            public TableCell<Order, Void> call(final TableColumn<Order, Void> param) {
+//                final TableCell<Order, Void> cell = new TableCell<Order, Void>() {
+//
+//
+//                    private final Label statusLabel = new Label(EpochSecondConverter.epochSecondToString(Instant.now().getEpochSecond()));
+//
+//                    {
+//                        Order data = getTableView().getItems().get(getIndex());
+//                        data.toString();
+//                    }
+//
+//                    @Override
+//                    public void updateItem(Void item, boolean empty) {
+//                        super.updateItem(item, empty);
+//                        if (empty) {
+//                            setGraphic(null);
+//                        } else {
+//                            setGraphic(statusLabel);
+//                        }
+//                    }
+//                };
+//                return cell;
+//            }
+//        };
+//
+//        colBtn.setCellFactory(cellFactory);
+//
+//        orderListTable.getColumns().add(colBtn);
+//    }
 }

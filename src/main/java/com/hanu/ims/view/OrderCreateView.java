@@ -52,6 +52,9 @@ public class OrderCreateView extends Stage {
     private TableColumn<OrderLine, Integer> orderLineQuantity;
     @FXML
     private TableColumn<OrderLine, Long> orderLineSum;
+    @FXML
+    private Label cashierLabel;
+
 
     private AutoCompletionBinding<Product> autoCompletionBinding;
 
@@ -104,6 +107,7 @@ public class OrderCreateView extends Stage {
         });
         resetBtn.setDisable(true);
         submitBtn.setDisable(true);
+        cashierLabel.setText(AuthenticationProvider.getInstance().getCurrentAccount().getUsername());
         initializeTable();
     }
 
