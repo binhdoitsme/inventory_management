@@ -6,6 +6,7 @@ import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
 import com.hanu.ims.model.domain.Product;
 import com.hanu.ims.util.authentication.AuthenticationProvider;
+import com.hanu.ims.util.configuration.Configuration;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -32,6 +33,7 @@ public class OrderCreateView extends Stage {
 
     private static final int DEFAULT_QTY = 1;
     private static final String FXML_FILE_NAME = "order_create.fxml";
+    private static final String TITLE = Configuration.get("window.title.order.create");
     private static ObservableList<Product> skuSuggestions = FXCollections.observableList(new ArrayList<>());
 
     @FXML
@@ -70,6 +72,7 @@ public class OrderCreateView extends Stage {
         Parent sceneRoot = loader.load();
         Scene scene = new Scene(sceneRoot);
         setScene(scene);
+        setTitle(TITLE);
         setInitialTotal();
     }
 
@@ -98,6 +101,14 @@ public class OrderCreateView extends Stage {
             System.out.println("order has changed!");
         });
         updateSuggestions();
+        setupAutoCompletion();
+
+        resetBtn.setDisable(true);
+        submitBtn.setDisable(true);
+        initializeTable();
+    }
+
+    private void setupAutoCompletion() {
         autoCompletionBinding = TextFields.bindAutoCompletion(skuTextField, skuSuggestions);
         autoCompletionBinding.setOnAutoCompleted(event -> {
             Product productToAdd = event.getCompletion();
@@ -112,10 +123,6 @@ public class OrderCreateView extends Stage {
         skuSuggestions.addListener((ListChangeListener<? super Product>) c -> {
             autoCompletionBinding = TextFields.bindAutoCompletion(skuTextField, skuSuggestions);
         });
-
-        resetBtn.setDisable(true);
-        submitBtn.setDisable(true);
-        initializeTable();
     }
 
     private void initializeTable() {

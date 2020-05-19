@@ -3,6 +3,7 @@ package com.hanu.ims.view;
 import com.hanu.ims.controller.OrderController;
 import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
+import com.hanu.ims.util.authentication.AuthenticationProvider;
 import com.hanu.ims.util.configuration.Configuration;
 import com.hanu.ims.util.date.EpochSecondConverter;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -98,6 +99,15 @@ public class OrderListView extends Stage {
         addOrderLineSelectedListener();
     }
 
+    private void disableDeleteButtonIfNotCreatedByThisUser() {
+        if (orderListTable.getSelectionModel().getSelectedItems().isEmpty()) return;
+        if (orderListTable.getSelectionModel().getSelectedItem() == null) return;
+        int cashierId = orderListTable.getSelectionModel().getSelectedItem().getCashierId();
+        if (cashierId != AuthenticationProvider.getInstance().getCurrentAccount().getId()) {
+            deleteButton.setDisable(true);
+        }
+    }
+
     private void addOrderLineSelectedListener() {
         ObservableList<TablePosition> selectedCells = orderListTable.getSelectionModel().getSelectedCells();
         selectedCells.addListener((ListChangeListener<? super TablePosition>) c -> {
@@ -106,6 +116,7 @@ public class OrderListView extends Stage {
             } else {
                 deleteButton.setDisable(false);
             }
+            disableDeleteButtonIfNotCreatedByThisUser();
         });
     }
 
