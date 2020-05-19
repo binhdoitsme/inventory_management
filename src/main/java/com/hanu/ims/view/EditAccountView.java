@@ -38,7 +38,7 @@ public class EditAccountView {
         String role= account.getRole().name();
 
         if (validateNewAccount(username, password, confirmPassword, role).equals("OK")) {
-            Account updatedAccount = new Account(account.getId(), username, password, Role.valueOf(role));
+            Account updatedAccount = new Account(account.getId(), username, password, Role.valueOf(role), 0);
             try {
                 if(ac.updateAccount(updatedAccount)){
                     statusLabel.setText("Edit account successfully");

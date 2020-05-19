@@ -39,7 +39,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 //        new BatchListView().show();
-        new SupplierListView().show();
+        new LoginView().show();
     }
 
 

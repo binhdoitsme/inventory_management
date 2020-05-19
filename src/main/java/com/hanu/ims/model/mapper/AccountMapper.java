@@ -6,6 +6,8 @@ import com.hanu.ims.model.domain.Role;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 public class AccountMapper extends Mapper<Account> {
 
@@ -19,10 +21,15 @@ public class AccountMapper extends Mapper<Account> {
                     rs.getString("username"),
                     rs.getString("password"),
                     Role.valueOf(rs.getString("role")),
-                    rs.getLong("last_update")
+                    getUnix(rs.getTimestamp("last_update"))
             );
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    private static Long getUnix(Timestamp timestamp) {
+        long result = timestamp.toInstant().getEpochSecond();
+        return result;
     }
 }

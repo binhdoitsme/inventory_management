@@ -26,11 +26,11 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
 
     @Override
     public boolean add(Account account) {
-        String sql = "INSERT INTO account (`username`, `password`, `role`, `last_update`) VALUES ('$username', '$password', '$role', 'last_update')"
+        String sql = "INSERT INTO account (`username`, `password`, `role`, `last_update`) VALUES ('$username', '$password', '$role', '$last_update')"
                 .replace("$username", account.getUsername())
                 .replace("$password", account.getPassword())
                 .replace("$role", account.getRole().name())
-                .replace("last_update", String.valueOf(getCurrentTimeStamp()));
+                .replace("$last_update", String.valueOf(getCurrentTimeStamp()));
 
         try {
             int affectedRows = getConnector().connect().executeInsert(sql);
