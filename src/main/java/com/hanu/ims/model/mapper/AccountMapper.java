@@ -18,7 +18,9 @@ public class AccountMapper extends Mapper<Account> {
             return new Account(rs.getInt("id"),
                     rs.getString("username"),
                     rs.getString("password"),
-                    Role.valueOf(rs.getString("role")));
+                    Role.valueOf(rs.getString("role")),
+                    rs.getLong("last_update")
+            );
         } catch (SQLException e) {
             return null;
         }

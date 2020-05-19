@@ -2,6 +2,7 @@ package com.hanu.ims;
 
 import com.hanu.ims.view.BatchListView;
 import com.hanu.ims.view.LoginView;
+import com.hanu.ims.view.SupplierListView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -38,7 +39,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 //        new BatchListView().show();
-        new LoginView().show();
+        new SupplierListView().show();
     }
 
 
