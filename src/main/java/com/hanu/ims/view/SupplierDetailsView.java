@@ -10,6 +10,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,6 +40,8 @@ public class SupplierDetailsView extends Stage {
     private final Supplier initialState;
     private Supplier currentState;
 
+    private static ObservableList<Batch> batchdata;
+
     @FXML
     private TextField supplierNameInput;
     @FXML
@@ -37,6 +52,22 @@ public class SupplierDetailsView extends Stage {
     private Button revertButton;
     @FXML
     private Button saveButton;
+
+    @FXML
+    private TableView<Batch> batchTable;
+    @FXML
+    private TableColumn<Batch, String> batchColSku;
+    @FXML
+    private TableColumn<Batch, String> batchColImpDate;
+    @FXML
+    private TableColumn<Batch, Long> batchColImpPrice;
+    @FXML
+    private TableColumn<Batch, Long> batchColRetail;
+    @FXML
+    private TableColumn<Batch, Integer> batchColQty;
+    @FXML
+    private TableColumn<Batch, Batch.Status> batchColStatus;
+
 
     public SupplierDetailsView(Supplier supplier) throws IOException {
         controller = new SupplierController();
@@ -52,6 +83,9 @@ public class SupplierDetailsView extends Stage {
         addEventListeners();
         setFieldValues(currentState);
         disableButtonsIfNoChangeDetected();
+        updateBatchData(true, initialState);
+        batchTable.setItems(batchdata);
+        bindTableData();
     }
 
     private void setFieldValues(Supplier supplier) {
@@ -117,4 +151,37 @@ public class SupplierDetailsView extends Stage {
             showAlertDialog(e.getMessage(), "An error occurred!", Alert.AlertType.ERROR);
         }
     }
+
+    static void updateBatchData(boolean forceUpdate, Supplier initialState) {
+        if (batchdata == null) {
+            batchdata = FXCollections.observableList(new ArrayList<>());
+            return;
+        }
+        if (forceUpdate) {
+            ObservableList<Batch> batches =  controller.getBatchBySupplier(initialState);
+            batches.addListener((ListChangeListener<? super Batch>) c -> {
+                batches.setAll(batches);
+            });
+        }
+    }
+
+    private void bindTableData() {
+        batchColSku.setCellValueFactory(param ->
+                new SimpleStringProperty(param.getValue().getSku()));
+        batchColImpDate.setCellValueFactory(param ->
+                new SimpleStringProperty(param.getValue().getImportDate().toString()));
+        batchColImpPrice.setCellValueFactory(param ->
+                new SimpleLongProperty(param.getValue().getImportPrice()).asObject());
+        batchColRetail.setCellValueFactory(param ->
+                new SimpleLongProperty(param.getValue().getRetailPrice()).asObject());
+        batchColQty.setCellValueFactory(param ->
+                new SimpleIntegerProperty(param.getValue().getQuantity()).asObject());
+        batchColStatus.setCellValueFactory(param ->
+                new SimpleObjectProperty<>(param.getValue().getStatus()));
+        batchTable.setRowFactory(tv -> {
+            TableRow<Batch> row = new TableRow<>();
+            return row;
+        });
+    }
+
 }

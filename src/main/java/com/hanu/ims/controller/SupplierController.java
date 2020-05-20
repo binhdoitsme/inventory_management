@@ -1,5 +1,7 @@
 package com.hanu.ims.controller;
 
+import com.hanu.ims.db.SupplierRepositoryImpl;
+import com.hanu.ims.model.domain.Batch;
 import com.hanu.ims.model.domain.Supplier;
 import com.hanu.ims.model.repository.SupplierRepository;
 import com.hanu.ims.util.servicelocator.ServiceContainer;
@@ -64,5 +66,14 @@ public class SupplierController {
         } else {
             return false;
         }
+    }
+
+    public ObservableList<Batch> getBatchBySupplier(Supplier supplier) {
+        ObservableList<Batch> batches = FXCollections.observableList(new ArrayList<>());
+        Thread dbThread = new Thread(() -> {
+            batches.setAll(repository.findBatchBySupplier(supplier));
+        });
+        dbThread.start();
+        return batches;
     }
 }

@@ -1,32 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="325.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-            xmlns:fx="http://javafx.com/fxml/1">
+
+<AnchorPane  prefHeight="700.0" prefWidth="1081.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Button fx:id="revertButton" layoutX="178.0" layoutY="279.0" mnemonicParsing="false" prefHeight="31.0"
-                prefWidth="82.0" text="Revert"/>
-        <Button fx:id="saveButton" layoutX="274.0" layoutY="279.0" mnemonicParsing="false" onAction="#onSave"
-                prefHeight="31.0" prefWidth="82.0" text="Save"/>
-        <Label layoutX="109.0" layoutY="25.0" text="Supplier details">
+        <Button fx:id="revertButton" layoutX="99.0" layoutY="560.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Revert" />
+        <Button fx:id="saveButton" layoutX="227.0" layoutY="560.0" mnemonicParsing="false" onAction="#onSave" prefHeight="31.0" prefWidth="82.0" text="Save" />
+        <Label layoutX="136.0" layoutY="44.0" text="Supplier details">
             <font>
                 <Font size="20.0"/>
             </font>
         </Label>
-        <VBox layoutX="17.0" layoutY="65.0" prefHeight="200.0" prefWidth="340.0">
+        <VBox layoutX="29.0" layoutY="101.0" prefHeight="400" prefWidth="350.0">
             <children>
-                <Label text="Supplier name"/>
-                <TextField fx:id="supplierNameInput" prefHeight="26.0" prefWidth="172.0"/>
-                <Label text="Phone number"/>
-                <TextField fx:id="supplierPhoneInput"/>
-                <Label text="Address"/>
-                <TextArea fx:id="supplierAddressInput" prefHeight="200.0" prefWidth="200.0"/>
+                <Label text="Supplier name">
+                    <VBox.margin>
+                        <Insets bottom="10.0" top="30.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="supplierNameInput" prefHeight="50.0" prefWidth="172.0" />
+                <Label text="Phone number">
+                    <VBox.margin>
+                        <Insets bottom="10.0" top="30.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="supplierPhoneInput" prefHeight="50.0" prefWidth="172.0" />
+                <Label text="Address">
+                    <VBox.margin>
+                        <Insets bottom="10.0" top="30.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <TextArea fx:id="supplierAddressInput" prefHeight="300.0" prefWidth="172.0" />
                 <!--                <Label text="Category" />-->
                 <!--                <ComboBox fx:id="categoryInput" maxWidth="1.7976931348623157E308" />-->
             </children>
         </VBox>
+      <TableView fx:id="batchTable" layoutX="441.0" layoutY="135.0" prefHeight="464.0" prefWidth="607.0">
+        <columns>
+          <TableColumn prefWidth="38.0" text="#" />
+          <TableColumn fx:id="batchColSku" prefWidth="93.0" text="SKU" />
+            <TableColumn fx:id="batchColImpDate" prefWidth="101.0" text="Import Date" />
+            <TableColumn fx:id="batchColImpPrice" prefWidth="99.0" text="Import price" />
+            <TableColumn fx:id="batchColRetail" prefWidth="99.0" text="Retail Price" />
+            <TableColumn  fx:id="batchColQty" prefWidth="78.0" text="In stock" />
+            <TableColumn fx:id="batchColStatus" prefWidth="98.0" text="Status" />
+        </columns>
+      </TableView>
+      <Separator layoutX="408.0" layoutY="1.0" orientation="VERTICAL" prefHeight="700.0" prefWidth="5.0" />
+      <Label layoutX="713.0" layoutY="44.0" text="Batch List">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

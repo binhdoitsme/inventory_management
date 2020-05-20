@@ -2,7 +2,9 @@ package com.hanu.ims.view;
 
 import com.hanu.ims.controller.AccountController;
 import com.hanu.ims.model.domain.Account;
+import com.hanu.ims.model.domain.Role;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -12,10 +14,9 @@ public class EditAccountView {
     //    public TextField passwordField;
 //    public TextField confirmPasswordField;
     Account account = AdminDashboardViewEventBinding.accountToEdit;
-
+    @FXML
     public TextField usernameField;
-
-
+    @FXML
     public Label statusLabel;
 
     public void initialize() {
@@ -28,30 +29,31 @@ public class EditAccountView {
     }
 
     public void attemptEditAccount(ActionEvent actionEvent) {
-//        String username = usernameField.getText();
-//        String password = passwordField.getText();
-//        String confirmPassword = confirmPasswordField.getText();
-//        String role= account.getRole().name();
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+        String role = account.getRole().name();
 
-        Account updatedAccount = new Account(account.getId(), account.getUsername(), account.getUsername(), account.getRole());
-        try {
-            if (ac.updateAccount(updatedAccount)) {
-                statusLabel.setText("Reset account's password to match username successfully");
-            } else {
-                statusLabel.setText("Failed to reset password??????");
-            }
+        if (validateNewAccount(username, password, confirmPassword, role).equals("OK")) {
+            Account updatedAccount = new Account(account.getId(), username, password, Role.valueOf(role), 0);
+            try {
+                if (ac.updateAccount(updatedAccount)) {
+                    statusLabel.setText("Edit account successfully");
+                } else {
+                    statusLabel.setText("Failed to update account");
+                }
 
 //                Account doppelgangerAccount = new Account(ac.validate(username, password).getId()
 //                        , username, password, Role.valueOf(role));
 //                AdminDashboardView.staticAccountList.add(doppelgangerAccount);
 
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            statusLabel.setText("Failed to reset password!?!??!?!?!");
-        }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                statusLabel.setText("Failed to reset password!?!??!?!?!");
+            }
 
-    }
+        }
 
 //    private String validateNewAccount(String username, String password, String confirmPassword, String role) {
 //        if (username.length() < 4) {
@@ -66,4 +68,5 @@ public class EditAccountView {
 //            return "Impressive. How did you even mismatch the role?";
 //        } else return "OK";
 //    }
+    }
 }

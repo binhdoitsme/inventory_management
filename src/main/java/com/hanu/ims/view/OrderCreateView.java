@@ -219,6 +219,7 @@ public class OrderCreateView extends Stage {
 
     private void onSuccessfulAdd() {
         orderLineData.clear();
+        setTotal();
     }
 
     public void onReset(ActionEvent actionEvent) {

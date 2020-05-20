@@ -53,9 +53,9 @@ public class CreateAccountView {
 //                Scene secondScene = new Scene(secondPane, 1200, 800);
 //                setDashboardPage(secondScene);
 //                toDashboardPage(actionEvent);
-                if (account.getRole() != Role.Admin) {
-                    Account doppelgangerAccount = new Account(ac.validate(username, password).getId()
-                            , username, password, Role.valueOf(role));
+                if(account.getRole()!=Role.Admin) {
+                    Account doppelgangerAccount= new Account(ac.validate(username,password).getId()
+                            , username, password, Role.valueOf(role), 0);
                     AdminDashboardViewEventBinding.staticAccountList.add(doppelgangerAccount);
 
                 }

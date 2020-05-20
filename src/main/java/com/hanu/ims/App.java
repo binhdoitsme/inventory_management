@@ -1,6 +1,7 @@
 package com.hanu.ims;
 
 import com.hanu.ims.view.LoginView;
+import com.hanu.ims.view.SupplierListView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

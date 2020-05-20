@@ -9,8 +9,10 @@ import com.hanu.ims.model.repository.AccountRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
         implements AccountRepository {
@@ -157,9 +159,10 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
         boolean updateCount = false;
         try {
             String sql =
-                    "update account set username= '$username', password= '$password' where id= $id"
+                    "update account set username= '$username', password= '$password' , last_login= '$last_login' where id= $id"
                             .replace("$username", item.getUsername())
                             .replace("$password", item.getPassword())
+                            .replace("$last_login", String.valueOf(getCurrentTimeStamp()))
                             .replace("$id", Integer.toString(item.getId()));
 
             updateCount = getConnector().connect().executeUpdate(sql) > 0;
@@ -198,5 +201,11 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Timestamp getCurrentTimeStamp() {
+        long timeMillis = System.currentTimeMillis();
+        long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(timeMillis);
+        return new Timestamp(timeSeconds * 1000);
     }
 }
