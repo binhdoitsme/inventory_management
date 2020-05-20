@@ -8,44 +8,27 @@
 
 <AnchorPane prefHeight="808.0" prefWidth="237.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.EditAccountView">
     <children>
-        <Label layoutX="34.0" layoutY="8.0" prefHeight="70.0" prefWidth="169.0" text="Create New Account">
+        <Label layoutX="17.0" layoutY="14.0" prefHeight="70.0" prefWidth="221.0" text="Confirm Password Reset">
             <font>
-                <Font size="18.0" />
+                <Font name="System Bold" size="18.0" />
             </font></Label>
-        <Label layoutX="35.0" layoutY="223.0" prefHeight="70.0" prefWidth="169.0" text="Username:">
-            <font>
-                <Font size="15.0" />
-            </font>
-        </Label>
-        <Label layoutX="36.0" layoutY="334.0" prefHeight="70.0" prefWidth="169.0" text="Password:">
-            <font>
-                <Font size="15.0" />
-            </font>
-        </Label>
-        <TextField fx:id="usernameField" layoutX="29.0" layoutY="268.0" prefHeight="25.0" prefWidth="180.0" />
-        <TextField fx:id="passwordField" layoutX="30.0" layoutY="378.0" prefHeight="25.0" prefWidth="180.0" />
-        <Label layoutX="35.0" layoutY="432.0" prefHeight="70.0" prefWidth="169.0" text="Confirm password:">
-            <font>
-                <Font size="15.0" />
-            </font>
-        </Label>
-        <TextField fx:id="confirmPasswordField" layoutX="29.0" layoutY="476.0" prefHeight="25.0" prefWidth="180.0" />
-        <Button layoutX="50.0" layoutY="724.0" mnemonicParsing="false" onAction="#attemptEditAccount" prefHeight="58.0" prefWidth="138.0" text="Submit">
+        <TextField fx:id="usernameField" layoutX="29.0" layoutY="246.0" prefHeight="25.0" prefWidth="180.0" />
+        <Button layoutX="50.0" layoutY="484.0" mnemonicParsing="false" onAction="#attemptEditAccount" prefHeight="58.0" prefWidth="138.0" text="Reset PW">
             <font>
                 <Font size="18.0" />
             </font>
         </Button>
-        <Label fx:id="statusLabel" layoutX="12.0" layoutY="81.0" prefHeight="140.0" prefWidth="215.0" textAlignment="CENTER" wrapText="true">
+        <Label fx:id="statusLabel" layoutX="12.0" layoutY="571.0" prefHeight="140.0" prefWidth="215.0" textAlignment="CENTER" wrapText="true">
             <font>
                 <Font name="Calibri Bold" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="29.0" layoutY="549.0" prefHeight="64.0" prefWidth="169.0" text="-UserList will be updated upon closing this popup" wrapText="true">
+        <Label layoutX="35.0" layoutY="125.0" prefHeight="121.0" prefWidth="169.0" text="You are about to reset the password for the account with the username:" wrapText="true">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
-      <Label layoutX="30.0" layoutY="613.0" prefHeight="95.0" prefWidth="190.0" text="-Kindly hit the &quot;Refresh Table&quot; button at the UserList after changes" wrapText="true">
+      <Label layoutX="26.0" layoutY="350.0" prefHeight="95.0" prefWidth="186.0" text="Are you sure you want to proceed?" wrapText="true">
          <font>
             <Font size="15.0" />
          </font>

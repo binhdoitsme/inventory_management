@@ -40,7 +40,7 @@
                                 <TableColumn fx:id="orderColCashier" prefWidth="159.199951171875" text="Cashier" />
                                 <TableColumn fx:id="orderColTimestamp" minWidth="0.0" prefWidth="201.0" text="Date created" />
                                 <TableColumn fx:id="orderColTotalPrice" prefWidth="116.20001220703125" text="Total Price" />
-                                <TableColumn minWidth="0.0" prefWidth="118.60003662109375" text="Status" />
+                                <TableColumn fx:id="orderColStatus" minWidth="0.0" prefWidth="118.60003662109375" text="Status" />
                             </columns>
                         </TableView>
                         <Button layoutX="624.0" layoutY="35.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" text="Delete" fx:id="deleteButton" onAction="#onDeleteButtonPressed" />

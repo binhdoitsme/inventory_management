@@ -55,6 +55,8 @@ public class OrderCreateView extends Stage {
     @FXML
     private TableColumn<OrderLine, Long> orderLineSum;
     @FXML
+    private Label cashierLabel;
+    @FXML
     private Label total;
 
     private AutoCompletionBinding<Product> autoCompletionBinding;
@@ -120,6 +122,10 @@ public class OrderCreateView extends Stage {
             }
             skuTextField.clear();
         });
+        resetBtn.setDisable(true);
+        submitBtn.setDisable(true);
+        cashierLabel.setText(AuthenticationProvider.getInstance().getCurrentAccount().getUsername());
+        initializeTable();
         skuSuggestions.addListener((ListChangeListener<? super Product>) c -> {
             autoCompletionBinding = TextFields.bindAutoCompletion(skuTextField, skuSuggestions);
         });
