@@ -1,6 +1,7 @@
 package com.hanu.ims.controller;
 
 import com.hanu.ims.db.SupplierRepositoryImpl;
+import com.hanu.ims.model.domain.Batch;
 import com.hanu.ims.model.domain.Supplier;
 import com.hanu.ims.model.repository.SupplierRepository;
 import com.hanu.ims.util.servicelocator.ServiceContainer;
@@ -8,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SupplierController {
     private SupplierRepository repository;
@@ -42,7 +42,7 @@ public class SupplierController {
         return repository.save(supplier);
     }
 
-    public ObservableList<Supplier> getSupplierList()  {
+    public ObservableList<Supplier> getSupplierList() {
         ObservableList<Supplier> suppliers = FXCollections.observableList(new ArrayList<>());
         Thread dbThread = new Thread(() -> {
             suppliers.setAll(repository.findAll());
@@ -50,7 +50,7 @@ public class SupplierController {
         dbThread.start();
         return suppliers;
     }
-    
+
     //helper
 
     public boolean isIn(Supplier supplier) {
@@ -66,5 +66,14 @@ public class SupplierController {
         } else {
             return false;
         }
+    }
+
+    public ObservableList<Batch> getBatchBySupplier(Supplier supplier) {
+        ObservableList<Batch> batches = FXCollections.observableList(new ArrayList<>());
+        Thread dbThread = new Thread(() -> {
+            batches.setAll(repository.findBatchBySupplier(supplier));
+        });
+        dbThread.start();
+        return batches;
     }
 }

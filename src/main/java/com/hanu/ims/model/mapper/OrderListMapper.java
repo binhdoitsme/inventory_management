@@ -25,8 +25,8 @@ public class OrderListMapper extends Mapper<List<Order>> {
             while (rs.next()) {
                 // work with order
                 int orderId = rs.getInt("order_id");
-                if (orderList.stream().anyMatch(order -> order.getId() == orderId)) {}
-                else {
+                if (orderList.stream().anyMatch(order -> order.getId() == orderId)) {
+                } else {
                     int cashierId = rs.getInt("cashier_id");
                     String cashierName = rs.getString("cashier_name");
                     long timestamp = rs.getTimestamp("timestamp").toInstant().getEpochSecond();

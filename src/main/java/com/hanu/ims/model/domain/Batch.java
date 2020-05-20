@@ -2,7 +2,7 @@ package com.hanu.ims.model.domain;
 
 import java.util.Date;
 
-public class Batch implements Comparable {
+public class    Batch implements Comparable {
     private final int id;
     private String sku;
     private int importQuantity; // need to change DB to support this

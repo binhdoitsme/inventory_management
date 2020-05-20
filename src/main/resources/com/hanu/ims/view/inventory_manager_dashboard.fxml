@@ -2,31 +2,35 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1">
     <VBox alignment="CENTER" layoutX="258.0" layoutY="173.0" prefHeight="27.0" prefWidth="284.0">
         <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="360.0" layoutY="148.0" text="Welcome!">
             <font>
-                <Font size="18.0" />
+                <Font size="18.0"/>
             </font>
         </Label>
     </VBox>
     <GridPane alignment="CENTER" layoutX="330.0" layoutY="222.0" prefHeight="155.0" prefWidth="140.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         </rowConstraints>
         <children>
-            <Button mnemonicParsing="false" onAction="#onManageBatchesClicked" prefHeight="26.0" prefWidth="312.0" text="Manage batches" GridPane.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#onManageSuppliersClicked" prefHeight="26.0" prefWidth="298.0" text="Manage suppliers" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onAction="#onLogoutClicked" prefHeight="26.0" prefWidth="320.0" text="Log out" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" onAction="#onExit" prefHeight="26.0" prefWidth="294.0" text="Exit" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" onAction="#onManageBatchesClicked" prefHeight="26.0" prefWidth="312.0"
+                    text="Manage batches" GridPane.hgrow="ALWAYS"/>
+            <Button mnemonicParsing="false" onAction="#onManageSuppliersClicked" prefHeight="26.0" prefWidth="298.0"
+                    text="Manage suppliers" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"/>
+            <Button mnemonicParsing="false" onAction="#onLogoutClicked" prefHeight="26.0" prefWidth="320.0"
+                    text="Log out" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"/>
+            <Button mnemonicParsing="false" onAction="#onExit" prefHeight="26.0" prefWidth="294.0" text="Exit"
+                    GridPane.hgrow="ALWAYS" GridPane.rowIndex="3"/>
         </children>
     </GridPane>
 </AnchorPane>

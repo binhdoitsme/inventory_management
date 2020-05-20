@@ -11,7 +11,8 @@ public class ServiceContainer {
 
     private static Map<Class<?>, Object> dependencyContainer = new HashMap<>();
 
-    ServiceContainer() { }
+    ServiceContainer() {
+    }
 
     public ServiceContainer addDependency(Class<?> dependencyType, Object implementation) {
         dependencyContainer.put(dependencyType, implementation);

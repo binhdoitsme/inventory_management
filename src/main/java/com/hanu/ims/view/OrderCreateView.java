@@ -6,6 +6,7 @@ import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
 import com.hanu.ims.model.domain.Product;
 import com.hanu.ims.util.authentication.AuthenticationProvider;
+import com.hanu.ims.util.configuration.Configuration;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -20,7 +21,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
@@ -28,10 +28,14 @@ import org.controlsfx.control.textfield.TextFields;
 import java.io.IOException;
 import java.util.*;
 
+import static com.hanu.ims.util.modal.ModalService.showAlertDialog;
+import static com.hanu.ims.util.modal.ModalService.showLoadingDialog;
+
 public class OrderCreateView extends Stage {
 
     private static final int DEFAULT_QTY = 1;
     private static final String FXML_FILE_NAME = "order_create.fxml";
+    private static final String TITLE = Configuration.get("window.title.order.create");
     private static ObservableList<Product> skuSuggestions = FXCollections.observableList(new ArrayList<>());
 
     @FXML
@@ -52,6 +56,10 @@ public class OrderCreateView extends Stage {
     private TableColumn<OrderLine, Integer> orderLineQuantity;
     @FXML
     private TableColumn<OrderLine, Long> orderLineSum;
+    @FXML
+    private Label cashierLabel;
+    @FXML
+    private Label total;
 
     private AutoCompletionBinding<Product> autoCompletionBinding;
 
@@ -68,11 +76,17 @@ public class OrderCreateView extends Stage {
         Parent sceneRoot = loader.load();
         Scene scene = new Scene(sceneRoot);
         setScene(scene);
+        setTitle(TITLE);
+        setInitialTotal();
+    }
+
+    private void setInitialTotal() {
+        total.setText("$0");
     }
 
     @FXML
     public void initialize() {
-        ((SimpleObjectProperty<Order>)orderData)
+        ((SimpleObjectProperty<Order>) orderData)
                 .set(new Order(AuthenticationProvider.getInstance().getCurrentAccount().getId()));
         skuSuggestions.addListener((ListChangeListener<? super Product>) p -> {
             System.out.println("Changed!");
@@ -91,6 +105,14 @@ public class OrderCreateView extends Stage {
             System.out.println("order has changed!");
         });
         updateSuggestions();
+        setupAutoCompletion();
+
+        resetBtn.setDisable(true);
+        submitBtn.setDisable(true);
+        initializeTable();
+    }
+
+    private void setupAutoCompletion() {
         autoCompletionBinding = TextFields.bindAutoCompletion(skuTextField, skuSuggestions);
         autoCompletionBinding.setOnAutoCompleted(event -> {
             Product productToAdd = event.getCompletion();
@@ -104,7 +126,11 @@ public class OrderCreateView extends Stage {
         });
         resetBtn.setDisable(true);
         submitBtn.setDisable(true);
+        cashierLabel.setText(AuthenticationProvider.getInstance().getCurrentAccount().getUsername());
         initializeTable();
+        skuSuggestions.addListener((ListChangeListener<? super Product>) c -> {
+            autoCompletionBinding = TextFields.bindAutoCompletion(skuTextField, skuSuggestions);
+        });
     }
 
     private void initializeTable() {
@@ -122,19 +148,24 @@ public class OrderCreateView extends Stage {
     }
 
     private void reduceOrderLineData() {
-        Map<String, OrderLine> skuQuantities = new HashMap<>();
+        Map<Integer, List<OrderLine>> skuQuantities = new HashMap<>();
         for (OrderLine ol : orderLineData) {
-            String sku = ol.getSku();
-            if (!skuQuantities.containsKey(sku)) {
-                skuQuantities.put(sku, ol);
-                continue;
+            int batchId = ol.getBatchId();
+            skuQuantities.putIfAbsent(batchId, new ArrayList<>());
+
+            List<OrderLine> orderLines = skuQuantities.get(batchId);
+            Optional<OrderLine> orderLineFromSameBatch = orderLines.stream()
+                    .filter(o -> o.getBatchId() == ol.getBatchId()).findFirst();
+            if (orderLineFromSameBatch.isPresent()) {
+                OrderLine orderLine = orderLineFromSameBatch.get();
+                orderLine.setQuantity(orderLine.getQuantity() + ol.getQuantity());
+            } else {
+                skuQuantities.get(batchId).add(ol);
             }
-            OrderLine orderLine = skuQuantities.get(sku);
-            orderLine.setQuantity(orderLine.getQuantity() + ol.getQuantity());
         }
         List<OrderLine> orderLines = new ArrayList<>();
-        for (String sku : skuQuantities.keySet()) {
-            orderLines.add(skuQuantities.get(sku));
+        for (int batchId : skuQuantities.keySet()) {
+            orderLines.addAll(skuQuantities.get(batchId));
         }
         orderLineData.setAll(orderLines);
         orderData.getValue().setOrderLines(orderLines);
@@ -156,13 +187,23 @@ public class OrderCreateView extends Stage {
         });
         orderLineData.addAll(orderLinesToAdd);
         orderData.getValue().addOrderLines(orderLinesToAdd); // defect here
-        ((SimpleObjectProperty<Order>)orderData).set(orderData.getValue());
+        ((SimpleObjectProperty<Order>) orderData).set(orderData.getValue());
 
         reduceOrderLineData();
+        setTotal();
+    }
+
+    private void setTotal() {
+        total.setText("$" + calculateOrderTotal());
+    }
+
+    private long calculateOrderTotal() {
+        if (orderLineData.isEmpty()) return 0;
+        return orderLineData.stream().map(line -> line.getLineSum()).reduce((l1, l2) -> l1 + l2).get();
     }
 
     public void onSubmit(ActionEvent actionEvent) {
-        Dialog<?> loadingDialog = showLoadingDialog();
+        Dialog<?> loadingDialog = showLoadingDialog(getOwner());
         try {
             Order order = orderData.getValue();
             order.setTimestampAsCurrent();
@@ -179,29 +220,14 @@ public class OrderCreateView extends Stage {
 
     private void onSuccessfulAdd() {
         orderLineData.clear();
-    }
-
-    private void showAlertDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("An error occurred!");
-        alert.setHeaderText(message);
-        alert.show();
-    }
-
-    private Dialog<?> showLoadingDialog() {
-        Dialog<String> loadingDialog = new Dialog<>();
-        loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(skuTextField.getScene().getWindow());
-        loadingDialog.setHeaderText("Please wait...");
-        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        loadingDialog.show();
-        return loadingDialog;
+        setTotal();
     }
 
     public void onReset(ActionEvent actionEvent) {
         orderLineData.clear();
         orderData.getValue().setOrderLines(new ArrayList<>());
         controller.invalidateCache();
+        setInitialTotal();
     }
 
     public void updateSuggestions() {

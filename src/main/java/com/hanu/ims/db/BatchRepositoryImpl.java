@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
+public class    BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
         implements BatchRepository {
 
     // constants
@@ -32,7 +32,8 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
     // mappers
     private final BatchMapper batchMapper = new BatchMapper();
     private final CategoryMapper categoryMapper = new CategoryMapper();
-    private final ProductWithoutBatchesMapper productMapper = new ProductWithoutBatchesMapper();;
+    private final ProductWithoutBatchesMapper productMapper = new ProductWithoutBatchesMapper();
+    ;
 
     @Override
     public List<Batch> findBySku(String sku) {

@@ -5,11 +5,16 @@ import com.hanu.ims.model.domain.Batch;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Modality;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import static com.hanu.ims.util.modal.ModalService.showAlertDialog;
+import static com.hanu.ims.util.modal.ModalService.showLoadingDialog;
 
 public class BatchDetailsView extends Stage {
 
@@ -92,8 +97,6 @@ public class BatchDetailsView extends Stage {
         productNameInput.setText(newValue.getProductName());
         productNameInput.setEditable(false);
         importDateInput.setText(newValue.getImportDate().toString().substring(0, 10));
-//        supplierInput.setText(newValue.getSupplier().getName());
-//        categoryInput.setText(newValue.getSupplier().getCategory().getName());
         status.setText(newValue.getStatus().toString());
         if (newValue.getQuantity() < newValue.getImportQuantity()) {
             quantityInput.setEditable(false);
@@ -135,26 +138,9 @@ public class BatchDetailsView extends Stage {
         disableButtonsIfNoChangeDetected();
     }
 
-    private void showAlertDialog(String message, String title, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(message);
-        alert.show();
-    }
-
-    private Dialog<?> showLoadingDialog() {
-        Dialog<String> loadingDialog = new Dialog<>();
-        loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(saveButton.getScene().getWindow());
-        loadingDialog.setHeaderText("Please wait...");
-        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        loadingDialog.show();
-        return loadingDialog;
-    }
-
     public void onSave() {
         System.out.println("Saved!");
-        var loadingDialog = showLoadingDialog();
+        var loadingDialog = showLoadingDialog(getOwner());
         try {
             Batch batch = controller.updateBatch(currentState);
             loadingDialog.close();

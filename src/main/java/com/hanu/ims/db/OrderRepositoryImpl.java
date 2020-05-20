@@ -9,7 +9,6 @@ import com.hanu.ims.model.mapper.OrderListMapper;
 import com.hanu.ims.model.mapper.ProductWithoutBatchesMapper;
 import com.hanu.ims.model.repository.OrderRepository;
 import com.hanu.ims.util.configuration.Configuration;
-import javafx.scene.Scene;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -54,8 +53,8 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
             int batchId = orderLine.getBatchId();
             int orderId = orderLine.getOrderId();
             valueStrings.add(template.replace("$quantity", String.valueOf(quantity))
-                                    .replace("$batch_id", String.valueOf(batchId))
-                                    .replace("$_order_id", String.valueOf(orderId)));
+                    .replace("$batch_id", String.valueOf(batchId))
+                    .replace("$_order_id", String.valueOf(orderId)));
         });
         sql = sql.concat(String.join(", ", valueStrings));
 
@@ -97,7 +96,7 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String timestampStr = df.format(timestamp);
             String sql = ADD_ONE.replace("$timestamp", timestampStr)
-                            .replace("$cashier_id", String.valueOf(item.getCashierId()));
+                    .replace("$cashier_id", String.valueOf(item.getCashierId()));
             return getConnector().connect().executeInsert(sql) > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,7 +105,9 @@ public class OrderRepositoryImpl extends RepositoryImpl<Order, Integer>
     }
 
     @Override
-    public boolean add(List<Order> items) { return false; }
+    public boolean add(List<Order> items) {
+        return false;
+    }
 
     @Override
     public long count() {

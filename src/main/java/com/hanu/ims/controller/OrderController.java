@@ -6,7 +6,6 @@ import com.hanu.ims.model.domain.Batch;
 import com.hanu.ims.model.domain.Order;
 import com.hanu.ims.model.domain.OrderLine;
 import com.hanu.ims.model.domain.Product;
-import com.hanu.ims.model.repository.AccountRepository;
 import com.hanu.ims.model.repository.BatchRepository;
 import com.hanu.ims.model.repository.OrderRepository;
 import com.hanu.ims.util.servicelocator.ServiceContainer;
@@ -45,7 +44,8 @@ public class OrderController {
      *     updateR remainingQty
      *     continue
      * </pre>
-     * @param sku the requested Product SKU
+     *
+     * @param sku      the requested Product SKU
      * @param quantity number of products requested
      * @return a list of tuple <Batch, quantity>
      */
@@ -54,8 +54,8 @@ public class OrderController {
 
         List<Batch> pendingBatchesWithSameSku =
                 pendingBatches.stream()
-                    .filter(b -> b.getSku().equals(sku) && b.getStatus() != Batch.Status.EXPIRED)
-                    .collect(Collectors.toList());
+                        .filter(b -> b.getSku().equals(sku) && b.getStatus() != Batch.Status.EXPIRED)
+                        .collect(Collectors.toList());
         if (!pendingBatchesWithSameSku.isEmpty() || batchesBySku.size() != pendingBatchesWithSameSku.size()) {
             for (Batch batch : pendingBatchesWithSameSku) {
                 int batchId = batch.getId();
@@ -74,6 +74,7 @@ public class OrderController {
         for (Batch batch : batchesBySku) { // batches are sorted from oldest to newest
             if (remainingQty <= 0) break;
             int currentBatchQty = batch.getQuantity();
+            if (currentBatchQty <= 0) continue;
             batchSelections.put(batch, remainingQty); // this is where the current bug appears
             if (currentBatchQty >= remainingQty) {
                 int newBatchQty = currentBatchQty - remainingQty;
@@ -85,10 +86,10 @@ public class OrderController {
                 remainingQty -= currentBatchQty;
                 currentBatchQty = 0;
             }
-            if (pendingBatchesWithSameSku.isEmpty())
+            if (!pendingBatchesWithSameSku.stream().anyMatch(b -> b.getQuantity() > 0 && b.getId() == batch.getId())) // the glitch stems from this line // changed
                 pendingBatches.add(batch);
             else {
-                pendingBatches.stream().filter(b -> b.getSku().equals(sku))
+                pendingBatches.stream().filter(b -> b.getId() == batch.getId())
                         .findFirst().get().setQuantity(currentBatchQty);
             }
         }
@@ -180,6 +181,7 @@ public class OrderController {
         ObservableList<Order> orderList = FXCollections.observableList(new ArrayList<>());
         Thread dbThread = new Thread(() -> {
             List<Order> orders = orderRepository.findAll();
+            System.out.println(String.join(", ", orders.stream().map(o -> String.valueOf(o.getId())).collect(Collectors.toList())));
             orderList.setAll(orders);
         });
         dbThread.start();

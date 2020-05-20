@@ -24,16 +24,16 @@
                 fx:id="saveButton" onAction="#onSave"/>
         <VBox layoutX="35.0" layoutY="46.0" prefHeight="346.0" prefWidth="471.0">
             <children>
-                <Label text="SKU" />
+                <Label text="SKU"/>
                 <TextField fx:id="skuInput" disable="true"/>
-                <Label text="Product Name" />
+                <Label text="Product Name"/>
                 <TextField fx:id="productNameInput" disable="true"/>
-                <Label text="Category" />
+                <Label text="Category"/>
                 <TextField prefWidth="200.0" fx:id="categoryInput" disable="true"/>
-                <Label text="Supplier" />
-                <TextField fx:id="supplierInput" disable="true" />
+                <Label text="Supplier"/>
+                <TextField fx:id="supplierInput" disable="true"/>
                 <Label text="Import date"/>
-                <TextField fx:id="importDateInput" editable="false" disable="true" />
+                <TextField fx:id="importDateInput" editable="false" disable="true"/>
                 <Label text="Quantity in stock"/>
                 <TextField fx:id="quantityInput"/>
                 <Label text="Import price"/>

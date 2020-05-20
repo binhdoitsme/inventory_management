@@ -14,9 +14,9 @@ public class ProductRepositoryImpl extends RepositoryImpl<Product, Integer>
     @Override
     public boolean add(Product item) {
         String sql = ADD_ONE.replace("$sku", item.getSku())
-                            .replace("$name", item.getName())
-                            .replace("$desc", item.getDescription())
-                            .replace("$cat_id", String.valueOf(item.getCategory().getId()));
+                .replace("$name", item.getName())
+                .replace("$desc", item.getDescription())
+                .replace("$cat_id", String.valueOf(item.getCategory().getId()));
         try {
             int rowsAffected = getConnector().connect().executeInsert(sql);
             return rowsAffected > 0;

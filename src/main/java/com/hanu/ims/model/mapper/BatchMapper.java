@@ -15,14 +15,14 @@ public class BatchMapper extends Mapper<Batch> {
 
     private static Batch fromDatabase(ResultSet rs) {
         try {
-            Batch batch =  new Batch(rs.getInt("id"),
-                                    rs.getString("sku"),
-                                    rs.getInt("import_quantity"),
-                                    rs.getInt("batch_quantity"),
-                                    rs.getDate("import_date"),
-                                    rs.getLong("import_price"),
-                                    rs.getLong("msrp"),
-                                    rs.getString("product_name"));
+            Batch batch = new Batch(rs.getInt("id"),
+                    rs.getString("sku"),
+                    rs.getInt("import_quantity"),
+                    rs.getInt("batch_quantity"),
+                    rs.getDate("import_date"),
+                    rs.getLong("import_price"),
+                    rs.getLong("msrp"),
+                    rs.getString("product_name"));
             Object orderId = rs.getObject("_order_id");
             long importDate = batch.getImportDate().getTime() / 1000;
             long dateToday = Instant.now().getEpochSecond();

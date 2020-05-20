@@ -7,11 +7,12 @@ import com.hanu.ims.model.domain.Account;
 import com.hanu.ims.model.mapper.AccountMapper;
 import com.hanu.ims.model.repository.AccountRepository;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
         implements AccountRepository {
@@ -48,10 +49,10 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
 
     @Override
     public long count() { //total count, including admins
-        long count= 0;
+        long count = 0;
         try {
             String sql = "SELECT * FROM account";
-            count= getConnector().connect().executeScalar(sql);
+            count = getConnector().connect().executeScalar(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (InvalidQueryTypeException e) {
@@ -158,21 +159,20 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
         boolean updateCount = false;
         try {
             String sql =
-                    "update account set username= '$username', password= '$password' where id= $id"
-                    .replace("$username", item.getUsername())
-                    .replace("$password", item.getPassword())
-                    .replace("$id", Integer.toString(item.getId()));
+                    "update account set username= '$username', password= '$password' , last_login= '$last_login' where id= $id"
+                            .replace("$username", item.getUsername())
+                            .replace("$password", item.getPassword())
+                            .replace("$last_login", String.valueOf(getCurrentTimeStamp()))
+                            .replace("$id", Integer.toString(item.getId()));
 
-            updateCount= getConnector().connect().executeUpdate(sql)>0;
-            System.out.println("updateCount is "+ updateCount);
-            if(updateCount) {
+            updateCount = getConnector().connect().executeUpdate(sql) > 0;
+            System.out.println("updateCount is " + updateCount);
+            if (updateCount) {
                 return item;
-            }
-            else return null;
+            } else return null;
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        catch (InvalidQueryTypeException e) {
+        } catch (InvalidQueryTypeException e) {
             e.printStackTrace();
         }
         return null;
@@ -201,5 +201,11 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Timestamp getCurrentTimeStamp() {
+        long timeMillis = System.currentTimeMillis();
+        long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(timeMillis);
+        return new Timestamp(timeSeconds * 1000);
     }
 }

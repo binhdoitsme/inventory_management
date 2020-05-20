@@ -3,7 +3,9 @@ package com.hanu.ims.db;
 import com.hanu.ims.base.RepositoryImpl;
 import com.hanu.ims.exception.DbException;
 import com.hanu.ims.exception.InvalidQueryTypeException;
+import com.hanu.ims.model.domain.Batch;
 import com.hanu.ims.model.domain.Supplier;
+import com.hanu.ims.model.mapper.BatchMapper;
 import com.hanu.ims.model.mapper.SupplierMapper;
 import com.hanu.ims.model.repository.SupplierRepository;
 import com.hanu.ims.util.configuration.Configuration;
@@ -27,12 +29,15 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
     private static final String FIND_ALL_ACTIVE = Configuration.get("db.sql.supplier.findAllActiveSuppliers");
     private static final String SAVE_ONE = Configuration.get("db.sql.supplier.saveOne");
     private static final String INVALIDATE = Configuration.get("db.sql.supplier.invalidate");
+    private static final String BATCH_BY_SUPPLIER = Configuration.get("db.sql.supplier.findBatchBySupplier");
 
     // mappers
     private SupplierMapper supplierMapper;
+    private BatchMapper batchMapper;
 
     public SupplierRepositoryImpl() {
         supplierMapper = new SupplierMapper();
+        batchMapper = new BatchMapper();
     }
 
     @Override
@@ -252,6 +257,24 @@ public class SupplierRepositoryImpl extends RepositoryImpl<Supplier, Integer> im
                 supplierList.add(supplier);
             }
             return supplierList;
+        } catch (SQLException | InvalidQueryTypeException e) {
+            e.printStackTrace();
+            throw new DbException(e);
+        }
+    }
+
+    @Override
+    public List<Batch> findBatchBySupplier(Supplier supplier) {
+        List<Batch> lstbatch = new ArrayList<>();
+        String query = BATCH_BY_SUPPLIER    .replace("$id", String.valueOf(supplier.getId()));
+        try {
+            ResultSet rs = getConnector().connect().executeSelect(query);
+            while (rs.next()) {
+                var batch = batchMapper.forwardConvert(rs);
+                if (batch == null) continue;
+                lstbatch.add(batch);
+            }
+            return lstbatch;
         } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
             throw new DbException(e);
