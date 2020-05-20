@@ -5,6 +5,7 @@ public class DbException extends RuntimeException {
 
     /**
      * Construct a runtime DbException with nested cause
+     *
      * @param throwable
      */
     public DbException(Throwable throwable) {

@@ -16,15 +16,15 @@ public class CreateAccountPopup {
     private Label userCountLabel;
     private TableView<Account> userTable;
 
-    CreateAccountPopup(){
+    CreateAccountPopup() {
         super();
     }
 
     CreateAccountPopup(TableView<Account> tableView, Label label) {
         this.userTable = tableView;
-        this.userCountLabel= label;
+        this.userCountLabel = label;
     }
-    
+
     public void display() throws Exception {
         Stage popupWindow = new Stage();
 
@@ -37,12 +37,12 @@ public class CreateAccountPopup {
 
         popupWindow.setScene(firstScene);
 
-        popupWindow.setOnHiding( event -> {
+        popupWindow.setOnHiding(event -> {
             System.out.println("Closing Stage");
             userTable.getItems().clear();
             userTable.getItems().addAll(AdminDashboardViewEventBinding.staticAccountList);
             userCountLabel.setText(Integer.toString(AdminDashboardViewEventBinding.staticAccountList.size()));
-        } );
+        });
 
         popupWindow.showAndWait();
 

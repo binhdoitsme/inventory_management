@@ -1,5 +1,9 @@
 package com.hanu.ims.util.configuration;
 
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +11,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import org.apache.commons.configuration2.FileBasedConfiguration;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
-import org.apache.commons.configuration2.ex.ConfigurationException;
 
 /**
  * Configuration class
@@ -37,7 +37,7 @@ public class Configuration {
 
         try {
             configurationFolder = new File(CONFIGURATION_PATH);
-            @SuppressWarnings("unused") Object o =configurationFolder.listFiles()[0];
+            @SuppressWarnings("unused") Object o = configurationFolder.listFiles()[0];
         } catch (NullPointerException e) {
             configurationFolder = new File("./src/main/resources/".concat(CONFIGURATION_PATH));
         }
@@ -66,8 +66,8 @@ public class Configuration {
 
     public String getString(String property) {
         return configurations.stream().filter(c -> c.containsKey(property))
-                                    .map(c -> c.getString(property))
-                                    .collect(Collectors.joining(""));
+                .map(c -> c.getString(property))
+                .collect(Collectors.joining(""));
     }
 
     public static String get(String property) {

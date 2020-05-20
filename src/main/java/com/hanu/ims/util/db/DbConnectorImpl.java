@@ -1,13 +1,13 @@
 package com.hanu.ims.util.db;
 
+import com.hanu.ims.exception.InvalidQueryTypeException;
+import com.hanu.ims.util.configuration.Configuration;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
-
-import com.hanu.ims.exception.InvalidQueryTypeException;
-import com.hanu.ims.util.configuration.Configuration;
 
 public class DbConnectorImpl implements DbConnector {
     // constants
@@ -42,7 +42,8 @@ public class DbConnectorImpl implements DbConnector {
         return connection.createStatement().executeQuery(query);
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public <T extends Object> T executeScalar(String query) throws SQLException, InvalidQueryTypeException {
         throwExceptionIfInvalidQueryType(query, DbQueryType.SELECT);
         logQuery(query);
@@ -79,7 +80,7 @@ public class DbConnectorImpl implements DbConnector {
     }
 
     private void throwExceptionIfInvalidQueryType(String query, DbQueryType type)
-        throws InvalidQueryTypeException {
+            throws InvalidQueryTypeException {
         if (!validateQueryType(query, type)) {
             throw new InvalidQueryTypeException();
         }

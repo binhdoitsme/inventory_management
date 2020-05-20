@@ -1,7 +1,6 @@
 package com.hanu.ims.model.mapper;
 
 import com.hanu.ims.base.Mapper;
-import com.hanu.ims.model.domain.Category;
 import com.hanu.ims.model.domain.Supplier;
 
 import java.sql.ResultSet;
@@ -30,6 +29,6 @@ public class SupplierMapper extends Mapper<Supplier> {
                 .replace("$name", "\'" + supplier.getName() + "\'")
                 .replace("$phone", "\'" + supplier.getPhone() + "\'")
                 .replace("$address", "\'" + supplier.getAddress() + "\'")
-                .replace("$isAvailable", ""+ supplier.isAvailable());
+                .replace("$isAvailable", "" + supplier.isAvailable());
     }
 }

@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane prefHeight="808.0" prefWidth="237.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.EditAccountView">
+<?import javafx.scene.text.*?>
+<AnchorPane prefHeight="808.0" prefWidth="237.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hanu.ims.view.EditAccountView">
     <children>
         <Label layoutX="17.0" layoutY="14.0" prefHeight="70.0" prefWidth="221.0" text="Confirm Password Reset">
             <font>
-                <Font name="System Bold" size="18.0" />
-            </font></Label>
-        <TextField fx:id="usernameField" layoutX="29.0" layoutY="246.0" prefHeight="25.0" prefWidth="180.0" />
-        <Button layoutX="50.0" layoutY="484.0" mnemonicParsing="false" onAction="#attemptEditAccount" prefHeight="58.0" prefWidth="138.0" text="Reset PW">
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="usernameField" layoutX="29.0" layoutY="246.0" prefHeight="25.0" prefWidth="180.0"/>
+        <Button layoutX="50.0" layoutY="484.0" mnemonicParsing="false" onAction="#attemptEditAccount" prefHeight="58.0"
+                prefWidth="138.0" text="Reset PW">
             <font>
-                <Font size="18.0" />
+                <Font size="18.0"/>
             </font>
         </Button>
-        <Label fx:id="statusLabel" layoutX="12.0" layoutY="571.0" prefHeight="140.0" prefWidth="215.0" textAlignment="CENTER" wrapText="true">
+        <Label fx:id="statusLabel" layoutX="12.0" layoutY="571.0" prefHeight="140.0" prefWidth="215.0"
+               textAlignment="CENTER" wrapText="true">
             <font>
-                <Font name="Calibri Bold" size="18.0" />
+                <Font name="Calibri Bold" size="18.0"/>
             </font>
         </Label>
-        <Label layoutX="35.0" layoutY="125.0" prefHeight="121.0" prefWidth="169.0" text="You are about to reset the password for the account with the username:" wrapText="true">
+        <Label layoutX="35.0" layoutY="125.0" prefHeight="121.0" prefWidth="169.0"
+               text="You are about to reset the password for the account with the username:" wrapText="true">
             <font>
-                <Font size="15.0" />
+                <Font size="15.0"/>
             </font>
         </Label>
-      <Label layoutX="26.0" layoutY="350.0" prefHeight="95.0" prefWidth="186.0" text="Are you sure you want to proceed?" wrapText="true">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
+        <Label layoutX="26.0" layoutY="350.0" prefHeight="95.0" prefWidth="186.0"
+               text="Are you sure you want to proceed?" wrapText="true">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Label>
     </children>
 </AnchorPane>

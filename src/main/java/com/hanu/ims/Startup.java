@@ -13,7 +13,8 @@ import java.io.IOException;
 public class Startup {
     private ServiceContainer container;
 
-    public Startup() {}
+    public Startup() {
+    }
 
     public Startup configureDependencies()
             throws ClassNotFoundException, IOException, NoSuchMethodException {
@@ -21,7 +22,7 @@ public class Startup {
         container = ServiceContainer.getInstance();
 
         // add dependencies here
-        
+
         container.addDependency(DbConnector.class, new DbConnectorImpl());
         container.addDependency(AccountRepository.class, new AccountRepositoryImpl());
         container.addDependency(OrderRepository.class, new OrderRepositoryImpl());

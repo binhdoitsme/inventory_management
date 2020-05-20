@@ -3,7 +3,6 @@ package com.hanu.ims.view;
 import com.hanu.ims.controller.BatchController;
 import com.hanu.ims.model.domain.Batch;
 import com.hanu.ims.model.domain.Category;
-import com.hanu.ims.model.domain.Order;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -11,7 +10,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,6 +20,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Optional;
+
+import static com.hanu.ims.util.modal.ModalService.*;
 
 public class BatchListView extends Stage {
 
@@ -77,9 +77,6 @@ public class BatchListView extends Stage {
                 batchDeleteButton.setDisable(true);
             } else {
                 Batch item = batchTable.getSelectionModel().getSelectedItem();
-//                System.out.println(item.getQuantity() < item.getImportQuantity() ||
-//                        item.getStatus() == Batch.Status.EXPIRED ||
-//                        item.getStatus() == Batch.Status.ORDERED);
                 if (item.getQuantity() < item.getImportQuantity() ||
                         item.getStatus() == Batch.Status.EXPIRED ||
                         item.getStatus() == Batch.Status.ORDERED) {
@@ -140,19 +137,12 @@ public class BatchListView extends Stage {
 
     @FXML
     public void onDeleteButtonClicked() {
-        Dialog<ButtonType> confirmationDialog = new Dialog<>();
-        confirmationDialog.setTitle("Confirm delete");
-        confirmationDialog.setHeaderText("Are you sure want to delete the selected batch?");
-        confirmationDialog.initOwner(batchTable.getScene().getWindow());
-        confirmationDialog.initModality(Modality.WINDOW_MODAL);
-        confirmationDialog.getDialogPane().getButtonTypes().add(ButtonType.YES);
-        confirmationDialog.getDialogPane().getButtonTypes().add(ButtonType.NO);
-        Optional<ButtonType> result = confirmationDialog.showAndWait();
+        Optional<ButtonType> result = showConfirmationDialog("Are you sure want to delete the selected batch?", getOwner());
         if (!result.isPresent() || result.get().equals(ButtonType.NO)) {
             return;
         }
 
-        Dialog<?> loadingDialog = showLoadingDialog();
+        Dialog<?> loadingDialog = showLoadingDialog(getOwner());
         Batch batch = batchTable.getSelectionModel().getSelectedItem();
         batchTable.getSelectionModel().clearSelection();
         try {
@@ -173,23 +163,6 @@ public class BatchListView extends Stage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private Dialog<?> showLoadingDialog() {
-        Dialog<String> loadingDialog = new Dialog<>();
-        loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(getScene().getWindow());
-        loadingDialog.setHeaderText("Please wait...");
-        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        loadingDialog.show();
-        return loadingDialog;
-    }
-
-    private void showAlertDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("An error occurred!");
-        alert.setHeaderText(message);
-        alert.show();
     }
 
     static void updateDataSource(boolean forceUpdate) {

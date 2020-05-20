@@ -1,7 +1,6 @@
 package com.hanu.ims.view;
 
 import com.hanu.ims.controller.SupplierController;
-import com.hanu.ims.model.domain.Batch;
 import com.hanu.ims.model.domain.Supplier;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,6 +17,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Optional;
+
+import static com.hanu.ims.util.modal.ModalService.showAlertDialog;
+import static com.hanu.ims.util.modal.ModalService.showLoadingDialog;
 
 public class SupplierListView extends Stage {
     // constants
@@ -130,7 +132,7 @@ public class SupplierListView extends Stage {
             return;
         }
 
-        Dialog<?> loadingDialog = showLoadingDialog();
+        Dialog<?> loadingDialog = showLoadingDialog(getOwner());
         Supplier supplier = supplierTable.getSelectionModel().getSelectedItem();
         supplierTable.getSelectionModel().clearSelection();
         try {
@@ -161,23 +163,6 @@ public class SupplierListView extends Stage {
             e.printStackTrace();
             showAlertDialog(e.getMessage());
         }
-    }
-
-    private Dialog<?> showLoadingDialog() {
-        Dialog<String> loadingDialog = new Dialog<>();
-        loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(getScene().getWindow());
-        loadingDialog.setHeaderText("Please wait...");
-        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        loadingDialog.show();
-        return loadingDialog;
-    }
-
-    private void showAlertDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("An error occurred!");
-        alert.setHeaderText(message);
-        alert.show();
     }
 
     static void updateDataSource(boolean forceUpdate) {

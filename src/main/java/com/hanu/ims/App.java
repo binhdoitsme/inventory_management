@@ -1,6 +1,5 @@
 package com.hanu.ims;
 
-import com.hanu.ims.view.BatchListView;
 import com.hanu.ims.view.LoginView;
 import javafx.application.Application;
 import javafx.stage.Stage;

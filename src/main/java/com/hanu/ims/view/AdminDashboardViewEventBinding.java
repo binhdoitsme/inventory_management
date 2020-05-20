@@ -1,6 +1,5 @@
 package com.hanu.ims.view;
 
-import com.hanu.ims.base.DashboardView;
 import com.hanu.ims.controller.AccountController;
 import com.hanu.ims.model.domain.Account;
 import com.hanu.ims.model.domain.Role;
@@ -33,16 +32,15 @@ public class AdminDashboardViewEventBinding {
     public TableColumn<Account, Integer> idColumn;
     @FXML
     public TableColumn<Account, String> usernameColumn;
-//    @FXML
+    //    @FXML
 //    public TableColumn<Account, String> passwordColumn;
     @FXML
     public TableColumn<Account, Role> roleColumn;
 
 
-
-    public static ObservableList<Account> staticAccountList= null;
-    private static List<Account> accountList= null;
-    public static Account accountToEdit= null;
+    public static ObservableList<Account> staticAccountList = null;
+    private static List<Account> accountList = null;
+    public static Account accountToEdit = null;
 
 //    private final List<Account> data =
 //            FXCollections.observableArrayList(
@@ -50,7 +48,6 @@ public class AdminDashboardViewEventBinding {
 //                    new Account(2,"Isabella", "Johnson", Role.InventoryManager),
 //                    new Account(3,"Ethan", "Williams", Role.Salesperson)
 //            );
-
 
 
     public void initialize() {
@@ -80,8 +77,8 @@ public class AdminDashboardViewEventBinding {
                         btn.setOnAction((ActionEvent event) -> {
                             Account data = getTableView().getItems().get(getIndex());
                             System.out.println("selectedEditData: " + data);
-                            accountToEdit= data;
-                            EditAccountPopup edit= new EditAccountPopup(userTable, data);
+                            accountToEdit = data;
+                            EditAccountPopup edit = new EditAccountPopup(userTable, data);
                             try {
                                 edit.display();
                             } catch (Exception e) {
@@ -124,11 +121,11 @@ public class AdminDashboardViewEventBinding {
                         btn.setOnAction((ActionEvent event) -> {
                             Account data = getTableView().getItems().get(getIndex());
                             System.out.println("selectedData: " + data);
-                            if(controller.deleteAccount(data)){
-                                deleteStatusLabel.setText("Deleted user "+ data.toString()+ " successfully");
+                            if (controller.deleteAccount(data)) {
+                                deleteStatusLabel.setText("Deleted user " + data.toString() + " successfully");
                                 refreshTable(event);
-                            }
-                            else deleteStatusLabel.setText("Delete user failed??? Wow! Probably it's due to FK constraints");
+                            } else
+                                deleteStatusLabel.setText("Delete user failed??? Wow! Probably it's due to FK constraints");
                         });
                     }
 
@@ -153,16 +150,16 @@ public class AdminDashboardViewEventBinding {
     }
 
     @FXML
-    public void showCreateAccountView(ActionEvent event) throws Exception{
-        CreateAccountPopup pop= new CreateAccountPopup(userTable, userCountLabel);
+    public void showCreateAccountView(ActionEvent event) throws Exception {
+        CreateAccountPopup pop = new CreateAccountPopup(userTable, userCountLabel);
         pop.display();
     }
 
     private ObservableList<Account> parseUserList() {
-        accountList= controller.getAccountList();
+        accountList = controller.getAccountList();
         userCountLabel.setText(Integer.toString(accountList.size()));
 
-        staticAccountList= FXCollections.observableArrayList(accountList);
+        staticAccountList = FXCollections.observableArrayList(accountList);
         return staticAccountList;
     }
 

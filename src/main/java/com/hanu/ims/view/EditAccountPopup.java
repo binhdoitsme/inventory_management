@@ -5,7 +5,6 @@ import com.hanu.ims.model.domain.Account;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -16,13 +15,13 @@ public class EditAccountPopup {
     private Account account;
     private TableView<Account> userTable;
 
-    EditAccountPopup(){
+    EditAccountPopup() {
         super();
     }
 
     EditAccountPopup(TableView<Account> tableView, Account account) {
         this.userTable = tableView;
-        this.account= account;
+        this.account = account;
     }
 
     public void display() throws Exception {
@@ -37,10 +36,10 @@ public class EditAccountPopup {
 
         popupWindow.setScene(firstScene);
 
-        popupWindow.setOnHiding( event -> {
+        popupWindow.setOnHiding(event -> {
             System.out.println("Closing Edit Stage");
             userTable.refresh();
-        } );
+        });
 
         popupWindow.showAndWait();
 

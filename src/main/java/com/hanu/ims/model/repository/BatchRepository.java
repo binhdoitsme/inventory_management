@@ -10,7 +10,10 @@ import java.util.Map;
 
 public interface BatchRepository extends Repository<Batch, Integer> {
     List<Batch> findBySku(String sku);
+
     List<Batch> findAvailableBySku(String sku);
+
     Map<Batch, Integer> getBatchesAndQuantityFromOrderLines(List<OrderLine> orderLines);
+
     List<Category> getCategorySuggestions();
 }

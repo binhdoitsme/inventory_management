@@ -6,7 +6,7 @@ import com.hanu.ims.model.domain.Account;
 import java.util.List;
 
 public interface AccountRepository extends Repository<Account, Integer> {
-    List<Account> accounts= null;
+    List<Account> accounts = null;
 
     public boolean add(Account account);
 

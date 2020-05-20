@@ -20,13 +20,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
 import java.util.*;
+
+import static com.hanu.ims.util.modal.ModalService.*;
 
 public class OrderDetailsView extends Stage {
     private static final int DEFAULT_QTY = 1;
@@ -121,8 +122,9 @@ public class OrderDetailsView extends Stage {
     }
 
     private void disableIfNotEditable() {
-        if (initialState.getCashierId() != AuthenticationProvider.getInstance().getCurrentAccount().getId()) {
-            orderLinesTable.setDisable(true);
+        if (initialState.getCashierId() != AuthenticationProvider.getInstance().getCurrentAccount().getId()
+                || initialState.isExpired()) {
+//            orderLinesTable.setDisable(true);
             skuTextField.setDisable(true);
         }
     }
@@ -138,7 +140,8 @@ public class OrderDetailsView extends Stage {
     private void addOrderLineSelectedListener() {
         ObservableList<TablePosition> selectedCells = orderLinesTable.getSelectionModel().getSelectedCells();
         selectedCells.addListener((ListChangeListener<? super TablePosition>) c -> {
-            if (selectedCells.isEmpty()) {
+            if (selectedCells.isEmpty() || initialState.isExpired()
+                    || initialState.getCashierId() != AuthenticationProvider.getInstance().getCurrentAccount().getId()) {
                 deleteButton.setDisable(true);
             } else {
                 deleteButton.setDisable(false);
@@ -185,6 +188,7 @@ public class OrderDetailsView extends Stage {
             saveButton.setDisable(true);
             return;
         }
+        if (initialState.isExpired()) return;
         revertButton.setDisable(false);
         saveButton.setDisable(false);
     }
@@ -207,35 +211,11 @@ public class OrderDetailsView extends Stage {
         controller.invalidateCache();
     }
 
-    private void showAlertDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("An error occurred!");
-        alert.setHeaderText(message);
-        alert.show();
-    }
-
-    private void showSuccessfulDialog() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success!");
-        alert.setHeaderText("The operation completed successfully!");
-        alert.show();
-    }
-
-    private Dialog<?> showLoadingDialog() {
-        Dialog<String> loadingDialog = new Dialog<>();
-        loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(orderLinesTable.getScene().getWindow());
-        loadingDialog.setHeaderText("Please wait...");
-        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        loadingDialog.show();
-        return loadingDialog;
-    }
-
     /**
      * Event handler
      */
     public void onSaveButtonClicked() {
-        Dialog<?> loadingDialog = showLoadingDialog();
+        Dialog<?> loadingDialog = showLoadingDialog(getScene().getWindow());
         try {
             controller.updateOrder(observableOrder.getValue(), orderLinesToDelete, orderLinesToAdd);
             showSuccessfulDialog();

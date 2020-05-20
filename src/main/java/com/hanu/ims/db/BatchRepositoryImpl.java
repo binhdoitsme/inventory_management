@@ -32,7 +32,8 @@ public class BatchRepositoryImpl extends RepositoryImpl<Batch, Integer>
     // mappers
     private final BatchMapper batchMapper = new BatchMapper();
     private final CategoryMapper categoryMapper = new CategoryMapper();
-    private final ProductWithoutBatchesMapper productMapper = new ProductWithoutBatchesMapper();;
+    private final ProductWithoutBatchesMapper productMapper = new ProductWithoutBatchesMapper();
+    ;
 
     @Override
     public List<Batch> findBySku(String sku) {

@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface SupplierRepository extends Repository<Supplier, Integer> {
     boolean add(Supplier supplier);
+
     void invalidate(int id);
+
     List<Supplier> findAllActiveSuppliers();
 }

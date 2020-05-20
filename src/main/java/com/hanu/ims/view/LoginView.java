@@ -12,11 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import static com.hanu.ims.util.modal.ModalService.showLoadingDialog;
 
 public class LoginView extends Stage {
 
@@ -79,7 +79,7 @@ public class LoginView extends Stage {
 
     @FXML
     public void onLoginClicked() throws Exception {
-        Dialog<?> loadingDialog = showLoadingDialog();
+        Dialog<?> loadingDialog = showLoadingDialog(getOwner());
 
         String username = usernameField.getText();
         String password = passwordField.getText();
@@ -110,16 +110,6 @@ public class LoginView extends Stage {
         loginFailedAlert.setContentText(longMessage);
         loginFailedAlert.show();
         logger.info("Login failed");
-    }
-
-    private Dialog<?> showLoadingDialog() {
-        Dialog<String> loadingDialog = new Dialog<>();
-        loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(usernameField.getScene().getWindow());
-        loadingDialog.setHeaderText("Please wait...");
-        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        loadingDialog.show();
-        return loadingDialog;
     }
 
     private Account validateAccount(String username, String password) {

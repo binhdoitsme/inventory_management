@@ -2,11 +2,10 @@ package com.hanu.ims.model.domain;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class Order {
+public class Order implements Comparable {
     private final int id;
     private final int cashierId;
     private String cashierName;
@@ -26,6 +25,7 @@ public class Order {
 
     /**
      * Constructor for a new order
+     *
      * @param cashierId
      */
     public Order(int cashierId) {
@@ -79,6 +79,10 @@ public class Order {
         this.timestamp = Instant.now().getEpochSecond();
     }
 
+    public boolean isExpired() {
+        return (Instant.now().getEpochSecond()) - timestamp > 604800;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Order{");
@@ -100,5 +104,14 @@ public class Order {
                 timestamp == order.timestamp &&
                 Objects.equals(cashierName, order.cashierName) &&
                 orderLines.equals(order.orderLines);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o.getClass() != getClass()) {
+            throw new ClassCastException();
+        }
+        var anotherOrder = (Order) o;
+        return Integer.compare(anotherOrder.id, id);
     }
 }

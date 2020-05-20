@@ -11,13 +11,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Modality;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.hanu.ims.util.modal.ModalService.showAlertDialog;
+import static com.hanu.ims.util.modal.ModalService.showLoadingDialog;
 
 public class SupplierCreateView extends Stage {
     private static final String FXML_FILE_NAME = "supplier_create_view.fxml";
@@ -55,7 +59,7 @@ public class SupplierCreateView extends Stage {
         String address = supplierAddressInput.getText().trim();
         Supplier supplier = new Supplier(name, phone, address, true);
 
-        var loadingDialog = showLoadingDialog();
+        var loadingDialog = showLoadingDialog(getOwner());
         try {
             controller.createSupplier(supplier);
             updateSuggestions(false);
@@ -67,23 +71,6 @@ public class SupplierCreateView extends Stage {
             loadingDialog.close();
             showAlertDialog(e.getMessage(), "An error occurred!", Alert.AlertType.WARNING);
         }
-    }
-
-    private void showAlertDialog(String message, String title, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(message);
-        alert.show();
-    }
-
-    private Dialog<?> showLoadingDialog() {
-        Dialog<String> loadingDialog = new Dialog<>();
-        loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(getScene().getWindow());
-        loadingDialog.setHeaderText("Please wait...");
-        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        loadingDialog.show();
-        return loadingDialog;
     }
 
     static void updateSuggestions(boolean forceUpdate) {

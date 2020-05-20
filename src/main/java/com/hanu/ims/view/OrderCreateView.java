@@ -21,13 +21,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
 import java.util.*;
+
+import static com.hanu.ims.util.modal.ModalService.showAlertDialog;
+import static com.hanu.ims.util.modal.ModalService.showLoadingDialog;
 
 public class OrderCreateView extends Stage {
 
@@ -200,7 +202,7 @@ public class OrderCreateView extends Stage {
     }
 
     public void onSubmit(ActionEvent actionEvent) {
-        Dialog<?> loadingDialog = showLoadingDialog();
+        Dialog<?> loadingDialog = showLoadingDialog(getOwner());
         try {
             Order order = orderData.getValue();
             order.setTimestampAsCurrent();
@@ -217,23 +219,6 @@ public class OrderCreateView extends Stage {
 
     private void onSuccessfulAdd() {
         orderLineData.clear();
-    }
-
-    private void showAlertDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("An error occurred!");
-        alert.setHeaderText(message);
-        alert.show();
-    }
-
-    private Dialog<?> showLoadingDialog() {
-        Dialog<String> loadingDialog = new Dialog<>();
-        loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(skuTextField.getScene().getWindow());
-        loadingDialog.setHeaderText("Please wait...");
-        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        loadingDialog.show();
-        return loadingDialog;
     }
 
     public void onReset(ActionEvent actionEvent) {

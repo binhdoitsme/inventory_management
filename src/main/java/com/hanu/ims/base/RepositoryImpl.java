@@ -2,7 +2,6 @@ package com.hanu.ims.base;
 
 import com.hanu.ims.exception.DbException;
 import com.hanu.ims.util.db.DbConnector;
-import com.hanu.ims.util.db.DbConnectorImpl;
 import com.hanu.ims.util.servicelocator.ServiceContainer;
 
 import java.io.Serializable;

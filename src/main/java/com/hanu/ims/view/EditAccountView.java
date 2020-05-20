@@ -2,23 +2,18 @@ package com.hanu.ims.view;
 
 import com.hanu.ims.controller.AccountController;
 import com.hanu.ims.model.domain.Account;
-import com.hanu.ims.model.domain.Role;
 import javafx.event.ActionEvent;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 public class EditAccountView {
-    private AccountController ac= new AccountController();
+    private AccountController ac = new AccountController();
 
-//    public TextField passwordField;
+    //    public TextField passwordField;
 //    public TextField confirmPasswordField;
-    Account account= AdminDashboardViewEventBinding.accountToEdit;
+    Account account = AdminDashboardViewEventBinding.accountToEdit;
 
     public TextField usernameField;
-
 
 
     public Label statusLabel;

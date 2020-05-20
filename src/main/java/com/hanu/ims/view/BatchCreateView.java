@@ -23,6 +23,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 
+import static com.hanu.ims.util.modal.ModalService.showAlertDialog;
+import static com.hanu.ims.util.modal.ModalService.showLoadingDialog;
+
 public class BatchCreateView extends Stage {
 
     // constants
@@ -179,24 +182,6 @@ public class BatchCreateView extends Stage {
         disableButtonsIfNotCompletedForm();
     }
 
-    private void showAlertDialog(String message, String title, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText("");
-        alert.setContentText(message);
-        alert.show();
-    }
-
-    private Dialog<?> showLoadingDialog() {
-        Dialog<String> loadingDialog = new Dialog<>();
-        loadingDialog.initModality(Modality.WINDOW_MODAL);
-        loadingDialog.initOwner(container.getScene().getWindow());
-        loadingDialog.setHeaderText("Please wait...");
-        loadingDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        loadingDialog.show();
-        return loadingDialog;
-    }
-
     public void onSave() throws IOException {
         if (selectedProduct == null) {
             // show create product dialog
@@ -214,7 +199,7 @@ public class BatchCreateView extends Stage {
                     "An error occurred!", Alert.AlertType.WARNING);
             return;
         }
-        Dialog<?> loadingDialog = showLoadingDialog();
+        Dialog<?> loadingDialog = showLoadingDialog(getOwner());
         String sku = selectedProduct.getSku();
         Integer supplierId = selectedSupplier.getId();
         Integer quantity = quantityInput.getValue();
