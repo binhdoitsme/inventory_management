@@ -198,6 +198,7 @@ public class OrderCreateView extends Stage {
     }
 
     private long calculateOrderTotal() {
+        if (orderLineData.isEmpty()) return 0;
         return orderLineData.stream().map(line -> line.getLineSum()).reduce((l1, l2) -> l1 + l2).get();
     }
 

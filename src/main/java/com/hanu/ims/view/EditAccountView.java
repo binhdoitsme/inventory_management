@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class EditAccountView {
+    private static final String DEFAULT_PASSWORD = "1";
     private AccountController ac = new AccountController();
 
     //    public TextField passwordField;
@@ -30,30 +31,29 @@ public class EditAccountView {
 
     public void attemptEditAccount(ActionEvent actionEvent) {
         String username = usernameField.getText();
-        String password = passwordField.getText();
-        String confirmPassword = confirmPasswordField.getText();
+        String password = DEFAULT_PASSWORD;
         String role = account.getRole().name();
 
-        if (validateNewAccount(username, password, confirmPassword, role).equals("OK")) {
-            Account updatedAccount = new Account(account.getId(), username, password, Role.valueOf(role), 0);
-            try {
-                if (ac.updateAccount(updatedAccount)) {
-                    statusLabel.setText("Edit account successfully");
-                } else {
-                    statusLabel.setText("Failed to update account");
-                }
+//        if (validateNewAccount(username, password, confirmPassword, role).equals("OK")) {
+        Account updatedAccount = new Account(account.getId(), username, password, Role.valueOf(role), 0);
+        try {
+            if (ac.updateAccount(updatedAccount)) {
+                statusLabel.setText("Edit account successfully");
+            } else {
+                statusLabel.setText("Failed to update account");
+            }
 
 //                Account doppelgangerAccount = new Account(ac.validate(username, password).getId()
 //                        , username, password, Role.valueOf(role));
 //                AdminDashboardView.staticAccountList.add(doppelgangerAccount);
 
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                statusLabel.setText("Failed to reset password!?!??!?!?!");
-            }
-
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            statusLabel.setText("Failed to reset password!?!??!?!?!");
         }
+
+//        }
 
 //    private String validateNewAccount(String username, String password, String confirmPassword, String role) {
 //        if (username.length() < 4) {
