@@ -5,14 +5,14 @@ public class Account {
     private String username;
     private String password;
     private Role role;
-    private long lastUpdate;
+    private long lastLogin;
 
-    public Account(int id, String username, String password, Role role, long lastUpdate) {
+    public Account(int id, String username, String password, Role role, long lastLogin) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;
-        this.lastUpdate = lastUpdate;
+        this.lastLogin = lastLogin;
     }
 
     public Account(String username, String password, Role role) {
@@ -64,9 +64,9 @@ public class Account {
         this.role = role;
     }
 
-    public void setLast_update(long lastUpdate) { this.lastUpdate = lastUpdate;}
+    public void setLast_update(long lastLogin) { this.lastLogin = lastLogin;}
 
-    public Long getLast_update() { return lastUpdate; }
+    public Long getLast_update() { return lastLogin; }
 
     @Override
     public String toString() {
@@ -74,8 +74,8 @@ public class Account {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", role=" + role +
-                ", last_update=" + lastUpdate +
+                ", role=" + role + '\'' +
+                ", lastLogin=" + lastLogin + '\'' +
                 '}';
     }
 }

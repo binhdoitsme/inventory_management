@@ -17,19 +17,25 @@ public class AccountMapper extends Mapper<Account> {
 
     private static Account fromResultSet(ResultSet rs) {
         try {
+            System.out.println(rs.getTimestamp("last_login"));
             return new Account(rs.getInt("id"),
                     rs.getString("username"),
                     rs.getString("password"),
                     Role.valueOf(rs.getString("role")),
-                    getUnix(rs.getTimestamp("last_update"))
+                    getUnix(rs.getTimestamp("last_login"))
             );
+
         } catch (SQLException e) {
             return null;
         }
     }
 
     private static Long getUnix(Timestamp timestamp) {
-        long result = timestamp.toInstant().getEpochSecond();
-        return result;
+        if (timestamp == null) {
+            return 0L;
+        } else {
+            long result = timestamp.toInstant().getEpochSecond();
+            return result;
+        }
     }
 }

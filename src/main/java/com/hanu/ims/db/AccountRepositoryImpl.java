@@ -26,11 +26,10 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
 
     @Override
     public boolean add(Account account) {
-        String sql = "INSERT INTO account (`username`, `password`, `role`, `last_update`) VALUES ('$username', '$password', '$role', '$last_update')"
+        String sql = "INSERT INTO account (`username`, `password`, `role`) VALUES ('$username', '$password', '$role')"
                 .replace("$username", account.getUsername())
                 .replace("$password", account.getPassword())
-                .replace("$role", account.getRole().name())
-                .replace("$last_update", String.valueOf(getCurrentTimeStamp()));
+                .replace("$role", account.getRole().name());
 
         try {
             int affectedRows = getConnector().connect().executeInsert(sql);
@@ -161,10 +160,10 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
         boolean updateCount = false;
         try {
             String sql =
-                    "update account set username= '$username', password= '$password' , last_update= '$last_update' where id= $id"
+                    "update account set username= '$username', password= '$password' , last_login= '$last_login' where id= $id"
                             .replace("$username", item.getUsername())
                             .replace("$password", item.getPassword())
-                            .replace("$last_update", String.valueOf(getCurrentTimeStamp()))
+                            .replace("$last_login", String.valueOf(getCurrentTimeStamp()))
                             .replace("$id", Integer.toString(item.getId()));
 
             updateCount = getConnector().connect().executeUpdate(sql) > 0;

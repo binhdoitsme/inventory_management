@@ -96,6 +96,7 @@ public class LoginView extends Stage {
             DashboardView dashboardView = createDashboardView(account);
             dashboardView.show();
             usernameField.getScene().getWindow().hide();
+            accountController.updateAccount(account);
         } else {
             showErrorDialog();
         }
