@@ -6,6 +6,7 @@ import com.hanu.ims.exception.InvalidQueryTypeException;
 import com.hanu.ims.model.domain.Account;
 import com.hanu.ims.model.mapper.AccountMapper;
 import com.hanu.ims.model.repository.AccountRepository;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +28,7 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
     public boolean add(Account account) {
         String sql = "INSERT INTO account (`username`, `password`, `role`) VALUES ('$username', '$password', '$role')"
                 .replace("$username", account.getUsername())
-                .replace("$password", account.getPassword())
+                .replace("$password", DigestUtils.sha256Hex(account.getPassword()))
                 .replace("$role", account.getRole().name());
 
         try {
@@ -161,7 +162,7 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
             String sql =
                     "update account set username= '$username', password= '$password' , last_login= '$last_login' where id= $id"
                             .replace("$username", item.getUsername())
-                            .replace("$password", item.getPassword())
+                            .replace("$password", DigestUtils.sha256Hex(item.getPassword()))
                             .replace("$last_login", String.valueOf(getCurrentTimeStamp()))
                             .replace("$id", Integer.toString(item.getId()));
 
@@ -193,7 +194,7 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
         try {
             String sql = "SELECT * FROM account WHERE (username = '$username' and password = '$password')"
                     .replace("$username", username)
-                    .replace("$password", password);
+                    .replace("$password", DigestUtils.sha256Hex(password));
             ResultSet rs = getConnector().connect().executeSelect(sql);
             rs.next();
             return mapper.forwardConvert(rs);
