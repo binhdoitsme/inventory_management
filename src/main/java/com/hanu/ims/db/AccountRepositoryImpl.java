@@ -26,7 +26,7 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
     public boolean add(Account account) {
         String sql = "INSERT INTO account (`username`, `password`, `role`) VALUES ('$username', '$password', '$role')"
                 .replace("$username", account.getUsername())
-                .replace("$password", account.getPassword())
+                .replace("$password", org.apache.commons.codec.digest.DigestUtils.sha256Hex(account.getPassword()))
                 .replace("$role", account.getRole().name());
 
         try {
@@ -160,7 +160,7 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
             String sql =
                     "update account set username= '$username', password= '$password' where id= $id"
                     .replace("$username", item.getUsername())
-                    .replace("$password", item.getPassword())
+                    .replace("$password", org.apache.commons.codec.digest.DigestUtils.sha256Hex(item.getPassword()))
                     .replace("$id", Integer.toString(item.getId()));
 
             updateCount= getConnector().connect().executeUpdate(sql)>0;
@@ -190,6 +190,7 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
 
     @Override
     public Account findByUsernameAndPassword(String username, String password) {
+        password= org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
         try {
             String sql = "SELECT * FROM account WHERE (username = '$username' and password = '$password')"
                     .replace("$username", username)

@@ -67,6 +67,12 @@ public class LoginView extends Stage {
                         ((StringProperty) observable).setValue(oldValue);
                 }
         );
+
+//        String sha256hex = org.apache.commons.codec.digest.DigestUtils.sha256Hex("duaf1xd");
+//        System.out.println(sha256hex);
+//        String shaagain= org.apache.commons.codec.digest.DigestUtils.sha256Hex("admin");
+//        System.out.println("Again "+ shaagain);
+
     }
 
     @FXML

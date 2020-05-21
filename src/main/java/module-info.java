@@ -11,6 +11,7 @@ module com.hanu.ims {
     requires com.gluonhq.attach.util;
     requires com.gluonhq.charm.glisten;
     requires junit;
+    requires org.apache.commons.codec;
 
 
     opens com.hanu.ims to javafx.fxml;
