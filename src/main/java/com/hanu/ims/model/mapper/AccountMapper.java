@@ -1,6 +1,7 @@
 package com.hanu.ims.model.mapper;
 
 import com.hanu.ims.base.Mapper;
+import com.hanu.ims.exception.DbException;
 import com.hanu.ims.model.domain.Account;
 import com.hanu.ims.model.domain.Role;
 
@@ -24,15 +25,14 @@ public class AccountMapper extends Mapper<Account> {
                     Role.valueOf(rs.getString("role")),
                     getUnix(rs.getTimestamp("last_login"))
             );
-
-        } catch (SQLException e) {
-            return null;
+        } catch (Exception e) {
+            throw new DbException(e);
         }
     }
 
     private static Long getUnix(Timestamp timestamp) {
         if (timestamp == null) {
-            return 0L;
+            return -1L;
         } else {
             long result = timestamp.toInstant().getEpochSecond();
             return result;

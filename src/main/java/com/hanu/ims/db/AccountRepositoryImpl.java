@@ -6,6 +6,7 @@ import com.hanu.ims.exception.InvalidQueryTypeException;
 import com.hanu.ims.model.domain.Account;
 import com.hanu.ims.model.mapper.AccountMapper;
 import com.hanu.ims.model.repository.AccountRepository;
+import com.hanu.ims.util.date.TimestampConverter;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.ResultSet;
@@ -54,30 +55,10 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
         try {
             String sql = "SELECT * FROM account";
             count = getConnector().connect().executeScalar(sql);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (InvalidQueryTypeException e) {
+        } catch (SQLException | InvalidQueryTypeException e) {
             e.printStackTrace();
         }
         return count;
-
-//        ResultSet rs = null;
-//        try {
-//            rs = getConnector().connect().executeSelect(sql);
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        } catch (InvalidQueryTypeException e) {
-//            e.printStackTrace();
-//        }
-//        while (true) {
-//            try {
-//                if (!rs.next()) break;
-//            } catch (SQLException throwables) {
-//                throwables.printStackTrace();
-//            }
-//            ++count;
-//        }
-
     }
 
     @Override
@@ -146,24 +127,15 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
         return accountList;
     }
 
-        /*
-String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and password= '$password' and role= '$role'"
-                    .replace("$id", Integer.toString(item.getId()))
-                    .replace("$username", item.getUsername())
-                    .replace("$password", item.getPassword())
-                    .replace("$role", item.getRole().name());
-
-     */
-
     @Override
     public Account save(Account item) {
         boolean updateCount = false;
         try {
             String sql =
-                    "update account set username= '$username', password= '$password' , last_login= '$last_login' where id= $id"
-                            .replace("$username", item.getUsername())
-                            .replace("$password", DigestUtils.sha256Hex(item.getPassword()))
-                            .replace("$last_login", String.valueOf(getCurrentTimeStamp()))
+                    "UPDATE account SET password= '$password', last_login= '$last_login' where id= $id"
+                            .replace("$password", item.getPassword())
+                            .replace("$last_login", item.getLastLogin() == -1 ? "null"
+                                    : String.valueOf(TimestampConverter.getTimestampFromSeconds(item.getLastLogin())))
                             .replace("$id", Integer.toString(item.getId()));
 
             updateCount = getConnector().connect().executeUpdate(sql) > 0;
@@ -200,13 +172,7 @@ String sql = "DELETE FROM ACCOUNT WHERE id= '$id' and username= '$username' and 
             return mapper.forwardConvert(rs);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new DbException(e);
         }
-    }
-
-    public Timestamp getCurrentTimeStamp() {
-        long timeMillis = System.currentTimeMillis();
-        long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(timeMillis);
-        return new Timestamp(timeSeconds * 1000);
     }
 }
