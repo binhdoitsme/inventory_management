@@ -16,6 +16,8 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
+import static com.hanu.ims.util.modal.ModalService.showLoadingDialog;
+
 public class SalespersonDashboardView extends DashboardView {
     private static final String LAYOUT_FILE = "salesperson_dashboard.fxml";
 
@@ -38,8 +40,7 @@ public class SalespersonDashboardView extends DashboardView {
 
     public void initialize() {
         setTitle();
-        welcomeLabel.setText("Welcome, "
-                + AuthenticationProvider.getInstance().getCurrentAccount().getUsername() + "!");
+        setWelcomeLabel(welcomeLabel);
     }
 
     public void onCreateOrderClicked(ActionEvent actionEvent) throws IOException {
@@ -55,7 +56,7 @@ public class SalespersonDashboardView extends DashboardView {
 
     public void onManageOrdersClicked(ActionEvent actionEvent) throws IOException {
         try {
-            var loadingDialog = showLoadingDialog();
+            var loadingDialog = showLoadingDialog(this);
             Stage createOrderView = new OrderListView();
             createOrderView.setOnCloseRequest(event -> {
                 Stage salesDashboard = new SalespersonDashboardView();

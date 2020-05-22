@@ -15,10 +15,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -84,20 +86,25 @@ public class LoginView extends Stage {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        logger.info("Executed login");
-        logger.info(username + " " + password);
-
-        Account account = validateAccount(username, password);
-
-        loadingDialog.close();
-
-        if (account != null) {
+        try {
+            Account account = validateAccount(username, password);
+            loadingDialog.close();
             AuthenticationProvider.getInstance().setCurrentAccount(account);
             DashboardView dashboardView = createDashboardView(account);
             dashboardView.show();
-            usernameField.getScene().getWindow().hide();
+            if (account.getLastLogin() < 0) {
+                Stage changePassCompulsory = new ChangePasswordView();
+                changePassCompulsory.initOwner(dashboardView);
+                changePassCompulsory.initModality(Modality.WINDOW_MODAL);
+                changePassCompulsory.setOnCloseRequest(event -> {});
+                changePassCompulsory.show();
+            }
+            hide();
+            account.setLastLogin(Instant.now().getEpochSecond() * 1000);
             accountController.updateAccount(account);
-        } else {
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            loadingDialog.close();
             showErrorDialog();
         }
     }

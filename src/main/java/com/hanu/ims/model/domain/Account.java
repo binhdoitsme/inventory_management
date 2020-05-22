@@ -64,9 +64,9 @@ public class Account {
         this.role = role;
     }
 
-    public void setLast_update(long lastLogin) { this.lastLogin = lastLogin;}
+    public void setLastLogin(long lastLogin) { this.lastLogin = lastLogin;}
 
-    public Long getLast_update() { return lastLogin; }
+    public Long getLastLogin() { return lastLogin; }
 
     @Override
     public String toString() {

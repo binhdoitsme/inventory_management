@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!--<AnchorPane prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/11.0.1"-->
+<!--            xmlns:fx="http://javafx.com/fxml/1">-->
+<!--    <children>-->
+<!--        <Label layoutX="34.0" layoutY="8.0" prefHeight="70.0" prefWidth="169.0" text="Create New Account">-->
+<!--            <font>-->
+<!--                <Font size="18.0"/>-->
+<!--            </font>-->
+<!--        </Label>-->
+<!--        <Label layoutX="35.0" layoutY="223.0" prefHeight="70.0" prefWidth="169.0" text="Username:">-->
+<!--            <font>-->
+<!--                <Font size="15.0"/>-->
+<!--            </font>-->
+<!--        </Label>-->
+<!--        <Label layoutX="34.0" layoutY="502.0" prefHeight="70.0" prefWidth="169.0" text="Role:">-->
+<!--            <font>-->
+<!--                <Font size="15.0"/>-->
+<!--            </font>-->
+<!--        </Label>-->
+<!--        <TextField fx:id="usernameField" layoutX="29.0" layoutY="268.0" prefHeight="25.0" prefWidth="180.0"/>-->
+<!--        <Button layoutX="50.0" layoutY="724.0" mnemonicParsing="false" onAction="#attemptCreateAccount"-->
+<!--                prefHeight="58.0" prefWidth="138.0" text="Submit">-->
+<!--            <font>-->
+<!--                <Font size="18.0"/>-->
+<!--            </font>-->
+<!--        </Button>-->
+<!--        <ChoiceBox fx:id="roleChoiceBox" layoutX="34.0" layoutY="559.0" prefHeight="25.0" prefWidth="169.0"-->
+<!--                   value="Salesperson">-->
+<!--            <items>-->
+<!--                <FXCollections fx:factory="observableArrayList">-->
+<!--                    <String fx:value="Admin"/>-->
+<!--                    <String fx:value="InventoryManager"/>-->
+<!--                    <String fx:value="Salesperson"/>-->
+<!--                </FXCollections>-->
+<!--            </items>-->
+<!--        </ChoiceBox>-->
+<!--    </children>-->
+<!--</AnchorPane>-->
+
+<AnchorPane maxHeight="300" prefHeight="300" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox alignment="CENTER" layoutX="107.0" layoutY="55.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0">
+        <Label alignment="CENTER" prefHeight="21.0" prefWidth="608.0" text="Create a new account">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="16.0" />
+         </VBox.margin></Label>
+        <Label prefHeight="21.0" prefWidth="326.0">Username</Label>
+        <TextField fx:id="usernameField" />
+        <Label prefHeight="21.0" prefWidth="1093.0">Role</Label>
+        <ChoiceBox fx:id="roleChoiceBox" layoutX="34.0" layoutY="559.0" prefHeight="31.0" prefWidth="1092.0" value="Salesperson">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Admin" />
+                    <String fx:value="InventoryManager" />
+                    <String fx:value="Salesperson" />
+                </FXCollections>
+            </items>
+        </ChoiceBox>
+        <Button onAction="#onCreateAccount" text="Submit">
+         <VBox.margin>
+            <Insets top="16.0" />
+         </VBox.margin></Button>
+      <padding>
+         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+      </padding>
+    </VBox>
+
+</AnchorPane>

@@ -12,6 +12,8 @@ import javafx.stage.Modality;
 
 import java.io.IOException;
 
+import static com.hanu.ims.util.modal.ModalService.showLoadingDialog;
+
 public class InventoryManagerDashboardView extends DashboardView {
 
     private static final String LAYOUT_FILE = "inventory_manager_dashboard.fxml";
@@ -34,22 +36,21 @@ public class InventoryManagerDashboardView extends DashboardView {
     @FXML
     public void initialize() {
         setTitle();
-        welcomeLabel.setText("Welcome, "
-                + AuthenticationProvider.getInstance().getCurrentAccount().getUsername() + "!");
+        setWelcomeLabel(welcomeLabel);
     }
 
-    public void onManageBatchesClicked(ActionEvent actionEvent) throws IOException {
+    public void onManageBatchesClicked() throws IOException {
         var stage = new BatchListView();
-        var dialog = showLoadingDialog();
+        var dialog = showLoadingDialog(this);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(this);
         stage.show();
         dialog.close();
     }
 
-    public void onManageSuppliersClicked(ActionEvent actionEvent) throws IOException {
+    public void onManageSuppliersClicked() throws IOException {
         var stage = new SupplierListView();
-        var dialog = showLoadingDialog();
+        var dialog = showLoadingDialog(this);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(this);
         stage.show();
