@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -96,11 +97,15 @@ public class LoginView extends Stage {
                 Stage changePassCompulsory = new ChangePasswordView();
                 changePassCompulsory.initOwner(dashboardView);
                 changePassCompulsory.initModality(Modality.WINDOW_MODAL);
-                changePassCompulsory.setOnCloseRequest(event -> {});
+                changePassCompulsory.initStyle(StageStyle.UTILITY);
+                changePassCompulsory.setOnCloseRequest(event -> {
+                    event.consume();
+                });
                 changePassCompulsory.show();
+            } else {
+                account.setLastLogin(Instant.now().getEpochSecond() * 1000);
             }
             hide();
-            account.setLastLogin(Instant.now().getEpochSecond() * 1000);
             accountController.updateAccount(account);
         } catch (RuntimeException e) {
             e.printStackTrace();

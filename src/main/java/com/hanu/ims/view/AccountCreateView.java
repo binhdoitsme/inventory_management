@@ -55,7 +55,7 @@ public class AccountCreateView extends Stage {
 //        String password = passwordField.getText();
 //        String confirmPassword = confirmPasswordField.getText();
         String role = (String) roleChoiceBox.getValue();
-        String password = DigestUtils.sha256Hex(DEFAULT_PASSWORD);
+        String password = DEFAULT_PASSWORD;
 
 //        if (validateNewAccount(username, password, confirmPassword, role).equals("OK")) {
             Account account = new Account(username, password, Role.valueOf(role));

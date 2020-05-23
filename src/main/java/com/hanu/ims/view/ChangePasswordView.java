@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
+import java.time.Instant;
 
 import static com.hanu.ims.util.modal.ModalService.*;
 
@@ -78,6 +79,7 @@ public class ChangePasswordView extends Stage {
         }
 
         currentAccount.setPassword(DigestUtils.sha256Hex(newPasswordValue));
+        currentAccount.setLastLogin(Instant.now().getEpochSecond() * 1000);
         try {
             showLoadingDialog(this);
             controller.updateAccount(currentAccount);
