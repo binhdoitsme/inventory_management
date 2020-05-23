@@ -11,7 +11,7 @@ public class MockSupplierRepositoryImpl extends SupplierRepositoryImpl {
     private Hashtable<Integer, Supplier> map;
 
     public MockSupplierRepositoryImpl() {
-        map = new Hashtable<Integer, Supplier>();
+        map = new Hashtable<>();
         map.put(1, new Supplier(1, "Supplier1", "0832677917", "KTX", false));
         map.put(2, new Supplier(2, "Supplier2", "0832677917", "KTX", true));
         map.put(3, new Supplier(3, "Supplier3", "0832677917", "KTX", false));
@@ -91,10 +91,7 @@ public class MockSupplierRepositoryImpl extends SupplierRepositoryImpl {
 
     @Override
     public List<Supplier> findAll() {
-        List<Supplier> lstSupplier = new ArrayList<>();
-        for (int i = 0; i < map.size(); i++) {
-            lstSupplier.add(map.get(i));
-        }
+        List<Supplier> lstSupplier = new ArrayList<>(map.values());
         return lstSupplier;
     }
 

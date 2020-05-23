@@ -15,7 +15,7 @@ public class App extends Application {
     // startup instance
     private Startup startupInstance;
 
-    public App() {
+    App() {
     }
 
     public App configureSelf() {
@@ -28,7 +28,7 @@ public class App extends Application {
         return this;
     }
 
-    private <T extends Startup> App useStartup(Class<T> startupClass)
+    <T extends Startup> App useStartup(Class<T> startupClass)
             throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         startupInstance = startupClass.getDeclaredConstructor().newInstance();
         return this;
@@ -39,11 +39,5 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
 //        new BatchListView().show();
         new LoginView().show();
-    }
-
-
-    public static void main(String[] args) throws InvocationTargetException,
-            NoSuchMethodException, InstantiationException, IllegalAccessException {
-        new App().useStartup(Startup.class).configureSelf().launch(args);
     }
 }
