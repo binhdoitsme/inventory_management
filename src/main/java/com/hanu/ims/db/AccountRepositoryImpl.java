@@ -132,10 +132,10 @@ public class AccountRepositoryImpl extends RepositoryImpl<Account, Integer>
         boolean updateCount = false;
         try {
             String sql =
-                    "UPDATE account SET password= '$password', last_login= '$last_login' where id= $id"
+                    "UPDATE account SET password= '$password', last_login= $last_login where id= $id"
                             .replace("$password", item.getPassword())
                             .replace("$last_login", item.getLastLogin() == -1 ? "null"
-                                    : String.valueOf(TimestampConverter.getTimestampFromSeconds(item.getLastLogin())))
+                                    : "'" + TimestampConverter.getTimestampFromSeconds(item.getLastLogin()) + "'")
                             .replace("$id", Integer.toString(item.getId()));
 
             updateCount = getConnector().connect().executeUpdate(sql) > 0;
