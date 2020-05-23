@@ -2,6 +2,7 @@ package com.hanu.ims.controller;
 
 import com.hanu.ims.app.MockStartUp;
 import com.hanu.ims.model.domain.Supplier;
+import javafx.collections.ListChangeListener;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -77,8 +78,11 @@ public class SupplierControllerTest {
     @Test
     public void findAll() {
         try {
-            List<Supplier> lstSupplier = new SupplierController().getSupplierList();
-            assertEquals(4, lstSupplier.size());
+            var lstSupplier = new SupplierController().getSupplierList();
+            lstSupplier.addListener((ListChangeListener<? super Supplier>) c -> {
+                assertEquals(3, lstSupplier.size());
+            });
+
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
