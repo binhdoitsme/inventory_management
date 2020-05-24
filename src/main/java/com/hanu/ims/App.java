@@ -15,7 +15,7 @@ public class App extends Application {
     // startup instance
     private Startup startupInstance;
 
-    App() {
+    public App() {
     }
 
     public App configureSelf() {
@@ -39,5 +39,9 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
 //        new BatchListView().show();
         new LoginView().show();
+    }
+
+    public static void main(String[] args) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        new App().useStartup(Startup.class).configureSelf().launch(args);
     }
 }
